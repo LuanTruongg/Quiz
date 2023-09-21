@@ -8,7 +8,7 @@ namespace Quiz.Repository.Configuration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("Users");
+            builder.ToTable("AspNetUsers");
             builder.HasKey(x => x.UserId);
             builder.Property(x => x.UserId).IsRequired();
         }

@@ -8,7 +8,7 @@ namespace Quiz.Repository
 {
     public class QuizDbContext : IdentityDbContext<User, IdentityRole<string>, string>
     {
-        public QuizDbContext(DbContextOptions options) : base(options)
+        public QuizDbContext(DbContextOptions<QuizDbContext> options) : base(options)
         {
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,11 +25,12 @@ namespace Quiz.Repository
             modelBuilder.ApplyConfiguration(new UserTestConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
 
-            modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims");
-            modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRoles").HasKey(x => new { x.UserId, x.RoleId });
-            modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins").HasKey(x => x.UserId);
-            modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
-            modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserToken").HasKey(x => x.UserId);
+            //modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("AspNetUserClaims");
+            //modelBuilder.Entity<IdentityUserRole<string>>().ToTable("AspNetUserRoles").HasKey(x => new { x.UserId, x.RoleId });
+            //modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("AspNetUserLogins").HasKey(x => x.UserId);
+            //modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("AspNetRoleClaims");
+            //modelBuilder.Entity<IdentityUserToken<string>>().ToTable("AspNetUserToken").HasKey(x => x.UserId);
+            base.OnModelCreating(modelBuilder);
         }
         #region DbSet
         public DbSet<Department> Departments { get; set; }
@@ -42,7 +43,7 @@ namespace Quiz.Repository
         public DbSet<TestSubject> TestSubjects { get; set; }
         public DbSet<UserAnswer> UserAnswers { get; set; }
         public DbSet<UserTest> UserTests { get; set; }
-        public DbSet<User> Users { get; set; }
+        //public DbSet<User> Users { get; set; }
         #endregion
     }
 }

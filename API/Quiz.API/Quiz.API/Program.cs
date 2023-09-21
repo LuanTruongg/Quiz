@@ -11,9 +11,9 @@ builder.Services.AddDbContext<QuizDbContext>(options =>
 builder.Services.AddIdentity<User, IdentityRole<string>>()
     .AddEntityFrameworkStores<QuizDbContext>()
     .AddDefaultTokenProviders();
-builder.Services.AddTransient<UserManager<User>, UserManager<User>>();
-builder.Services.AddTransient<SignInManager<User>, SignInManager<User>>();
-builder.Services.AddTransient<RoleManager<IdentityRole<string>>, RoleManager<IdentityRole<string>>>();
+//builder.Services.AddTransient<UserManager<User>, UserManager<User>>();
+//builder.Services.AddTransient<SignInManager<User>, SignInManager<User>>();
+//builder.Services.AddTransient<RoleManager<IdentityRole<string>>, RoleManager<IdentityRole<string>>>();
 // Add services to the container.
 
 var app = builder.Build();
