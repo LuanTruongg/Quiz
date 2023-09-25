@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Quiz.DTO\Quiz.DTO.csproj" />
+    <ProjectReference Include="..\Quiz.Repository\Quiz.Repository.csproj" />
+  </ItemGroup>
+
 </Project>
