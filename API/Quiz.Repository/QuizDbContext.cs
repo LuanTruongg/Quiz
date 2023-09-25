@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Quiz.Repository.Configuration;
+using Quiz.Repository.DataSeed;
 using Quiz.Repository.Model;
 
 namespace Quiz.Repository
@@ -25,12 +26,13 @@ namespace Quiz.Repository
             modelBuilder.ApplyConfiguration(new UserTestConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
 
-            //modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("AspNetUserClaims");
-            //modelBuilder.Entity<IdentityUserRole<string>>().ToTable("AspNetUserRoles").HasKey(x => new { x.UserId, x.RoleId });
-            //modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("AspNetUserLogins").HasKey(x => x.UserId);
-            //modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("AspNetRoleClaims");
-            //modelBuilder.Entity<IdentityUserToken<string>>().ToTable("AspNetUserToken").HasKey(x => x.UserId);
-            base.OnModelCreating(modelBuilder);
+			//modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("AspNetUserClaims");
+			//modelBuilder.Entity<IdentityUserRole<string>>().ToTable("AspNetUserRoles").HasKey(x => new { x.UserId, x.RoleId });
+			//modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("AspNetUserLogins").HasKey(x => x.UserId);
+			//modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("AspNetRoleClaims");
+			//modelBuilder.Entity<IdentityUserToken<string>>().ToTable("AspNetUserToken").HasKey(x => x.UserId);
+			modelBuilder.Seed();
+			base.OnModelCreating(modelBuilder);
         }
         #region DbSet
         public DbSet<Department> Departments { get; set; }
