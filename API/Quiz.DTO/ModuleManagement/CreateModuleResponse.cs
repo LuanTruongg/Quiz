@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Quiz.DTO.ModuleManagement
 {
-	public class CreateModuleRequest
+	public class CreateModuleResponse
 	{
-        public string SubjectId { get; set; }
-        public int NumberOfMudule { get; set; }
-    }
+		public string ModuleName { get; set;}
+	}
 }
