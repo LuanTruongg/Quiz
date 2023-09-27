@@ -21,7 +21,7 @@ namespace Quiz.API.Controllers
 		}
 		[HttpGet]
 		[ProducesResponseType(typeof(GetModuleResponse), 200)]
-		public async Task<IActionResult> GetListModule([FromQuery]GetModuleRequest request)
+		public async Task<IActionResult> GetListModule([FromQuery]GetListModuleRequest request)
 		{
 			if (ModelState.IsValid)
 			{
@@ -30,12 +30,16 @@ namespace Quiz.API.Controllers
 			throw new ErrorException(400, ErrorMessage.BadRequest);
 		}
 
-		//// GET api/<ModuleManagementController>/5
-		//[HttpGet("{id}")]
-		//public string Get(int id)
-		//{
-		//	return "value";
-		//}
+		[HttpGet("{moduleId}")]
+		[ProducesResponseType(typeof(GetModuleResponse), 200)]
+		public async Task<IActionResult> GetModuleById(string moduleId)
+		{
+			if (ModelState.IsValid)
+			{
+				return GetResponse(200, await _service.GetModuleByIdAsync(moduleId));
+			}
+			throw new ErrorException(400, ErrorMessage.BadRequest);
+		}
 
 		[HttpPost]
 		[ProducesResponseType(typeof(CreateModuleResponse), 200)]
@@ -48,11 +52,16 @@ namespace Quiz.API.Controllers
 			throw new ErrorException(400, ErrorMessage.BadRequest);
 		}
 
-		//// PUT api/<ModuleManagementController>/5
-		//[HttpPut("{id}")]
-		//public void Put(int id, [FromBody] string value)
-		//{
-		//}
+		[HttpPut("{id}")]
+		[ProducesResponseType(typeof(EditModuleRequest), 200)]
+		public async Task<IActionResult> Put(string id, [FromBody] EditModuleRequest request)
+		{
+			if (ModelState.IsValid)
+			{
+				return GetResponse(200, await _service.EditModuleAsync(id, request));
+			}
+			throw new ErrorException(400, ErrorMessage.BadRequest);
+		}
 
 		//// DELETE api/<ModuleManagementController>/5
 		//[HttpDelete("{id}")]
