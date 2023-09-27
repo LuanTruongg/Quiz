@@ -21,7 +21,7 @@ namespace Quiz.API.Controllers
 		}
 		[HttpGet]
 		[ProducesResponseType(typeof(GetModuleResponse), 200)]
-		public async Task<IActionResult> Get([FromQuery]GetModuleRequest request)
+		public async Task<IActionResult> GetListModule([FromQuery]GetModuleRequest request)
 		{
 			if (ModelState.IsValid)
 			{
@@ -37,20 +37,16 @@ namespace Quiz.API.Controllers
 		//	return "value";
 		//}
 
-		//[HttpPost]
-		//public async Task<IActionResult> Post([FromBody] string value)
-		//{
-		//	if (!ModelState.IsValid)
-		//	{
-		//		return BadRequest(ModelState);
-		//	}
-		//	var result = await _service.GetListModuleAsync(request);
-		//	if (result.IsSuccessed)
-		//	{
-		//		return Ok(result);
-		//	}
-		//	return NotFound();
-		//}
+		[HttpPost]
+		[ProducesResponseType(typeof(CreateModuleResponse), 200)]
+		public async Task<IActionResult> Post([FromBody] CreateModuleRequest request)
+		{
+			if (ModelState.IsValid)
+			{
+				return GetResponse(200, await _service.CreateListModuleAsync(request));
+			}
+			throw new ErrorException(400, ErrorMessage.BadRequest);
+		}
 
 		//// PUT api/<ModuleManagementController>/5
 		//[HttpPut("{id}")]
