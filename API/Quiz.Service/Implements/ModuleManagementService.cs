@@ -3,6 +3,7 @@ using Quiz.DTO.ModuleManagement;
 using Quiz.Infrastructure.Http;
 using Quiz.Repository;
 using Quiz.Repository.Model;
+using Serilog;
 
 namespace Quiz.Service.Implements
 {
@@ -44,7 +45,36 @@ namespace Quiz.Service.Implements
 			return listModuleOfSubject;
 		}
 
-		public async Task<IEnumerable<GetModuleResponse>> GetListModuleAsync(GetModuleRequest request)
+		public async Task<GetModuleResponse> EditModuleAsync(string id, EditModuleRequest request)
+		{
+			var moduleExisting = await _dbContext.Modules.FindAsync(id);
+			if (moduleExisting is null)
+			{
+				throw new TestException("Module Not Found");
+			}
+			var subject = await _dbContext.Subjects.FindAsync(moduleExisting.SubjectId);
+			if (subject is null)
+			{
+				throw new TestException("Subject Not Found");
+			}
+			try
+			{
+				moduleExisting.Name = request.ModuleName;
+				_dbContext.Modules.Update(moduleExisting);
+				
+			}catch (Exception ex)
+			{
+				Log.Error(ex.Message, ex);
+			}
+			await _dbContext.SaveChangesAsync();
+			return new GetModuleResponse()
+			{
+				Name = moduleExisting.Name,
+				SubjectName = subject.Name
+			};
+		}
+
+		public async Task<IEnumerable<GetModuleResponse>> GetListModuleAsync(GetListModuleRequest request)
 		{
 			var subjectExisting = await _dbContext.Subjects.FindAsync(request.SubjectId);
 			if(subjectExisting is null)
@@ -58,6 +88,23 @@ namespace Quiz.Service.Implements
 					Name = x.Name,
 					SubjectName = x.Subject.Name
 				}).ToListAsync();
+			return data;
+		}
+
+		public async Task<GetModuleResponse> GetModuleByIdAsync(string moduleId)
+		{
+			var moduleExisting = await _dbContext.Modules.FindAsync(moduleId);
+			if (moduleExisting is null)
+			{
+				throw new TestException("Not Found");
+			}
+			var data = await _dbContext.Modules
+				.Where(x => x.ModuleId == moduleId)
+				.Select(x => new GetModuleResponse()
+				{
+					Name = x.Name,
+					SubjectName = x.Subject.Name
+				}).FirstOrDefaultAsync();
 			return data;
 		}
 	}
