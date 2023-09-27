@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Quiz.DTO.SubjectManagement;
+using Quiz.Infrastructure.Http;
 using Quiz.Repository;
 using Quiz.Repository.Model;
 
@@ -12,7 +13,6 @@ namespace Quiz.Service.Implements
         {
             _dbContext = dbContext;
         }
-
 		public async Task<AddSubjectResponse> AddSubjectsAsync(AddSubjectRequest request)
 		{
 			var subjectExisting = await _dbContext.Subjects.FindAsync(request.SubjectId);
@@ -32,7 +32,7 @@ namespace Quiz.Service.Implements
 				else
 				{
 					if (request.MajorId is null) {
-						throw new Exception();
+						throw new TestException("MajorId cannot be empty");
 					}
 					newSubject = new Subject
 					{
@@ -48,6 +48,10 @@ namespace Quiz.Service.Implements
 					await _dbContext.MajorSubjects.AddAsync(addMajorSubject);
 				}
 			}
+			else
+			{
+				throw new TestException("SubjectId was already used");
+			}
 			await _dbContext.Subjects.AddAsync(newSubject);
 			await _dbContext.SaveChangesAsync();
 			var result = new AddSubjectResponse()
@@ -59,7 +63,6 @@ namespace Quiz.Service.Implements
 			};
 			return result;
 		}
-
 		public async Task<IEnumerable<GetSubjectResponse>> GetListSubjectsAsync()
 		{
 			var data = await _dbContext.Subjects.Select(x => new GetSubjectResponse()

@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Quiz.Infrastructure\Quiz.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Quiz.Repository\Quiz.Repository.csproj" />
     <ProjectReference Include="..\..\Quiz.Service\Quiz.Service.csproj" />
   </ItemGroup>
