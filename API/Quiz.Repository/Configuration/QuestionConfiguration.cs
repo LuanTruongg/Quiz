@@ -17,7 +17,8 @@ namespace Quiz.Repository.Configuration
             builder.Property(x => x.QuestionC).IsRequired();
             builder.Property(x => x.QuestionD).IsRequired();
             builder.Property(x => x.Answer).IsRequired();
-            builder.HasOne(x => x.Module).WithMany(x => x.Questions).HasForeignKey(x => x.ModuleId);
+			builder.Property(x => x.Difficult).IsRequired();
+			builder.HasOne(x => x.Module).WithMany(x => x.Questions).HasForeignKey(x => x.ModuleId);
         }
     }
 }

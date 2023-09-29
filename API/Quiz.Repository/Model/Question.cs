@@ -16,8 +16,9 @@ namespace Quiz.Repository.Model
         public string QuestionB { get; set; }
         public string QuestionC { get; set; }
         public string QuestionD { get; set; }
-        public string QuestionCustom { get; set; }
+        public string? QuestionCustom { get; set; }
         public string Answer { get; set; }
-        public List<TestSubject> TestSubjects { get; set; }
+        public string Difficult { get; set; }
+		public List<TestSubject> TestSubjects { get; set; }
     }
 }

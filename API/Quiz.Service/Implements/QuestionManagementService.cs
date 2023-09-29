@@ -1,10 +1,10 @@
-﻿using Quiz.DTO.QuestionManagement;
+﻿using Microsoft.EntityFrameworkCore;
+using Quiz.DTO.QuestionManagement;
 using Quiz.Infrastructure.Http;
 using Quiz.Repository;
 using Quiz.Repository.Model;
 using Quiz.Service.Extensions;
 using Serilog;
-using System.Xml.Linq;
 
 namespace Quiz.Service.Implements
 {
@@ -48,6 +48,7 @@ namespace Quiz.Service.Implements
 				QuestionD = Base64.Base64Encode(request.QuestionD),
 				QuestionCustom = "test",
 				Answer = Base64.Base64Encode(answer),
+				Difficult = request.Difficult,
 				ModuleId = request.ModuleId
 			};
 			try
@@ -77,7 +78,63 @@ namespace Quiz.Service.Implements
 				QuestionC = result.QuestionC,
 				QuestionD = result.QuestionD,
 				Answer = result.Answer,
+				Difficult = result.Difficult,
 				ModuleId = result.ModuleId
+			};
+		}
+
+		public async Task<GetQuestionListResponse> GetListQuestionAsync(GetQuestionListRequest request)
+		{
+			//filter
+			var subjectExisting = await _dbContext.Subjects.FindAsync(request.SubjectId);
+			
+			if (subjectExisting is null)
+			{
+				throw new TestException($"Not Found Subject with Id: {request.SubjectId}");
+			}
+			var questionAll = _dbContext.Questions.AsQueryable();
+
+			if (!string.IsNullOrEmpty(request.Search))
+			{
+				var seacrhKeyTitleEncode = Base64.Base64Encode(request.Search).ToString();
+				questionAll = questionAll.Where(x => x.QuestionText.Contains(seacrhKeyTitleEncode));
+			}
+			var getListQuestionOfSubject = from question in questionAll
+										   join module in _dbContext.Modules on question.ModuleId equals module.ModuleId
+										   join subject in _dbContext.Subjects on module.SubjectId equals subject.SubjectId
+										   select new {
+											   question.QuestionText,
+											   question.QuestionA,
+											   question.QuestionB,
+											   question.QuestionC,
+											   question.QuestionD,
+											   subject.Name
+										   };
+				
+			//paging
+			int totalRow = await getListQuestionOfSubject.CountAsync();
+
+			var data = await getListQuestionOfSubject.Skip((request.Page - 1) * request.PageSize)
+				.Take(request.PageSize)
+				.Select(x => new QuestionItem()
+				{
+					QuestionText = Base64.Base64Decode(x.QuestionText),
+					QuestionA = Base64.Base64Decode(x.QuestionA),
+					QuestionB = Base64.Base64Decode(x.QuestionB),
+					QuestionC = Base64.Base64Decode(x.QuestionC),
+					QuestionD = Base64.Base64Decode(x.QuestionD),
+					SubjectName = x.Name
+				}).ToListAsync();
+
+			var numberPage = request.Page <= 0 ? 1 : request.Page;
+			var numberPageSize = request.PageSize <= 0 ? 10 : request.PageSize;
+
+			return new GetQuestionListResponse()
+			{
+				Results = data,
+				Page = numberPage,
+				PageSize = numberPageSize,
+				Count = data.Count()
 			};
 		}
 	}
