@@ -8,6 +8,7 @@
 		public string QuestionC { get; set; }
 		public string QuestionD { get; set; }
 		public char Answer { get; set; }
+		public string Difficult { get; set; }
 		public string ModuleId { get; set; }
 	}
 }
