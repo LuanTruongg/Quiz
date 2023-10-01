@@ -5,6 +5,7 @@ using Quiz.Repository;
 using Quiz.Repository.Model;
 using Quiz.Service.Extensions;
 using Serilog;
+using System.Reflection;
 
 namespace Quiz.Service.Implements
 {
@@ -135,6 +136,99 @@ namespace Quiz.Service.Implements
 				Page = numberPage,
 				PageSize = numberPageSize,
 				Count = data.Count()
+			};
+		}
+
+		public async Task<string> DeleteQuestionAsync(string id)
+		{
+			var questionExisting = await _dbContext.Questions.FindAsync(id);
+			if (questionExisting is null)
+			{
+				throw new TestException($"Not Found Subject with Id: {id}");
+			}
+			try
+			{
+				_dbContext.Questions.Remove(questionExisting);
+				await _dbContext.SaveChangesAsync();
+				return $"Delete success question: {Base64.Base64Decode(questionExisting.QuestionText)} ";
+			}
+			catch (Exception ex)
+			{
+				Log.Error(ex.Message);
+				throw new TestException(ex.Message);
+			}
+		}
+
+		public async Task<EditQuestionResponse> EditQuestionAsync(string id, EditQuestionRequest request)
+		{
+			var moduleExisting = await _dbContext.Modules.FindAsync(request.ModuleId);
+			if (moduleExisting is null)
+			{
+				throw new TestException($"Not Found Module with Id: {request.ModuleId}");
+			}
+			var answer = string.Empty;
+			switch (request.Answer)
+			{
+				case 'A':
+					answer = request.QuestionA;
+					break;
+				case 'B':
+					answer = request.QuestionB;
+					break;
+				case 'C':
+					answer = request.QuestionC;
+					break;
+				case 'D':
+					answer = request.QuestionD;
+					break;
+			}
+			var editQuestion = await _dbContext.Questions.FindAsync(id);
+			if (editQuestion is null)
+			{
+				throw new TestException($"Not Found Question with Id: {id}");
+			}
+			editQuestion.QuestionText = Base64.Base64Encode(request.QuestionText);
+			editQuestion.QuestionA = Base64.Base64Encode(request.QuestionA);
+			editQuestion.QuestionB = Base64.Base64Encode(request.QuestionB);
+			editQuestion.QuestionC = Base64.Base64Encode(request.QuestionC);
+			editQuestion.QuestionD = Base64.Base64Encode(request.QuestionD);
+			editQuestion.Answer = Base64.Base64Encode(answer);
+			editQuestion.Difficult = request.Difficult;
+			editQuestion.ModuleId = request.ModuleId;
+			try
+			{
+				_dbContext.Questions.Update(editQuestion);
+			}
+			catch (Exception ex)
+			{
+				Log.Error(ex.Message);
+			}
+			 _dbContext.SaveChanges();
+			var result = _dbContext.Questions.Where(x => x.QuestionId == editQuestion.QuestionId).FirstOrDefault();
+			if (result is null)
+			{
+				throw new TestException($"Not Found Question with Id: {id}");
+			}
+			//return new AddQuestionResponse()
+			//{
+			//	QuestionText = newQuestion.QuestionText,
+			//	QuestionA = newQuestion.QuestionA,
+			//	QuestionB = newQuestion.QuestionB,
+			//	QuestionC = newQuestion.QuestionC,
+			//	QuestionD = newQuestion.QuestionD,
+			//	Answer = newQuestion.Answer,
+			//	ModuleId = newQuestion.ModuleId
+			//};
+			return new EditQuestionResponse()
+			{
+				QuestionText = result.QuestionText,
+				QuestionA = result.QuestionA,
+				QuestionB = result.QuestionB,
+				QuestionC = result.QuestionC,
+				QuestionD = result.QuestionD,
+				Answer = result.Answer,
+				Difficult = result.Difficult,
+				ModuleId = result.ModuleId
 			};
 		}
 	}
