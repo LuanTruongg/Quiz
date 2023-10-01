@@ -48,14 +48,25 @@ namespace Quiz.API.Controllers
 			throw new ErrorException(400, ErrorMessage.BadRequest);
 		}
 
-		//[HttpPut("{id}")]
-		//public void Put(int id, [FromBody] string value)
-		//{
-		//}
+		[HttpPut("{id}")]
+		[ProducesResponseType(typeof(EditQuestionResponse), 200)]
+		public async Task<IActionResult> Put(string id, [FromBody] EditQuestionRequest request)
+		{
+			if (ModelState.IsValid)
+			{
+				return GetResponse(200, await _service.EditQuestionAsync(id, request));
+			}
+			throw new ErrorException(400, ErrorMessage.BadRequest);
+		}
 
-		//[HttpDelete("{id}")]
-		//public void Delete(int id)
-		//{
-		//}
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> Delete(string id)
+		{
+			if (ModelState.IsValid)
+			{
+				return GetResponse(200, await _service.DeleteQuestionAsync(id));
+			}
+			throw new ErrorException(400, ErrorMessage.BadRequest);
+		}
 	}
 }
