@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Quiz.Repository;
 
@@ -11,9 +12,10 @@ using Quiz.Repository;
 namespace Quiz.Repository.Migrations
 {
     [DbContext(typeof(QuizDbContext))]
-    partial class QuizDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231007164413_set_testSubject_Id_auto")]
+    partial class set_testSubject_Id_auto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -352,11 +354,9 @@ namespace Quiz.Repository.Migrations
 
             modelBuilder.Entity("Quiz.Repository.Model.TestSubject", b =>
                 {
-                    b.Property<int>("TestSubjectId")
+                    b.Property<string>("TestSubjectId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TestSubjectId"), 1L, 1);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("QuestionId")
                         .IsRequired()
@@ -506,10 +506,7 @@ namespace Quiz.Repository.Migrations
 
                     b.Property<string>("TestSubjectId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TestSubjectId1")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -517,7 +514,7 @@ namespace Quiz.Repository.Migrations
 
                     b.HasKey("UserTestId");
 
-                    b.HasIndex("TestSubjectId1");
+                    b.HasIndex("TestSubjectId");
 
                     b.HasIndex("UserId");
 
@@ -661,7 +658,7 @@ namespace Quiz.Repository.Migrations
                 {
                     b.HasOne("Quiz.Repository.Model.TestSubject", "TestSubject")
                         .WithMany("UserTest")
-                        .HasForeignKey("TestSubjectId1")
+                        .HasForeignKey("TestSubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
