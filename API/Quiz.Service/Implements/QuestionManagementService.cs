@@ -209,16 +209,6 @@ namespace Quiz.Service.Implements
 			{
 				throw new TestException($"Not Found Question with Id: {id}");
 			}
-			//return new AddQuestionResponse()
-			//{
-			//	QuestionText = newQuestion.QuestionText,
-			//	QuestionA = newQuestion.QuestionA,
-			//	QuestionB = newQuestion.QuestionB,
-			//	QuestionC = newQuestion.QuestionC,
-			//	QuestionD = newQuestion.QuestionD,
-			//	Answer = newQuestion.Answer,
-			//	ModuleId = newQuestion.ModuleId
-			//};
 			return new EditQuestionResponse()
 			{
 				QuestionText = result.QuestionText,

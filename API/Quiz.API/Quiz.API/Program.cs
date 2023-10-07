@@ -20,6 +20,8 @@ builder.Services.AddIdentity<User, IdentityRole<string>>()
 builder.Services.AddScoped<ISubjectManagementService, SubjectManagementService>();
 builder.Services.AddScoped<IModuleManagementService, ModuleManagementService>();
 builder.Services.AddScoped<IQuestionManagementService, QuestionManagementService>();
+builder.Services.AddScoped<ITestStructureManagementService, TestStructureManagementService>();
+builder.Services.AddScoped<ITestSubjectManagementService, TestSubjectManagementService>();
 
 var app = builder.Build();
 

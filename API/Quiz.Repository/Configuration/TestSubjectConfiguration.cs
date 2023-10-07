@@ -9,8 +9,8 @@ namespace Quiz.Repository.Configuration
         public void Configure(EntityTypeBuilder<TestSubject> builder)
         {
             builder.ToTable("TestSubjects");
-            builder.HasKey(x => x.TestSubjectId);
-            builder.Property(x => x.TestSubjectId).IsRequired();
+            //builder.HasNoKey();
+            builder.Property(x => x.TestSubjectId).IsRequired().ValueGeneratedOnAdd();
             builder.HasOne(x => x.TestStructure).WithMany(x => x.TestSubjects).HasForeignKey(x => x.TestStructureId);
             builder.HasOne(x => x.Question).WithMany(x => x.TestSubjects).HasForeignKey(x => x.QuestionId);
         }
