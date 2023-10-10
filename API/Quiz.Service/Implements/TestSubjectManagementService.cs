@@ -47,7 +47,7 @@ namespace Quiz.Service.Implements
 			for (int j = 0; j < request.ListModuleId.Count; j++)
 			{
 				var listQuestionOfModule = await listQuestionOfSubject.Where(x => x.ModuleId == request.ListModuleId[j]).ToListAsync();
-				for (int k = 0; k < questionTotalOfModule; k++)
+				for (int k = 0; k < request.ListNumQuestion[j]; k++)
 				{
 					Random rand = new Random();
 					int randomNumber = rand.Next(0, listQuestionOfModule.Count);
@@ -55,13 +55,11 @@ namespace Quiz.Service.Implements
 					if (!listQuestionResult.Contains(questionIdRandom.ToString()))
 					{
 						listQuestionResult.Add(questionIdRandom.ToString());
-						//listQuestionOfModule = listQuestionOfModule.Where(x => !x.QuestionId.Contains(questionIdRandom.ToString())).ToList();
 					}
 					else
 					{
 						k--;
 					}
-					
 				}
 			}
 			foreach (var question in listQuestionResult) 
@@ -88,6 +86,28 @@ namespace Quiz.Service.Implements
 			{
 				message = "Create success"
 			};
+		}
+
+		public async Task<DeleteTestSubjectResponse> DeleteTestSubject(string testSubjectCode)
+		{
+			var testSubjectExisting = await _dbContext.TestSubjects.FirstOrDefaultAsync(x => x.TestSubjectCode == testSubjectCode);
+			if (testSubjectExisting is null)
+			{
+				throw new TestException($"Not Found Test with Id {testSubjectCode}");
+			}
+			var listQuestion = await _dbContext.TestSubjects
+									.Where(x => x.TestSubjectCode == testSubjectCode)
+									.Select(x => x.TestSubjectId).ToListAsync();
+
+			foreach (var item in listQuestion) {
+				var getQuestionInTest = await _dbContext.TestSubjects.FirstOrDefaultAsync(x => x.TestSubjectId == item);
+				_dbContext.TestSubjects.Remove(getQuestionInTest);
+			}
+			_dbContext.SaveChanges();
+			return new DeleteTestSubjectResponse()
+			{
+				message = "Delete success"
+			};	
 		}
 	}
 }

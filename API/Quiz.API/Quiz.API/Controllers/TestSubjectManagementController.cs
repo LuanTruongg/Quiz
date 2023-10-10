@@ -2,6 +2,7 @@
 using Quiz.DTO.TestSubjectManagement;
 using Quiz.Infrastructure.Constraint;
 using Quiz.Infrastructure.Http;
+using Quiz.Repository.Model;
 using Quiz.Service;
 using ControllerBase = Quiz.Infrastructure.Http.ControllerBase;
 
@@ -49,10 +50,14 @@ namespace Quiz.API.Controllers
 		//{
 		//}
 
-		//// DELETE api/<TestSubjectManagementController>/5
-		//[HttpDelete("{id}")]
-		//public void Delete(int id)
-		//{
-		//}
+		[HttpDelete("{testSubjectCode}")]
+		public async Task<IActionResult> Delete(string testSubjectCode)
+		{
+			if (ModelState.IsValid)
+			{
+				return GetResponse(200, await _service.DeleteTestSubject(testSubjectCode));
+			}
+			throw new ErrorException(400, ErrorMessage.BadRequest);
+		}
 	}
 }
