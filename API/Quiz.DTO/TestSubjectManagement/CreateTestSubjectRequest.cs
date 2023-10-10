@@ -11,5 +11,6 @@ namespace Quiz.DTO.TestSubjectManagement
 		public string TestSubjectCode { get; set; }
 		public string TestStructureId { get; set; }
 		public List<string> ListModuleId { get; set; }
+		public List<int> ListNumQuestion { get; set; }
 	}
 }
