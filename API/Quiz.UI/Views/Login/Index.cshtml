@@ -46,12 +46,6 @@
                                 Login
                             </button>
                         </a>
-                        <a asp-controller="Admin" asp-action="Index">
-                            <button type="button" class="btn btn-primary btn-lg"
-                                    style="padding-left: 2.5rem; padding-right: 2.5rem;">
-                                Login Admin
-                            </button>
-                        </a>
                         <a asp-area="" asp-controller="Login" asp-action="Login" class="btn btn-lg btn-google text-uppercase btn-outline shadow bg-white rounded"><img src="https://img.icons8.com/color/16/000000/google-logo.png"> Signup Using Google</a>
                         @* <ul>
                             @if (Context.User.Identity.IsAuthenticated)
@@ -73,6 +67,24 @@
             </div>
         </div>
     </div>
+    <a asp-controller="Home" asp-action="Index">
+        <button type="button" class="btn btn-primary btn-lg"
+                style="padding-left: 2.5rem; padding-right: 2.5rem;">
+            Login
+        </button>
+    </a>
+    <a asp-controller="Admin" asp-action="Index">
+        <button type="button" class="btn btn-primary btn-lg"
+                style="padding-left: 2.5rem; padding-right: 2.5rem;">
+            Login Admin
+        </button>
+    </a>
+    <a asp-controller="Teacher" asp-action="Index">
+        <button type="button" class="btn btn-primary btn-lg"
+                style="padding-left: 2.5rem; padding-right: 2.5rem;">
+            Login Teacher
+        </button>
+    </a>
 </section>
 @* 
 

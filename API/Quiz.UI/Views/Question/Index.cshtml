@@ -1,0 +1,104 @@
+﻿@* ﻿@using LShopSolution.ViewModels.Common;
+@model PagedResult<LShopSolution.ViewModels.Authen.Users.UserVM> *@
+@{
+    ViewData["Title"] = "Danh sách câu hỏi";
+    Layout = "~/Views/Shared/_LayoutTeacher.cshtml";
+}
+@section Scripts{
+    <script>
+        setTimeout(function () {
+            $('#msgAlert').fadeOut('slow');
+        }, 2000);
+    </script>
+}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Danh sách câu hỏi</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Danh sách câu hỏi</li>
+    </ol>
+    <div class="card mb-4">
+
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <a class="btn btn-success" asp-controller="Question" asp-action="Create">Tạo mới</a>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <form asp-action="Index" method="get">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <input type="text" name="keyword" class="form-control" value="@ViewBag.Keyword" />
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary">Tìm</button>
+                                <button type="button" class="btn btn-dark" onclick="window.location.href='Users/Index'">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-4"></div>
+        <div class="card-body">
+            @if (ViewBag.SuccessMsg != null)
+            {
+                <div id="msgAlert" class="alert alert-success" role="alert">
+                    @ViewBag.SuccessMsg
+                </div>
+            }
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            Mã môn
+                        </th>
+                        <th>
+                            Tên môn
+                        </th>
+                        <th>
+                            Khoa
+                        </th>
+                        @*                         <th>
+                        Tài khoản
+                        </th>
+                        <th>
+                        Email
+                        </th>
+                        <th></th> *@
+                    </tr>
+                </thead>
+                <t@* body>
+                     @foreach (var item in Model.Items)
+                     {
+                     <tr>
+                     <td>
+                     @Html.DisplayFor(modelItem => item.FirstName)
+                     </td>
+                     <td>
+                     @Html.DisplayFor(modelItem => item.LastName)
+                     </td>
+                     <td>
+                     @Html.DisplayFor(modelItem => item.PhoneNumber)
+                     </td>
+                     <td>
+                     @Html.DisplayFor(modelItem => item.UserName)
+                     </td>
+                     <td>
+                     @Html.DisplayFor(modelItem => item.Email)
+                     </td>
+                     <td>
+                     @Html.ActionLink("Sửa", "Edit", new { id=item.Id }) |
+                     @Html.ActionLink("Xem", "Details", new { id=item.Id }) |
+                     @Html.ActionLink("Xóa", "Delete", new { id=item.Id }) |
+                     @Html.ActionLink("Gán quyền", "GetRoleAssign", new { id=item.Id })
+                     </td>
+                     </tr>
+                     } *@
+                </tbody>
+            </table>
+        </div>
+        @* @await Component.InvokeAsync("Pager", Model) *@
+    </div>
+</div>
+

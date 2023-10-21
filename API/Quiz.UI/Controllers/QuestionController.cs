@@ -2,7 +2,7 @@
 
 namespace Quiz.UI.Controllers
 {
-    public class UserManagementController : Controller
+    public class QuestionController : Controller
     {
         public IActionResult Index()
         {
@@ -21,10 +21,6 @@ namespace Quiz.UI.Controllers
             return View();
         }
         public IActionResult Delete()
-        {
-            return View();
-        }
-        public IActionResult GetProfile()
         {
             return View();
         }
