@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Quiz.Infrastructure.Middlewares;
 using Quiz.Repository;
 using Quiz.Repository.Model;
+using Quiz.UI.ServicesClient;
+using Quiz.UI.ServicesClient.Implements;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<QuizDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("QuizDb")));
+builder.Services.AddHttpClient();
+
 builder.Services.AddIdentity<User, IdentityRole<string>>(options =>
 {
     options.SignIn.RequireConfirmedAccount = true;
@@ -42,6 +47,13 @@ builder.Services.AddAuthentication(options =>
         options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
         options.CallbackPath = new PathString("/signin-google");
     });
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+});
+
+builder.Services.AddScoped<ILoginServiceClient, LoginServiceClient>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();
 
@@ -54,14 +66,15 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseCookiePolicy();
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 app.UseAuthentication();
 
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.UseSession();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Login}/{action=Index}");
+    pattern: "{controller=Home}/{action=Index}");
 
 app.Run();
