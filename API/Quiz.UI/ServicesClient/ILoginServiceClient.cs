@@ -6,6 +6,6 @@ namespace Quiz.UI.ServicesClient
 {
     public interface ILoginServiceClient
     {
-        Task<ApiResult<string>> Authenticate(AuthenticationRequest request);
+        Task<AuthenticationResponse> Authenticate(AuthenticationRequest request);
     }
 }

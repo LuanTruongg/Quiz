@@ -21,6 +21,7 @@ namespace Quiz.API.Controllers
         }
         [HttpPost("login")]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(AuthenticationResponse), 200)]
         public async Task<IActionResult> Login([FromBody] AuthenticationRequest request)
         {
             if (ModelState.IsValid)

@@ -1,4 +1,6 @@
-﻿<div class="container-fluid mb-5">
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<div class="container-fluid mb-5">
     <div class="row border-top px-xl-5">
         @* <div class="col-lg-3 d-none d-lg-block">
             <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
@@ -50,9 +52,25 @@
                         </div>
                         <a href="contact.html" class="nav-item nav-link">Contact</a> *@
                     </div>
-                    <div class="navbar-nav ml-auto py-0">
-                        <a asp-action="Index" asp-controller="Login" class="nav-item nav-link">Login</a>
-                    </div>
+                    @{
+                        var fullname = HttpContextAccessor.HttpContext.Session.GetString("FullName");
+                        if (fullname != null)
+                        {
+                            <div class="navbar-nav ml-auto py-0">
+                                <a asp-action="Index" asp-controller="Account" class="nav-item nav-link">
+                                    @fullname
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="navbar-nav ml-auto py-0">
+                                <a asp-action="Index" asp-controller="Login" class="nav-item nav-link">Login</a>
+                            </div>
+                        }
+                    }
+                    
+                    
                 </div>
             </nav>
             @* <div id="header-carousel" class="carousel slide" data-ride="carousel">

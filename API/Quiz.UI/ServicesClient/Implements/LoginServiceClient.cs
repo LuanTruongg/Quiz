@@ -22,7 +22,7 @@ namespace Quiz.UI.ServicesClient.Implements
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
         }
-        public async Task<ApiResult<string>> Authenticate(AuthenticationRequest request)
+        public async Task<AuthenticationResponse> Authenticate(AuthenticationRequest request)
         {
             var json = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
@@ -30,9 +30,10 @@ namespace Quiz.UI.ServicesClient.Implements
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
             var response = await client.PostAsync("/identity/login", httpContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<ApiSuccessResult<string>>(await response.Content.ReadAsStringAsync());
-            return JsonConvert.DeserializeObject<ApiErrorResult<string>>(await response.Content.ReadAsStringAsync());
+                return JsonConvert.DeserializeObject<AuthenticationResponse>(responseContent);
+            return JsonConvert.DeserializeObject<AuthenticationResponse>(responseContent);
         }
     }
 }
