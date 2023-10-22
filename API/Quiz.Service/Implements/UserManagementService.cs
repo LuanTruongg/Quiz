@@ -31,20 +31,33 @@ namespace Quiz.Service.Implements
             var user = await _userManager.FindByNameAsync(request.UserName);
             if (user == null)
             {
-                throw new TestException("Tài khoản không tồn tại");
+                return new AuthenticationResponse
+                {
+                    Token = null,
+                    IsAuthSuccessful = false,
+                    ErrorMessage = "Tài khoản không tồn tại"
+                };
+                //throw new TestException("Tài khoản không tồn tại");
             }
             var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
             if (!result.Succeeded)
             {
-                throw new TestException("Đăng nhập không đúng");
+                return new AuthenticationResponse
+                {
+                    Token = null,
+                    IsAuthSuccessful = false,
+                    ErrorMessage = "Tài khoản hoặc mật khẩu không đúng"
+                };
+                //throw new TestException("");
             }
 
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, string.Join(";",roles)),
-                new Claim(ClaimTypes.Name, request.UserName)
+                new Claim(ClaimTypes.Name, user.Fullname),
+                new Claim("UserId", user.Id)
             };
             //Ma Hoa
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtTokens:Key"]));
