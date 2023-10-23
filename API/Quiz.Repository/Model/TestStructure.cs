@@ -12,6 +12,7 @@ namespace Quiz.Repository.Model
         public string Name { get; set; }
         public int Time { get; set; }
         public int NumberOfQuestions { get; set; }
+        public string SubjectId { get; set; }
         public List<TestSubject> TestSubjects { get; set; }
     }
 }

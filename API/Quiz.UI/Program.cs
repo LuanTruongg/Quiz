@@ -53,6 +53,7 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddScoped<ILoginServiceClient, LoginServiceClient>();
+builder.Services.AddScoped<IHomeServiceClient, HomeServiceClient>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();

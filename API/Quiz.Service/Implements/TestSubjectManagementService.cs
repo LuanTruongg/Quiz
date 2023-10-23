@@ -8,7 +8,7 @@ using System;
 
 namespace Quiz.Service.Implements
 {
-	public class TestSubjectManagementService : ITestSubjectManagementService
+    public class TestSubjectManagementService : ITestSubjectManagementService
 	{
 		private readonly QuizDbContext _dbContext;
 		public TestSubjectManagementService(QuizDbContext dbContext)
@@ -109,5 +109,10 @@ namespace Quiz.Service.Implements
 				message = "Delete success"
 			};	
 		}
-	}
+
+        public Task<string> GetListTestSubjectOfSubject(GetTestSubjectOfSubjectRequest request)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
