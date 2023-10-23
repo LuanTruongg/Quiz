@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Quiz.DTO.TestSubjectManagement
 {
-	public class CreateTestSubjectRequest
-	{
-		public string TestSubjectCode { get; set; }
-		public string TestStructureId { get; set; }
-		public List<string> ListModuleId { get; set; }
-		public List<int> ListNumQuestion { get; set; }
-	}
+    public class CreateTestSubjectRequest
+    {
+        public string TestSubjectCode { get; set; }
+        public string TestStructureId { get; set; }
+        public List<string> ListModuleId { get; set; }
+        public List<int> ListNumQuestion { get; set; }
+    }
 }

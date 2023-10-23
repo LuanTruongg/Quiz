@@ -20,11 +20,15 @@ namespace Quiz.API.Controllers
 
 		}
 		//// GET: api/<TestSubjectManagementController>
-		//[HttpGet]
-		//public IEnumerable<string> Get()
-		//{
-		//	return new string[] { "value1", "value2" };
-		//}
+		[HttpGet]
+		public async Task<IActionResult> Get(GetTestSubjectOfSubjectRequest request)
+		{
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetListTestSubjectOfSubject(request));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
 
 		//// GET api/<TestSubjectManagementController>/5
 		//[HttpGet("{id}")]

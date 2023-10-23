@@ -38,7 +38,7 @@
         <!-- Topbar End -->
         <!-- Navbar Start -->
         @{
-            await Html.RenderPartialAsync("_HomeNav");
+            @await Component.InvokeAsync("Nav")
         }
         <!-- Navbar End -->
     </header>

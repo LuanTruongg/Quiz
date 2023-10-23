@@ -24,8 +24,9 @@ namespace Quiz.UI.Controllers
             _service = service;
             _configuration = configuration;
         }
-        public IActionResult Index()
+        public IActionResult Index(string message)
         {
+            ViewData["Message"] = message;
             return View();
         }
 
@@ -39,8 +40,7 @@ namespace Quiz.UI.Controllers
             var result = await _service.Authenticate(request);
             if (result.Token == null)
             {
-                ModelState.AddModelError("", result.ErrorMessage);
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "Login", new { message = result.ErrorMessage });
             }
             var userPrincipal = this.ValidateToken(result.Token);
             var authProperties = new AuthenticationProperties
@@ -95,10 +95,11 @@ namespace Quiz.UI.Controllers
         //    return Json(claims);
         //    //return RedirectToAction("Index", "Home");
         //}
-        //public async Task<IActionResult> Logout()
-        //{
-        //    await HttpContext.SignOutAsync();
-        //    return RedirectToAction("Home");
-        //}
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Remove("Token");
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

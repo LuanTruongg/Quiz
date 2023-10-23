@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Quiz.DTO.TestSubjectManagement
+namespace Quiz.DTO.Common
 {
-    public class CreateTestSubjectResponse
+    public class GetListMajorRequest
     {
-        public string message { get; set; }
+        public string Name { get; set; }
     }
 }

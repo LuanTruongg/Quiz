@@ -18,11 +18,15 @@ namespace Quiz.API.Controllers
 			_service = service;
 
 		}
-		//[HttpGet]
-		//public IEnumerable<string> Get()
-		//{
-		//	return new string[] { "value1", "value2" };
-		//}
+		[HttpGet]
+		public async Task<IActionResult> Get([FromQuery] GetListTestStructureRequest request)
+		{
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetListTestStructureAsync(request));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
 
 		//[HttpGet("{id}")]
 		//public string Get(int id)

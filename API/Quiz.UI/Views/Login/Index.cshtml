@@ -1,6 +1,7 @@
 ﻿@using Quiz.DTO.UserManagement
 @model AuthenticationRequest
 @{
+
     Layout = null;
 }
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -14,6 +15,14 @@
                      class="img-fluid" alt="Sample image">
             </div>
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                @{
+                    if (ViewData["Message"] != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewData["Message"]
+                        </div>
+                    }
+                }
                 <form asp-action="LoginDefault" asp-controller="Login" method="post">
                     <!-- Email input -->
                     <label class="form-label" for="form3Example3">Email address</label>
@@ -39,26 +48,12 @@
                         </div>
                         <a href="#!" class="text-body">Forgot password?</a>
                     </div>
-
                     <div class="text-center text-lg-start mt-4 pt-2 d-flex justify-content-between">
-                        @* <a asp-controller ="Login" asp-action="Login"> *@
                             <button type="submit" class="btn btn-primary btn-lg"
                                     style="padding-left: 2.5rem; padding-right: 2.5rem;">
                                 Login
                             </button>
-                        @* </a> *@
                         <a asp-area="" asp-controller="Login" asp-action="LoginGoogle" class="btn btn-lg btn-google text-uppercase btn-outline shadow bg-white rounded"><img src="https://img.icons8.com/color/16/000000/google-logo.png"> Signup Using Google</a>
-                        @* <ul>
-                            @if (Context.User.Identity.IsAuthenticated)
-                            {
-                                <li>
-                                    <a>Hello @User.Identity.Name</a>
-                                </li>
-                                <li>
-                                    <a asp-area="" asp-controller="Login" asp-action="Logout">Sign in with Google</a>
-                                </li>
-                            }
-                        </ul> *@
                     </div>
                     <p class="small fw-bold mt-2 pt-1 mb-0">
                         Don't have an account? <a href="#!"
@@ -87,44 +82,3 @@
         </button>
     </a>
 </section>
-@* 
-
-<div id="layoutAuthentication" class="vh-100">
-    <div id="layoutAuthentication_content" class="vh-90">
-        <main class="d-flex justify-content-center align-items-center">
-            <section>
-                <div class="container-fluid h-custom pt-5">
-                    <div class="row d-flex justify-content-center align-items-center h-100">
-                        <div class="col-md-9 col-lg-6 col-xl-5">
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-                                 class="img-fluid" alt="Sample image">
-                        </div>
-                        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <a asp-area="" asp-controller="Login" asp-action="Login" class="btn btn-lg btn-google btn-block text-uppercase btn-outline shadow p-3 mb-5 bg-white rounded"><img src="https://img.icons8.com/color/16/000000/google-logo.png"> Signup Using Google</a>
-                                        <ul>
-                                            @if (Context.User.Identity.IsAuthenticated)
-                                            {
-                                                <li>
-                                                    <a>Hello @User.Identity.Name</a>
-                                                </li>
-                                                <li>
-                                                    <a asp-area="" asp-controller="Login" asp-action="Logout">Sign in with Google</a>
-                                                </li>
-                                            }
-                                        </ul>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <a asp-area="" asp-controller="Home" asp-action="Index" class="accordion-button">User Page</a>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="/js/scripts.js"></script> *@
