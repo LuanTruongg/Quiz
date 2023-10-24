@@ -21,6 +21,7 @@ namespace Quiz.Service.Implements
         {
             var departmentExisting = await _dbContext.Departments.Select(x => new GetListDepartmentResponse
             {
+                DepartmentId = x.DepartmentId,
                 Name = x.Name
             }).ToListAsync();
             return departmentExisting;

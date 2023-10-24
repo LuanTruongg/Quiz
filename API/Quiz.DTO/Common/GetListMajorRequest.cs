@@ -8,6 +8,6 @@ namespace Quiz.DTO.Common
 {
     public class GetListMajorRequest
     {
-        public string Name { get; set; }
+        public string DepartmentId { get; set; }
     }
 }
