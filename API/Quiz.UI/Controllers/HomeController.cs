@@ -39,8 +39,6 @@ namespace Quiz.UI.Controllers
         public async Task<IActionResult> HomeNav()
         {
             var listDepartment = _homeServiceClient.GetListDepartments();
-            //return listDepartment;
-            //return PartialView(listDepartment);
             return View(listDepartment);
         }
     }

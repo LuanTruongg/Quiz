@@ -52,10 +52,10 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(30);
 });
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<ILoginServiceClient, LoginServiceClient>();
 builder.Services.AddScoped<IHomeServiceClient, HomeServiceClient>();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
+builder.Services.AddScoped<ITestStructureServiceClient, TestStructureServiceClient>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
