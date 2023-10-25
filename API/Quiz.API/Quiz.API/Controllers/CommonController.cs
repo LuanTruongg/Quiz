@@ -21,14 +21,14 @@ namespace Quiz.API.Controllers
             _service = service;
 
         }
-        [HttpGet("get-list-major")]
+        [HttpGet("get-list-major/{id?}")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(GetListMajorResponse), 200)]
-        public async Task<IActionResult> GetListMajor()
+        public async Task<IActionResult> GetListMajor(string id)
         {
             if (ModelState.IsValid)
             {
-                return GetResponse(200, await _service.GetListMajorAsync());
+                return GetResponse(200, await _service.GetListMajorAsync(id));
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
@@ -41,6 +41,17 @@ namespace Quiz.API.Controllers
             if (ModelState.IsValid)
             {
                 return GetResponse(200, await _service.GetListDepartmentAsync());
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+        [HttpGet("get-list-subject/{majorId?}")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(GetListDepartmentResponse), 200)]
+        public async Task<IActionResult> GetListSubject(string majorId)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetListSubjectAsync(majorId));
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }

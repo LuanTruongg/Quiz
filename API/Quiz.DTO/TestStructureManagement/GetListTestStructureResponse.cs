@@ -15,5 +15,7 @@ namespace Quiz.DTO.TestStructureManagement
     {
         public string TestStructureId { get; set; }
         public string Name { get; set; }
+        public int NumberOfQuestion { get; set; }
+        public int Time { get; set; }
     }
 }

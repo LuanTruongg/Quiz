@@ -102,14 +102,11 @@
                     <ul class="dropdown-menu">
                         @foreach (var item in Model)
                         {
-                        <li> <a class="dropdown-item" asp-action="ListTest" asp-controller="TestStructure"> @item.Name </a></li>
-                            <li>@Html.ActionLink(item.Name, "ListTest", "TestStructure", new { id = item.DepartmentId })</li>
+                            <li>@Html.ActionLink(item.Name, "ListMajor", "TestStructure", new { id = item.DepartmentId }, new { @class = "dropdown-item"})</li>
                         } 
                     </ul>
                 </li>
             </ul>
-
-
             @{
                 var fullname = HttpContextAccessor.HttpContext.Session.GetString("FullName");
                 if (fullname != null)

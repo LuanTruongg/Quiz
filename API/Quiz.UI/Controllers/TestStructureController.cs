@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Quiz.Repository.Model;
 using Quiz.UI.ServicesClient;
 using Quiz.UI.ServicesClient.Implements;
 
@@ -23,9 +24,27 @@ namespace Quiz.UI.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> ListTest(string id)
+        public async Task<IActionResult> ListMajor(string id)
         {
-            ViewData["DepartmentName"] = await _testStructureServiceClient.GetNameDepartment(id);
+            ViewBag.Department = await _testStructureServiceClient.GetNameDepartment(id);
+            var listMajor = await _testStructureServiceClient.GetListMajors(id);
+            ViewBag.ListMajor = listMajor;
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> ListSubject(string majorId, string departmentId)
+        {
+            ViewData["SubjectName"] = await _testStructureServiceClient.GetNameMajor(majorId, departmentId);
+            var listSubject = await _testStructureServiceClient.GetListSubject(majorId);
+            ViewBag.ListSubject = listSubject;
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> ListTestOfSubject(string subjectId, string subjectName)
+        {
+            ViewData["SubjectName"] = subjectName;
+            var listTestStructure = await _testStructureServiceClient.GetListTestStructure(subjectId);
+            ViewBag.ListTestStructure = listTestStructure;
             return View();
         }
     }
