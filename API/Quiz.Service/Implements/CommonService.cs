@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Quiz.DTO.Common;
 using Quiz.Repository;
+using Quiz.Repository.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,13 +28,44 @@ namespace Quiz.Service.Implements
             return departmentExisting;
         }
 
-        public async Task<IEnumerable<GetListMajorResponse>> GetListMajorAsync()
+        public async Task<IEnumerable<GetListMajorResponse>> GetListMajorAsync(string departmentId)
         {
-            var majorExisting = await _dbContext.Majors.Select(x => new GetListMajorResponse
+            var majorExisting = _dbContext.Majors.AsQueryable();
+            if (departmentId != null)
             {
+                majorExisting = majorExisting.Where(x => x.DepartmentId == departmentId);
+            }
+
+            var result = await majorExisting.Select(x => new GetListMajorResponse
+            {
+                MajorId = x.MajorId,
                 Name = x.Name
             }).ToListAsync();
-            return majorExisting;
+            return result;
+        }
+
+        public async Task<IEnumerable<GetListSubjectResponse>> GetListSubjectAsync(string majorId)
+        {
+            var subjectExisting = _dbContext.Subjects.AsQueryable();
+            if (majorId == null)
+            {
+                var result = await subjectExisting.Select(x => new GetListSubjectResponse
+                {
+                    SubjectId = x.SubjectId,
+                    Name = x.Name
+                }).ToListAsync();
+                return result;
+            }
+            var subjectExistingFilter = from subject in subjectExisting
+                                        join subjectMajor in _dbContext.MajorSubjects on subject.SubjectId equals subjectMajor.SubjectId
+                                        where subjectMajor.MajorId == majorId
+                                        select new GetListSubjectResponse()
+                                        {
+                                            SubjectId = subject.SubjectId,
+                                            Name = subject.Name
+                                        };
+            var result2 = await subjectExistingFilter.ToListAsync();
+            return result2;
         }
     }
 }

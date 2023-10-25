@@ -59,7 +59,9 @@ namespace Quiz.Service.Implements
                 .Select(x => new TestStructureItem()
                 {
                     TestStructureId = x.TestStructureId,
-					Name = x.Name
+					Name = x.Name,
+					NumberOfQuestion = x.NumberOfQuestions,
+					Time = x.Time
                 }).ToListAsync();
 
             var numberPage = request.Page <= 0 ? 1 : request.Page;

@@ -30,5 +30,14 @@ namespace Quiz.UI.ServicesClient.Implements
             var body = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<GetListDepartmentResponse>>(body);
         }
+
+        public async Task<List<GetListMajorResponse>> GetListMajor(string departmentId)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.GetAsync($"/common/get-list-major/{departmentId}");
+            var body = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<GetListMajorResponse>>(body);
+        }
     }
 }

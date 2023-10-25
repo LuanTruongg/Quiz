@@ -6,5 +6,6 @@ namespace Quiz.UI.ServicesClient
     public interface IHomeServiceClient
     {
         Task<List<GetListDepartmentResponse>> GetListDepartments();
+        Task<List<GetListMajorResponse>> GetListMajor(string departmentId);
     }
 }
