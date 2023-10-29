@@ -1,9 +1,9 @@
 ﻿@using Quiz.DTO.TestSubjectManagement
 @using Quiz.Service.Extensions
+@model List<UserAnswerRequest>
 @{
     List<GetListQuestionOfTestResponse> listQuestion = ViewBag.ListQuestion;
 }
-@* @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap'); *@
 <style>
     *{
         margin: 0;
@@ -88,73 +88,44 @@
     }
 }
 </style>
-@* <form asp-action="SubmitTest" asp-controller="TestSubject" method="post"> *@
-    <div class="container w-100 shadow-sm p-3 mb-5 bg-white rounded">
+
+@using (Html.BeginForm("SubmitTest", "TestSubject", FormMethod.Post))
+{
+    <div>
         @{
             for (int i = 0; i < listQuestion.Count(); i++)
             {
+                <div class="container w-100 shadow-sm p-3 mb-5 bg-white rounded">
                 <div class="question w-100">
                     <div class="py-2 h5"><b>Câu @(i+1): @Base64.Base64Decode(listQuestion[i].QuestionText)</b></div>
                     <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                    <input type="text" value="@listQuestion[i].QuestionId" />
+                            <input type="hidden" value="@listQuestion[i].QuestionId" name="UserAnswerRequest[@i].QuestionId" />
                         <label class="options">
                             @Base64.Base64Decode(listQuestion[i].AnswerA)
-                            <input type="radio" name="radio">
+                            <input type="radio" name="UserAnswerRequest[@i].UserAnswerQuestion" value="A">
                             <span class="checkmark"></span>
                         </label>
                         <label class="options">
                             @Base64.Base64Decode(listQuestion[i].AnswerB)
-                            <input type="radio" name="radio">
+                            <input type="radio" name="UserAnswerRequest[@i].UserAnswerQuestion" value="B">
                             <span class="checkmark"></span>
                         </label>
                         <label class="options">
                             @Base64.Base64Decode(listQuestion[i].AnswerC)
-                            <input type="radio" name="radio">
+                            <input type="radio" name="UserAnswerRequest[@i].UserAnswerQuestion" value="C">
                             <span class="checkmark"></span>
                         </label>
                         <label class="options">
                             @Base64.Base64Decode(listQuestion[i].AnswerD)
-                            <input type="radio" name="radio">
+                            <input type="radio" name="UserAnswerRequest[@i].UserAnswerQuestion" value="D">
                             <span class="checkmark"></span>
                         </label>
                     </div>
                 </div>
+                </div>
             }
         }
-        <div class="d-flex align-items-center pt-3">
-            <div id="prev">
-                <button class="btn btn-primary">Previous</button>
-            </div>
-            <div class="ml-auto mr-sm-5">
-                <button class="btn btn-success">Next</button>
-            </div>
-        </div>
     </div>
     <button class="btn btn-success float-right" data-toggle="modal" data-target="#exampleModalCenter">Submit</button>
-@* </form> *@
-<!-- Button trigger modal -->
-@* <button type="button" class="btn btn-primary" >
-    Launch demo modal
-</button> *@
+}
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Kết quả bài thi</h5>
-                @* <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button> *@
-            </div>
-            <div class="modal-body">
-                <span>Số câu đúng: 60/60</span><br />
-                <span>Điểm thực: 10.0</span>
-            </div>
-            <div class="modal-footer">
-                @* <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> *@
-                <button type="button"><a asp-action="Index" asp-controller="Home" class="btn btn-primary">Về trang chủ</a></button>
-            </div>
-        </div>
-    </div>
-</div>
