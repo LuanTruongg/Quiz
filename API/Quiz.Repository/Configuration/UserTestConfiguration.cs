@@ -13,6 +13,7 @@ namespace Quiz.Repository.Configuration
             builder.Property(x => x.UserTestId).IsRequired();
             builder.Property(x => x.Score).HasDefaultValue(0);
             builder.HasOne(x => x.User).WithMany(x => x.UserTests).HasForeignKey(x => x.UserId);
+            builder.HasOne(x => x.TestStructure).WithOne(x => x.UserTest);
         }
     }
 }

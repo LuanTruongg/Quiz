@@ -506,7 +506,7 @@ namespace Quiz.Repository.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasDefaultValue(0m);
 
-                    b.Property<string>("TestSubjectId")
+                    b.Property<string>("TestStructureId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -516,7 +516,8 @@ namespace Quiz.Repository.Migrations
 
                     b.HasKey("UserTestId");
 
-                    b.HasIndex("TestSubjectId");
+                    b.HasIndex("TestStructureId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -658,9 +659,9 @@ namespace Quiz.Repository.Migrations
 
             modelBuilder.Entity("Quiz.Repository.Model.UserTest", b =>
                 {
-                    b.HasOne("Quiz.Repository.Model.TestSubject", "TestSubject")
-                        .WithMany("UserTest")
-                        .HasForeignKey("TestSubjectId")
+                    b.HasOne("Quiz.Repository.Model.TestStructure", "TestStructure")
+                        .WithOne("UserTest")
+                        .HasForeignKey("Quiz.Repository.Model.UserTest", "TestStructureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -670,7 +671,7 @@ namespace Quiz.Repository.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TestSubject");
+                    b.Navigation("TestStructure");
 
                     b.Navigation("User");
                 });
@@ -705,11 +706,9 @@ namespace Quiz.Repository.Migrations
             modelBuilder.Entity("Quiz.Repository.Model.TestStructure", b =>
                 {
                     b.Navigation("TestSubjects");
-                });
 
-            modelBuilder.Entity("Quiz.Repository.Model.TestSubject", b =>
-                {
-                    b.Navigation("UserTest");
+                    b.Navigation("UserTest")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Quiz.Repository.Model.User", b =>
