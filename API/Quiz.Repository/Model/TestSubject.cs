@@ -9,6 +9,5 @@ namespace Quiz.Repository.Model
         public TestStructure TestStructure { get; set;}
         public string QuestionId { get; set; }
         public Question Question { get; set; }
-        public List<UserTest> UserTest { get; set; }
 	}
 }

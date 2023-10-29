@@ -331,12 +331,6 @@ namespace Quiz.Repository.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserTests_TestSubjects_TestSubjectId",
-                        column: x => x.TestSubjectId,
-                        principalTable: "TestSubjects",
-                        principalColumn: "TestSubjectId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -432,11 +426,6 @@ namespace Quiz.Repository.Migrations
                 name: "IX_UserAnswers_UserTestId",
                 table: "UserAnswers",
                 column: "UserTestId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserTests_TestSubjectId",
-                table: "UserTests",
-                column: "TestSubjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserTests_UserId",

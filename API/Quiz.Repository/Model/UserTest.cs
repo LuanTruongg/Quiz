@@ -3,8 +3,6 @@
     public class UserTest
     {
         public string UserTestId { get; set; }
-        public string TestSubjectId { get; set; }
-        public TestSubject TestSubject { get; set; }
         public string UserId { get; set;}
         public User User { get; set; }
         public int CorrectAnswers { get; set; }
