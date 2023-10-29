@@ -52,8 +52,9 @@ namespace Quiz.Service.Implements
             {
 				testStructureExisting = testStructureExisting.Where(x => x.SubjectId == request.SubjectId);
             }
-            int totalRow = testStructureExisting.Count();
 
+            int totalRow = testStructureExisting.Count();
+			
             var data = await testStructureExisting.Skip((request.Page - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(x => new TestStructureItem()

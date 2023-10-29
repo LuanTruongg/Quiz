@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Quiz.DTO.TestSubjectManagement
 {
-    public class GetTestSubjectOfSubjectRequest
+    public class GetListQuestionOfTestRequest
     {
-        public string SubjectId { get; set; }
+        public string TestSubjectCode { get; set; }
     }
 }

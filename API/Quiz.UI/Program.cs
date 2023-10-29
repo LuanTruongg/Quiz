@@ -56,6 +56,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<ILoginServiceClient, LoginServiceClient>();
 builder.Services.AddScoped<IHomeServiceClient, HomeServiceClient>();
 builder.Services.AddScoped<ITestStructureServiceClient, TestStructureServiceClient>();
+builder.Services.AddScoped<ITestSubjectServiceClient, TestSubjectServiceClient>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

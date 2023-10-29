@@ -1,10 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Quiz.DTO.TestSubjectManagement;
+using Quiz.UI.ServicesClient;
 
 namespace Quiz.UI.Controllers
 {
     public class TestSubjectController : Controller
     {
-        public IActionResult Index()
+        private readonly ITestSubjectServiceClient _testSubjectServiceClient;
+        public TestSubjectController(ITestSubjectServiceClient testSubjectServiceClient)
+        {
+            _testSubjectServiceClient = testSubjectServiceClient;
+        }
+        public async Task<IActionResult> Index(string testStructureId)
+        {
+            var testSubjectCode = await _testSubjectServiceClient.GetTestSubjectCode(testStructureId);
+            ViewBag.ListQuestion = await _testSubjectServiceClient.GetListQuestionOfTest(testSubjectCode);
+            return View();
+        }
+        [HttpPost]
+        public IActionResult SubmitTest()
         {
             return View();
         }

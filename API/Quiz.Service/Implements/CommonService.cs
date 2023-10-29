@@ -67,5 +67,17 @@ namespace Quiz.Service.Implements
             var result2 = await subjectExistingFilter.ToListAsync();
             return result2;
         }
+
+        public async Task<string> GetTestSubjectCode(string testStructureId)
+        {
+            var testSubjectCode = _dbContext.TestSubjects
+                .Select(x => new
+                {
+                    TestStructureId = x.TestStructureId,
+                    TestSubjectCode = x.TestSubjectCode
+                })
+                .FirstOrDefault(x => x.TestStructureId == testStructureId);
+            return testSubjectCode.TestSubjectCode;
+        }
     }
 }

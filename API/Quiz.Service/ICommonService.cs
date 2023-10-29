@@ -12,5 +12,6 @@ namespace Quiz.Service
         Task<IEnumerable<GetListMajorResponse>> GetListMajorAsync(string departmentId);
         Task<IEnumerable<GetListDepartmentResponse>> GetListDepartmentAsync();
         Task<IEnumerable<GetListSubjectResponse>> GetListSubjectAsync(string majorId);
+        Task<string> GetTestSubjectCode(string testStructureId);
     }
 }

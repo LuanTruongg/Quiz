@@ -21,11 +21,11 @@ namespace Quiz.API.Controllers
 		}
 		//// GET: api/<TestSubjectManagementController>
 		[HttpGet]
-		public async Task<IActionResult> Get(GetTestSubjectOfSubjectRequest request)
+		public async Task<IActionResult> Get([FromQuery]GetListQuestionOfTestRequest request)
 		{
             if (ModelState.IsValid)
             {
-                return GetResponse(200, await _service.GetListTestSubjectOfSubject(request));
+                return GetResponse(200, await _service.GetListQuestionOfTestAsync(request));
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }

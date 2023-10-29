@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace Quiz.UI.Controllers
 {
@@ -48,9 +49,11 @@ namespace Quiz.UI.Controllers
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
                 IsPersistent = true,
             };
+            var roles = await _service.GetListRoleFromToken(result.Token);
             HttpContext.Session.SetString("Token", result.Token);
             HttpContext.Session.SetString("UserId", userPrincipal.FindFirst("UserId").Value);
             HttpContext.Session.SetString("FullName", userPrincipal.Identity.Name);
+            HttpContext.Session.SetString("Roles", roles);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal, authProperties);
             return RedirectToAction("Index", "Home");
         }

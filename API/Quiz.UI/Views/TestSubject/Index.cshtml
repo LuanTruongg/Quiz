@@ -1,6 +1,8 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Quiz.DTO.TestSubjectManagement
+@using Quiz.Service.Extensions
+@{
+    List<GetListQuestionOfTestResponse> listQuestion = ViewBag.ListQuestion;
+}
 @* @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap'); *@
 <style>
     *{
@@ -86,42 +88,50 @@
     }
 }
 </style>
-<div class="container w-100 shadow-sm p-3 mb-5 bg-white rounded">
-    <div class="question w-100">
-        <div class="py-2 h5"><b>Q. which option best describes your job role? asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd </b></div>
-        <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-            <label class="options">
-                Small Business Owner or Employeeasd asd  asda dasd asd asd asd asd asd 
-                <input type="radio" name="radio">
-                <span class="checkmark"></span>
-            </label>
-            <label class="options">
-                Nonprofit Owner or Employeea sd asd asd asd as das asd asd as asd asd asd 
-                <input type="radio" name="radio">
-                <span class="checkmark"></span>
-            </label>
-            <label class="options">
-                Journalist or Activist asd asd asd asd asd asd asd asd asd asd asd 
-                <input type="radio" name="radio">
-                <span class="checkmark"></span>
-            </label>
-            <label class="options">
-                Othera sdasd asd asd asd asd asd asd asd asd asd as dasd sad asd asd asd 
-                <input type="radio" name="radio">
-                <span class="checkmark"></span>
-            </label>
+<form asp-action="SubmitTest" asp-controller="TestSubject" method="post">
+    <div class="container w-100 shadow-sm p-3 mb-5 bg-white rounded">
+        @{
+            for (int i = 0; i < listQuestion.Count(); i++)
+            {
+                <div class="question w-100">
+                    <div class="py-2 h5"><b>Câu @(i+1): @Base64.Base64Decode(listQuestion[i].QuestionText)</b></div>
+                    <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
+                        <label class="options">
+                            <input type="text" asp-for="@(i+1)" value="@listQuestion[i].QuestionId" />
+                            @Base64.Base64Decode(listQuestion[i].AnswerA)
+                            <input type="radio" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="options">
+                            @Base64.Base64Decode(listQuestion[i].AnswerB)
+                            <input type="radio" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="options">
+                            @Base64.Base64Decode(listQuestion[i].AnswerC)
+                            <input type="radio" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="options">
+                            @Base64.Base64Decode(listQuestion[i].AnswerD)
+                            <input type="radio" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                </div>
+            }
+        }
+        <div class="d-flex align-items-center pt-3">
+            <div id="prev">
+                <button class="btn btn-primary">Previous</button>
+            </div>
+            <div class="ml-auto mr-sm-5">
+                <button class="btn btn-success">Next</button>
+            </div>
         </div>
     </div>
-    <div class="d-flex align-items-center pt-3">
-        <div id="prev">
-            <button class="btn btn-primary">Previous</button>
-        </div>
-        <div class="ml-auto mr-sm-5">
-            <button class="btn btn-success">Next</button>
-        </div>
-    </div>
-</div>
-<button class="btn btn-success float-right" data-toggle="modal" data-target="#exampleModalCenter">Submit</button>
+    <button class="btn btn-success float-right" data-toggle="modal" data-target="#exampleModalCenter">Submit</button>
+</form>
 <!-- Button trigger modal -->
 @* <button type="button" class="btn btn-primary" >
     Launch demo modal
@@ -148,5 +158,3 @@
         </div>
     </div>
 </div>
-@{
-}
