@@ -18,7 +18,11 @@ namespace Quiz.UI.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult SubmitTest()
+        public IActionResult SubmitTest(List<UserAnswerRequest> UserAnswerRequest)
+        {
+            return RedirectToAction("Score");
+        }
+        public IActionResult Score()
         {
             return View();
         }
