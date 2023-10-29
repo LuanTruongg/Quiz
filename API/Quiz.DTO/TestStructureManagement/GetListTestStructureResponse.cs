@@ -13,6 +13,7 @@ namespace Quiz.DTO.TestStructureManagement
     }
     public class TestStructureItem
     {
+        public string TestSubjectCode { get; set; }
         public string TestStructureId { get; set; }
         public string Name { get; set; }
         public int NumberOfQuestion { get; set; }

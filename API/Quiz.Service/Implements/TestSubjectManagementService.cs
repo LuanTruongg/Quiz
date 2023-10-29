@@ -5,6 +5,7 @@ using Quiz.Repository;
 using Quiz.Repository.Model;
 using Serilog;
 using System;
+using System.Buffers.Text;
 
 namespace Quiz.Service.Implements
 {
@@ -110,9 +111,21 @@ namespace Quiz.Service.Implements
 			};	
 		}
 
-        public Task<string> GetListTestSubjectOfSubject(GetTestSubjectOfSubjectRequest request)
+        public async Task<List<GetListQuestionOfTestResponse>> GetListQuestionOfTestAsync(GetListQuestionOfTestRequest request)
         {
-            throw new NotImplementedException();
+			var listAllQuestion = await _dbContext.TestSubjects.
+				Where(x => x.TestSubjectCode == request.TestSubjectCode)
+				.Select(x => new GetListQuestionOfTestResponse
+                {
+					QuestionId = x.QuestionId,
+					QuestionText = x.Question.QuestionText,
+					AnswerA = x.Question.QuestionA,
+					AnswerB = x.Question.QuestionB,
+					AnswerC = x.Question.QuestionC,
+					AnswerD = x.Question.QuestionD
+				}).ToListAsync();
+			return listAllQuestion;
         }
+
     }
 }

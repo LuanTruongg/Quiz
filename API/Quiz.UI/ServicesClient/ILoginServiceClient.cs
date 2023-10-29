@@ -7,5 +7,6 @@ namespace Quiz.UI.ServicesClient
     public interface ILoginServiceClient
     {
         Task<AuthenticationResponse> Authenticate(AuthenticationRequest request);
+        Task<string> GetListRoleFromToken(string token);
     }
 }

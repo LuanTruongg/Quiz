@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Quiz.DTO.BaseResponse;
 using Quiz.DTO.UserManagement;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Text;
 
@@ -34,6 +35,22 @@ namespace Quiz.UI.ServicesClient.Implements
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<AuthenticationResponse>(responseContent);
             return JsonConvert.DeserializeObject<AuthenticationResponse>(responseContent);
+        }
+
+        public async Task<string> GetListRoleFromToken(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var oldTokenDecoded = handler.ReadJwtToken(token);
+            List<string> rolesDecoded = new List<string>();
+            foreach (var item in oldTokenDecoded.Payload)
+            { 
+                if (item.Key == "role")
+                {
+                    rolesDecoded = JsonConvert.DeserializeObject<List<string>>(item.Value.ToString());
+                }
+            }
+            string listRole = string.Join(",", rolesDecoded);
+            return listRole;
         }
     }
 }
