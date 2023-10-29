@@ -10,5 +10,7 @@
         //public string UserAnswerId { get; set; }
         //public UserAnswer UserAnswer { get; set; }
         public List<UserAnswer> UserAnswers { get; set; }
+        public string TestStructureId { get; set; }
+        public TestStructure TestStructure { get; set; }
     }
 }

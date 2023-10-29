@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Quiz.Repository.Migrations
 {
-    public partial class DbInit : Migration
+    public partial class dbInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -87,7 +87,8 @@ namespace Quiz.Repository.Migrations
                     TestStructureId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Time = table.Column<int>(type: "int", nullable: false),
-                    NumberOfQuestions = table.Column<int>(type: "int", nullable: false)
+                    NumberOfQuestions = table.Column<int>(type: "int", nullable: false),
+                    SubjectId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -239,6 +240,33 @@ namespace Quiz.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserTests",
+                columns: table => new
+                {
+                    UserTestId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CorrectAnswers = table.Column<int>(type: "int", nullable: false),
+                    Score = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
+                    TestStructureId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTests", x => x.UserTestId);
+                    table.ForeignKey(
+                        name: "FK_UserTests_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserTests_TestStructures_TestStructureId",
+                        column: x => x.TestStructureId,
+                        principalTable: "TestStructures",
+                        principalColumn: "TestStructureId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MajorSubjects",
                 columns: table => new
                 {
@@ -273,8 +301,9 @@ namespace Quiz.Repository.Migrations
                     QuestionB = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     QuestionC = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     QuestionD = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    QuestionCustom = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    QuestionCustom = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Difficult = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -284,52 +313,6 @@ namespace Quiz.Repository.Migrations
                         column: x => x.ModuleId,
                         principalTable: "Modules",
                         principalColumn: "ModuleId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TestSubjects",
-                columns: table => new
-                {
-                    TestSubjectId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TestStructureId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    QuestionId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TestSubjects", x => x.TestSubjectId);
-                    table.ForeignKey(
-                        name: "FK_TestSubjects_Questions_QuestionId",
-                        column: x => x.QuestionId,
-                        principalTable: "Questions",
-                        principalColumn: "QuestionId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TestSubjects_TestStructures_TestStructureId",
-                        column: x => x.TestStructureId,
-                        principalTable: "TestStructures",
-                        principalColumn: "TestStructureId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserTests",
-                columns: table => new
-                {
-                    UserTestId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TestSubjectId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CorrectAnswers = table.Column<int>(type: "int", nullable: false),
-                    Score = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserTests", x => x.UserTestId);
-                    table.ForeignKey(
-                        name: "FK_UserTests_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -352,6 +335,54 @@ namespace Quiz.Repository.Migrations
                         principalColumn: "UserTestId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "TestSubjects",
+                columns: table => new
+                {
+                    TestSubjectId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TestSubjectCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TestStructureId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    QuestionId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TestSubjects", x => x.TestSubjectId);
+                    table.ForeignKey(
+                        name: "FK_TestSubjects_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "QuestionId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TestSubjects_TestStructures_TestStructureId",
+                        column: x => x.TestStructureId,
+                        principalTable: "TestStructures",
+                        principalColumn: "TestStructureId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Departments",
+                columns: new[] { "DepartmentId", "Name" },
+                values: new object[,]
+                {
+                    { "KTCN", "Khoa Kỹ thuật Công nghệ" },
+                    { "KTL", "Khoa Kinh tế - Luật" },
+                    { "LLCTGDQP&TC", "Khoa Lý luận chính trị - GD Quốc phòng và Thể chất" },
+                    { "NN&CNTP", "Khoa Nông nghiệp và Công nghệ Thực phẩm" },
+                    { "SP&KHCB", "Khoa Sư phạm và Khoa học cơ bản" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Majors",
+                columns: new[] { "MajorId", "DepartmentId", "Name" },
+                values: new object[] { "CNTT", "KTCN", "Công nghệ thông tin" });
+
+            migrationBuilder.InsertData(
+                table: "Majors",
+                columns: new[] { "MajorId", "DepartmentId", "Name" },
+                values: new object[] { "DK&TDH", "KTCN", "Điều khiển và tự động hoá" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -428,6 +459,12 @@ namespace Quiz.Repository.Migrations
                 column: "UserTestId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserTests_TestStructureId",
+                table: "UserTests",
+                column: "TestStructureId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserTests_UserId",
                 table: "UserTests",
                 column: "UserId");
@@ -454,6 +491,9 @@ namespace Quiz.Repository.Migrations
                 name: "MajorSubjects");
 
             migrationBuilder.DropTable(
+                name: "TestSubjects");
+
+            migrationBuilder.DropTable(
                 name: "UserAnswers");
 
             migrationBuilder.DropTable(
@@ -463,25 +503,22 @@ namespace Quiz.Repository.Migrations
                 name: "Majors");
 
             migrationBuilder.DropTable(
+                name: "Questions");
+
+            migrationBuilder.DropTable(
                 name: "UserTests");
 
             migrationBuilder.DropTable(
                 name: "Departments");
 
             migrationBuilder.DropTable(
+                name: "Modules");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "TestSubjects");
-
-            migrationBuilder.DropTable(
-                name: "Questions");
-
-            migrationBuilder.DropTable(
                 name: "TestStructures");
-
-            migrationBuilder.DropTable(
-                name: "Modules");
 
             migrationBuilder.DropTable(
                 name: "Subjects");
