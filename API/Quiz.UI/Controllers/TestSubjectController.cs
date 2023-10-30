@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Quiz.DTO.TestSubjectManagement;
+using Quiz.Repository.Model;
 using Quiz.UI.ServicesClient;
 
 namespace Quiz.UI.Controllers
@@ -13,14 +14,22 @@ namespace Quiz.UI.Controllers
         }
         public async Task<IActionResult> Index(string testStructureId)
         {
+            ViewBag.TestStructureId = testStructureId;
             var testSubjectCode = await _testSubjectServiceClient.GetTestSubjectCode(testStructureId);
             ViewBag.ListQuestion = await _testSubjectServiceClient.GetListQuestionOfTest(testSubjectCode);
             return View();
         }
         [HttpPost]
-        public IActionResult SubmitTest(List<UserAnswerRequest> UserAnswerRequest)
+        public async Task<IActionResult> SubmitTest(List<UserAnswerRequest> UserAnswerRequest, string testStructureId)
         {
-            return RedirectToAction("Score");
+            
+            var userTest = await _testSubjectServiceClient.SaveUserTest(testStructureId);
+            if(userTest.UserTestId != null)
+            {
+                await _testSubjectServiceClient.SaveUserAnswer(UserAnswerRequest, userTest.UserTestId);
+                return RedirectToAction("Score");
+            }
+            return BadRequest("Error");
         }
         public IActionResult Score()
         {

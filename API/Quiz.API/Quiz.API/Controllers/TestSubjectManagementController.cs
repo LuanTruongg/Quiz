@@ -48,13 +48,13 @@ namespace Quiz.API.Controllers
 			throw new ErrorException(400, ErrorMessage.BadRequest);
 		}
 
-		//// PUT api/<TestSubjectManagementController>/5
-		//[HttpPut("{id}")]
-		//public void Put(int id, [FromBody] string value)
-		//{
-		//}
+        //// PUT api/<TestSubjectManagementController>/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
-		[HttpDelete("{testSubjectCode}")]
+        [HttpDelete("{testSubjectCode}")]
 		public async Task<IActionResult> Delete(string testSubjectCode)
 		{
 			if (ModelState.IsValid)
