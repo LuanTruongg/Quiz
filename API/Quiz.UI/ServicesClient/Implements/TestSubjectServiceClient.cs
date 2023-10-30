@@ -34,6 +34,24 @@ namespace Quiz.UI.ServicesClient.Implements
             return listQuestion;
         }
 
+        public async Task<GetResultUserTestResponse> GetResultUserTest(string userTestId)
+        {
+            var content = new GetResultUserTestRequest()
+            {
+                UserTestId = userTestId
+            };
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+
+            var json = JsonConvert.SerializeObject(content);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync($"/user-test-management/get-result-user-test", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<GetResultUserTestResponse>(result);
+        }
+
         public async Task<string> GetTestSubjectCode(string testStructureId)
         {
             var client = _httpClientFactory.CreateClient();
@@ -42,7 +60,7 @@ namespace Quiz.UI.ServicesClient.Implements
             var body = await response.Content.ReadAsStringAsync();
             return body.ToString();
         }
-        public async Task SaveUserAnswer(List<UserAnswerRequest> request, string userTestId)
+        public async Task<AddUserAnswerResponse> SaveUserAnswer(List<UserAnswerRequest> request, string userTestId)
         {
             var content = new List<AddUserAnswerRequest>();
             foreach(var item in request)
@@ -64,9 +82,7 @@ namespace Quiz.UI.ServicesClient.Implements
 
             var response = await client.PostAsync("/user-answer-management", httpContent);
             var result = await response.Content.ReadAsStringAsync();
-            //if (response.IsSuccessStatusCode)
-            //    return JsonConvert.DeserializeObject<AddUserTestResponse>(result);
-            //return JsonConvert.DeserializeObject<AddUserTestResponse>(result);
+            return JsonConvert.DeserializeObject<AddUserAnswerResponse>(result);
         }
 
         public async Task<AddUserTestResponse> SaveUserTest(string testStructureId)
