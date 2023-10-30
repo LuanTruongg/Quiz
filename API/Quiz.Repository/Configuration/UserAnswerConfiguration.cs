@@ -10,7 +10,7 @@ namespace Quiz.Repository.Configuration
         {
             builder.ToTable("UserAnswers");
             builder.HasKey(x => x.UserAnswerId);
-            builder.Property(x => x.UserAnswerId).IsRequired();
+            builder.Property(x => x.UserAnswerId).IsRequired().ValueGeneratedOnAdd();
             builder.HasOne(x => x.UserTest).WithMany(x => x.UserAnswers).HasForeignKey(x => x.UserTestId);
         }
     }

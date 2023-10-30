@@ -3,6 +3,7 @@
 @model List<UserAnswerRequest>
 @{
     List<GetListQuestionOfTestResponse> listQuestion = ViewBag.ListQuestion;
+    var testStructureId = ViewBag.TestStructureId;
 }
 <style>
     *{
@@ -91,6 +92,7 @@
 
 @using (Html.BeginForm("SubmitTest", "TestSubject", FormMethod.Post))
 {
+    <input type="text" value="@testStructureId" name="testStructureId" />
     <div>
         @{
             for (int i = 0; i < listQuestion.Count(); i++)

@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
-using Quiz.DTO.TestStructureManagement;
+using Quiz.DTO.BaseResponse;
 using Quiz.DTO.TestSubjectManagement;
+using Quiz.DTO.UserAnswerManagement;
+using Quiz.DTO.UserManagement;
+using Quiz.DTO.UserTestManagement;
 using Quiz.Repository.Model;
-using System.Net.Http;
-using static System.Net.Mime.MediaTypeNames;
+using System.Text;
 
 namespace Quiz.UI.ServicesClient.Implements
 {
@@ -38,8 +40,59 @@ namespace Quiz.UI.ServicesClient.Implements
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
             var response = await client.GetAsync($"/common/get-test-subject-code/{testStructureId}");
             var body = await response.Content.ReadAsStringAsync();
-            //var testSubjectCode = JsonConvert.DeserializeObject<string>(body);
             return body.ToString();
         }
+        public async Task SaveUserAnswer(List<UserAnswerRequest> request, string userTestId)
+        {
+            var content = new List<AddUserAnswerRequest>();
+            foreach(var item in request)
+            {
+                var userAnswer = new AddUserAnswerRequest()
+                {
+                    QuestionId = item.QuestionId,
+                    UserAnswerQuestion = item.UserAnswerQuestion,
+                    UserTestId = userTestId
+                };
+                content.Add(userAnswer);
+            }
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+
+            var json = JsonConvert.SerializeObject(content);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("/user-answer-management", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            //if (response.IsSuccessStatusCode)
+            //    return JsonConvert.DeserializeObject<AddUserTestResponse>(result);
+            //return JsonConvert.DeserializeObject<AddUserTestResponse>(result);
+        }
+
+        public async Task<AddUserTestResponse> SaveUserTest(string testStructureId)
+        {
+            var userId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+            var content = new AddUserTestRequest()
+            {
+                UserId = userId,
+                UserTestId = Guid.NewGuid().ToString(),
+                TestStructureId = testStructureId,
+                CorrectAnswers = 0,
+                Score = 0
+            };
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+
+            var json = JsonConvert.SerializeObject(content);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync($"/user-test-management", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<AddUserTestResponse>(result);
+            return JsonConvert.DeserializeObject<AddUserTestResponse>(result);
+        }
+
     }
 }

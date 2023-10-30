@@ -26,6 +26,8 @@ builder.Services.AddScoped<ITestStructureManagementService, TestStructureManagem
 builder.Services.AddScoped<ITestSubjectManagementService, TestSubjectManagementService>();
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<ICommonService, CommonService>();
+builder.Services.AddScoped<IUserTestManagementService, UserTestManagementService>();
+builder.Services.AddScoped<IUserAnswerManagementService, UserAnswerManagementService>();
 
 string issuer = builder.Configuration.GetValue<string>("JwtTokens:Issuer");
 string signingKey = builder.Configuration.GetValue<string>("JwtTokens:Key");
