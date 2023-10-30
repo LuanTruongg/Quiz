@@ -18,13 +18,25 @@ namespace Quiz.API.Controllers
             _service = service;
 
         }
+
         [HttpPost]
         [ProducesResponseType(typeof(AddUserTestResponse), 200)]
-        public async Task<IActionResult> GetListMajor([FromBody] AddUserTestRequest request)
+        public async Task<IActionResult> AddUserTest([FromBody] AddUserTestRequest request)
         {
             if (ModelState.IsValid)
             {
                 return GetResponse(200, await _service.AddUserTestAsync(request));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+
+        [HttpPost("get-result-user-test")]
+        [ProducesResponseType(typeof(GetResultUserTestRequest), 200)]
+        public async Task<IActionResult> GetResultUserTest([FromBody] GetResultUserTestRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetResultUserTestAsync(request));
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }

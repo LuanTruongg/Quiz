@@ -29,14 +29,16 @@ namespace Quiz.Service.Implements
                 return new AddUserAnswerResponse()
                 {
                     IsSuccess = true,
-                    Message = null
+                    Message = null,
+                    UserTestId = requests[0].UserTestId
                 };
             } catch (Exception ex)
             {
                 return new AddUserAnswerResponse()
                 {
                     IsSuccess = false,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    UserTestId = null
                 };
             }
             

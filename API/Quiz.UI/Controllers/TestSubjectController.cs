@@ -26,14 +26,15 @@ namespace Quiz.UI.Controllers
             var userTest = await _testSubjectServiceClient.SaveUserTest(testStructureId);
             if(userTest.UserTestId != null)
             {
-                await _testSubjectServiceClient.SaveUserAnswer(UserAnswerRequest, userTest.UserTestId);
-                return RedirectToAction("Score");
+                var userTestObj = await _testSubjectServiceClient.SaveUserAnswer(UserAnswerRequest, userTest.UserTestId);
+                return RedirectToAction("Score", "TestSubject", new { userTestId = userTestObj.UserTestId });
             }
             return BadRequest("Error");
         }
-        public IActionResult Score()
+        public async Task<IActionResult> Score(string userTestId)
         {
-            return View();
+            var score = await _testSubjectServiceClient.GetResultUserTest(userTestId); 
+            return View(score);
         }
         public IActionResult Create()
         {

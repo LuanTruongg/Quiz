@@ -104,22 +104,22 @@
                             <input type="hidden" value="@listQuestion[i].QuestionId" name="UserAnswerRequest[@i].QuestionId" />
                         <label class="options">
                             @Base64.Base64Decode(listQuestion[i].AnswerA)
-                            <input type="radio" name="UserAnswerRequest[@i].UserAnswerQuestion" value="A">
+                                <input type="radio" name="UserAnswerRequest[@i].UserAnswerQuestion" value="@listQuestion[i].AnswerA">
                             <span class="checkmark"></span>
                         </label>
                         <label class="options">
                             @Base64.Base64Decode(listQuestion[i].AnswerB)
-                            <input type="radio" name="UserAnswerRequest[@i].UserAnswerQuestion" value="B">
+                                <input type="radio" name="UserAnswerRequest[@i].UserAnswerQuestion" value="@listQuestion[i].AnswerB">
                             <span class="checkmark"></span>
                         </label>
                         <label class="options">
                             @Base64.Base64Decode(listQuestion[i].AnswerC)
-                            <input type="radio" name="UserAnswerRequest[@i].UserAnswerQuestion" value="C">
+                                <input type="radio" name="UserAnswerRequest[@i].UserAnswerQuestion" value="@listQuestion[i].AnswerC">
                             <span class="checkmark"></span>
                         </label>
                         <label class="options">
                             @Base64.Base64Decode(listQuestion[i].AnswerD)
-                            <input type="radio" name="UserAnswerRequest[@i].UserAnswerQuestion" value="D">
+                                <input type="radio" name="UserAnswerRequest[@i].UserAnswerQuestion" value="@listQuestion[i].AnswerD">
                             <span class="checkmark"></span>
                         </label>
                     </div>
