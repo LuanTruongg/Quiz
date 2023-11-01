@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Quiz.DTO.BaseResponse;
 using Quiz.DTO.UserManagement;
 using Quiz.Infrastructure.Http;
 using Quiz.Repository.Model;
@@ -76,6 +77,27 @@ namespace Quiz.Service.Implements
                 IsAuthSuccessful = true,
                 IsFirstLogin = string.IsNullOrEmpty(user.PhoneNumber)
             };
+        }
+
+        public async Task<ApiResult<GetProfileResponse>> GetMyProfileAsync(string userId)
+        {
+            var userExisting = await _userManager.FindByIdAsync(userId);
+            if (userExisting == null)
+            {
+                return new ApiErrorResult<GetProfileResponse>("Not Found");
+            }
+            var result = new GetProfileResponse()
+            {
+                Fullname = userExisting.Fullname,
+                DoB = userExisting.DoB,
+                Address = userExisting.Address,
+                CCCD = userExisting.CCCD,
+                Money = userExisting.Money,
+                Sex = userExisting.Sex,
+                Email = userExisting.Email,
+                PhoneNumber = userExisting.PhoneNumber
+            };
+            return new ApiSuccessResult<GetProfileResponse>(result);
         }
 
         public async Task<RegisterResponse> RegisterAsync(RegisterRequest request)

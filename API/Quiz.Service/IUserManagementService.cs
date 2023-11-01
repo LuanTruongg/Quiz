@@ -1,4 +1,5 @@
-﻿using Quiz.DTO.UserManagement;
+﻿using Quiz.DTO.BaseResponse;
+using Quiz.DTO.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,6 @@ namespace Quiz.Service
     {
         Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request);
         Task<RegisterResponse> RegisterAsync(RegisterRequest request);
-
+        Task<ApiResult<GetProfileResponse>> GetMyProfileAsync(string userId);
     }
 }

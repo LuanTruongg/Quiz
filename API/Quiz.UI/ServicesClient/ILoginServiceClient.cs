@@ -8,5 +8,6 @@ namespace Quiz.UI.ServicesClient
     {
         Task<AuthenticationResponse> Authenticate(AuthenticationRequest request);
         Task<string> GetListRoleFromToken(string token);
+        Task<ApiResult<GetProfileResponse>> GetMyProfile(string userId);
     }
 }
