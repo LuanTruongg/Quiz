@@ -52,5 +52,19 @@ namespace Quiz.UI.ServicesClient.Implements
             string listRole = string.Join(",", rolesDecoded);
             return listRole;
         }
+
+        public async Task<ApiResult<GetProfileResponse>> GetMyProfile(string userId)
+        {
+            var json = JsonConvert.SerializeObject(userId);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.PostAsync("/identity/my-profile", httpContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<GetProfileResponse>>(responseContent);
+            return JsonConvert.DeserializeObject<ApiErrorResult<GetProfileResponse>>(responseContent);
+        }
     }
 }

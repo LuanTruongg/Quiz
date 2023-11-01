@@ -20,7 +20,6 @@ namespace Quiz.API.Controllers
 
         }
         [HttpPost("login")]
-        [AllowAnonymous]
         [ProducesResponseType(typeof(AuthenticationResponse), 200)]
         public async Task<IActionResult> Login([FromBody] AuthenticationRequest request)
         {
@@ -31,12 +30,22 @@ namespace Quiz.API.Controllers
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
         [HttpPost("register")]
-        [AllowAnonymous]
+        [ProducesResponseType(typeof(RegisterResponse), 200)]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             if (ModelState.IsValid)
             {
                 return GetResponse(200, await _service.RegisterAsync(request));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+        [HttpPost("my-profile")] 
+        [ProducesResponseType(typeof(GetProfileResponse), 200)]
+        public async Task<IActionResult> GetMyProfile([FromBody] string userId)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetMyProfileAsync(userId));
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
