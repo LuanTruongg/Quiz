@@ -21,8 +21,9 @@ namespace Quiz.UI.Controllers
             _homeServiceClient = homeServiceClient;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            ViewBag.ListDepartment = await _homeServiceClient.GetListDepartments();
             return View();
         }
 
@@ -38,7 +39,7 @@ namespace Quiz.UI.Controllers
         }
         public async Task<IActionResult> HomeNav()
         {
-            var listDepartment = _homeServiceClient.GetListDepartments();
+            var listDepartment = await _homeServiceClient.GetListDepartments();
             return View(listDepartment);
         }
     }
