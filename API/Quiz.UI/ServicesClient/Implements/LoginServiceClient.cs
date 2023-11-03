@@ -41,15 +41,14 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var handler = new JwtSecurityTokenHandler();
             var oldTokenDecoded = handler.ReadJwtToken(token);
-            List<string> rolesDecoded = new List<string>();
-            foreach (var item in oldTokenDecoded.Payload)
+            var listRole = "";
+            foreach (var item in oldTokenDecoded.Claims)
             { 
-                if (item.Key == "role")
+                if (item.Type == "UserRoles")
                 {
-                    rolesDecoded = JsonConvert.DeserializeObject<List<string>>(item.Value.ToString());
+                    listRole =item.Value.ToString();
                 }
             }
-            string listRole = string.Join(",", rolesDecoded);
             return listRole;
         }
 

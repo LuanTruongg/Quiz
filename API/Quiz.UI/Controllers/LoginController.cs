@@ -53,7 +53,7 @@ namespace Quiz.UI.Controllers
             HttpContext.Session.SetString("Token", result.Token);
             HttpContext.Session.SetString("UserId", userPrincipal.FindFirst("UserId").Value);
             HttpContext.Session.SetString("FullName", userPrincipal.Identity.Name);
-            HttpContext.Session.SetString("Roles", roles);
+            HttpContext.Session.SetString("UserRoles", roles);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal, authProperties);
             return RedirectToAction("Index", "Home");
         }
