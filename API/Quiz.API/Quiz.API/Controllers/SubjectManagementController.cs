@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Quiz.DTO.BaseResponse;
 using Quiz.DTO.SubjectManagement;
 using Quiz.Infrastructure.Constraint;
 using Quiz.Infrastructure.Http;
@@ -24,7 +25,6 @@ namespace Quiz.API.Controllers
 		[ProducesResponseType(typeof(GetSubjectResponse), 200)]
 		public async Task<IActionResult> Get()
 		{
-			var result = await _service.GetListSubjectsAsync();
 			if (ModelState.IsValid)
 			{
 				return GetResponse(200, await _service.GetListSubjectsAsync());
@@ -40,6 +40,17 @@ namespace Quiz.API.Controllers
 			{
 				return GetResponse(200, await _service.AddSubjectsAsync(request));
 			}
+			throw new ErrorException(400, ErrorMessage.BadRequest);
+		}
+		[HttpGet("get-list-subject-paging")]
+		[ProducesResponseType(typeof(GetListSubjectPagingResponse), 200)]
+		public async Task<IActionResult> GetListSubjectPaging([FromQuery] PagingRequest request)
+		{
+			if (ModelState.IsValid)
+			{
+				return GetResponse(200, await _service.GetListSubjectsPagingAsync(request));
+			}
+
 			throw new ErrorException(400, ErrorMessage.BadRequest);
 		}
 	}

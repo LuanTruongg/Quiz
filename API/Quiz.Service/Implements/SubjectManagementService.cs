@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Quiz.DTO.BaseResponse;
 using Quiz.DTO.SubjectManagement;
 using Quiz.Infrastructure.Http;
 using Quiz.Repository;
@@ -71,5 +72,35 @@ namespace Quiz.Service.Implements
 			}).ToListAsync();
 			return data;
 		}
-	}
+
+        public async Task<GetListSubjectPagingResponse> GetListSubjectsPagingAsync(PagingRequest request)
+        {
+            var subjectExisting = _dbContext.Subjects.AsQueryable();
+            if (request.Search != null)
+            {
+                subjectExisting = subjectExisting.Where(x => x.Name.Contains(request.Search));
+            }
+
+            int totalRow = subjectExisting.Count();
+
+            var data = await subjectExisting.Skip((request.Page - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(x => new SubjectItem()
+                {
+                    SubjectId = x.SubjectId,
+					Name = x.Name,
+                }).ToListAsync();
+
+            var numberPage = request.Page <= 0 ? 1 : request.Page;
+            var numberPageSize = request.PageSize <= 0 ? 10 : request.PageSize;
+
+            return new GetListSubjectPagingResponse()
+            {
+                Results = data,
+                Page = numberPage,
+                PageSize = numberPageSize,
+                Count = data.Count()
+            };
+        }
+    }
 }
