@@ -56,7 +56,7 @@ namespace Quiz.Service.Implements
             var claims = new[]
             {
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, string.Join(";",roles)),
+                new Claim("UserRoles", string.Join(";",roles)),
                 new Claim(ClaimTypes.Name, user.Fullname),
                 new Claim("UserId", user.Id)
             };

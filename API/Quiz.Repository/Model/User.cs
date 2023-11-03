@@ -4,7 +4,6 @@ namespace Quiz.Repository.Model
 {
     public class User : IdentityUser<string>
     {
-        public string UserId { get; set; }
         public string Fullname { get; set; }
         public DateTime DoB { get; set; }
         public string CCCD { get; set; }
