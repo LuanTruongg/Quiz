@@ -1,12 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Quiz.DTO.BaseResponse;
+using Quiz.UI.ServicesClient;
 
 namespace Quiz.UI.Controllers
 {
     public class SubjectManagementController : Controller
     {
-        public IActionResult Index()
+        private readonly ISubjectServiceClient _subjectServiceClient;
+        public SubjectManagementController(ISubjectServiceClient subjectServiceClient)
         {
-            return View();
+            _subjectServiceClient = subjectServiceClient;
+        }
+        public async Task<IActionResult> Index(PagingRequest request)
+        {
+            var listsubject = await _subjectServiceClient.GetListSubjectPaging(request);
+            return View(listsubject);
         }
         public IActionResult Create()
         {
