@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Quiz.DTO.BaseResponse;
 using Quiz.DTO.Common;
 using Quiz.DTO.TestStructureManagement;
 using Quiz.Repository.Model;
@@ -81,13 +82,16 @@ namespace Quiz.UI.ServicesClient.Implements
             return result;
         }
 
-        public async Task<GetListTestStructureResponse> GetListTestStructure(string subjectId)
+        public async Task<ApiResult<PagedResult<TestStructureItem>>> GetListTestStructure(GetListTestStructureRequest request)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/test-structure?SubjectId={subjectId}&Page=1&PageSize=5");
+            var response = await client.GetAsync($"/test-structure?" +
+                $"SubjectId={request.SubjectId}" +
+                $"&Page={request.Page}" +
+                $"&PageSize={request.PageSize}");
             var body = await response.Content.ReadAsStringAsync();
-            var listStructure = JsonConvert.DeserializeObject<GetListTestStructureResponse>(body);
+            var listStructure = JsonConvert.DeserializeObject<ApiResult<PagedResult<TestStructureItem>>>(body);
             return listStructure;
         }
     }

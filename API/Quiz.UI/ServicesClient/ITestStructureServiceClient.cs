@@ -1,4 +1,5 @@
-﻿using Quiz.DTO.Common;
+﻿using Quiz.DTO.BaseResponse;
+using Quiz.DTO.Common;
 using Quiz.DTO.TestStructureManagement;
 
 namespace Quiz.UI.ServicesClient
@@ -9,6 +10,6 @@ namespace Quiz.UI.ServicesClient
         Task<GetListDepartmentResponse> GetNameDepartment(string id);
         Task<string> GetNameMajor(string majorId, string departmentId);
         Task<List<GetListSubjectResponse>> GetListSubject(string majorId);
-        Task<GetListTestStructureResponse> GetListTestStructure(string subjectId);
+        Task<ApiResult<PagedResult<TestStructureItem>>> GetListTestStructure(GetListTestStructureRequest request);
     }
 }
