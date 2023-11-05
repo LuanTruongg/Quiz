@@ -11,5 +11,6 @@ namespace Quiz.Repository.Model
         public bool Sex { get; set;}
         public string? Address { get; set;}
         public List<UserTest> UserTests { get; set; }
+        public List<UserSubject>? UserSubjects { get; set; }
     }
 }
