@@ -44,7 +44,7 @@ namespace Quiz.API.Controllers
 		}
 		[HttpGet("get-list-subject-paging")]
 		[ProducesResponseType(typeof(GetListSubjectPagingResponse), 200)]
-		public async Task<IActionResult> GetListSubjectPaging([FromQuery] PagingRequest request)
+		public async Task<IActionResult> GetListSubjectPaging([FromQuery] GetListSubjectPagingRequest request)
 		{
 			if (ModelState.IsValid)
 			{

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Quiz.DTO.SubjectManagement
 {
-    public class GetListSubjectPagingResponse : PagingListResponse<SubjectItem>
+    public class GetListSubjectPagingResponse : ListResponse<SubjectItem>
     {
 
     }
