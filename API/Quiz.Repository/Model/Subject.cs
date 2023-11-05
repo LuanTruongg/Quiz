@@ -13,5 +13,6 @@ namespace Quiz.Repository.Model
         public bool General { get; set; }
         public List<MajorSubject> MajorSubjects { get; set; }
         public List<Module> Modules { get; set; }
+        public List<UserSubject>? UserSubjects { get; set; }
     }
 }
