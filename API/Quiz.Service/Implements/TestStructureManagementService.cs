@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Quiz.DTO.BaseResponse;
 using Quiz.DTO.QuestionManagement;
 using Quiz.DTO.SubjectManagement;
 using Quiz.DTO.TestStructureManagement;
@@ -45,7 +46,7 @@ namespace Quiz.Service.Implements
 			}
 		}
 
-        public async Task<GetListTestStructureResponse> GetListTestStructureAsync(GetListTestStructureRequest request)
+        public async Task<ApiResult<PagedResult<TestStructureItem>>> GetListTestStructureAsync(GetListTestStructureRequest request)
         {
 			var testStructureExisting = _dbContext.TestStructures.AsQueryable();
             if (request.SubjectId != null)
@@ -68,14 +69,14 @@ namespace Quiz.Service.Implements
             var numberPage = request.Page <= 0 ? 1 : request.Page;
             var numberPageSize = request.PageSize <= 0 ? 10 : request.PageSize;
 
-            return new GetListTestStructureResponse()
+            var result =  new PagedResult<TestStructureItem>()
             {
-                Results = data,
+                TotalRecords = totalRow,
                 Page = numberPage,
                 PageSize = numberPageSize,
-                Count = data.Count()
+                Items = data
             };
-
+            return new ApiSuccessResult<PagedResult<TestStructureItem>>(result);
         }
     }
 }

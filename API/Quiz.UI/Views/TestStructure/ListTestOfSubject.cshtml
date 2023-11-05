@@ -1,10 +1,11 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    GetListTestStructureResponse listTestStructure = ViewBag.ListTestStructure;
+    ApiResult<PagedResult<TestStructureItem>> listTestStructure = ViewBag.ListTestStructure;
 }
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @using Quiz.DTO.TestStructureManagement
+@using Quiz.DTO.BaseResponse
 
 <!-- Shop Start -->
 <div class="container-fluid pt-5">
@@ -21,7 +22,7 @@
         <section>
             <div class="container py-5">
                 @{
-                    foreach (var testStructure in listTestStructure.Results)
+                    foreach (var testStructure in listTestStructure.ResultObj.Items)
                     {
                         <div class="row justify-content-center mb-3">
                             <div class="col-md-12 col-xl-10">
@@ -73,6 +74,7 @@
             </div>
         </section>
         <!-- Shop Product End -->
+        @await Component.InvokeAsync("Pager", listTestStructure.ResultObj)
     </div>
 </div>
 <!-- Shop End -->

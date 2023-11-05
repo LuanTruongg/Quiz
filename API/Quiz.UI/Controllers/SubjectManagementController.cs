@@ -1,16 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Quiz.DTO.BaseResponse;
 using Quiz.DTO.SubjectManagement;
+using Quiz.DTO.TestStructureManagement;
+using Quiz.Repository.Model;
 using Quiz.UI.ServicesClient;
+using Quiz.UI.ServicesClient.Implements;
 
 namespace Quiz.UI.Controllers
 {
     public class SubjectManagementController : Controller
     {
         private readonly ISubjectServiceClient _subjectServiceClient;
-        public SubjectManagementController(ISubjectServiceClient subjectServiceClient)
+        private readonly ITestStructureServiceClient _testStructureServiceClient;
+        public SubjectManagementController(
+            ISubjectServiceClient subjectServiceClient,
+            ITestStructureServiceClient testStructureServiceClient)
         {
             _subjectServiceClient = subjectServiceClient;
+            _testStructureServiceClient = testStructureServiceClient;
         }
         public async Task<IActionResult> Index(string search, int page = 1, int pageSize = 1)
         {
@@ -29,8 +36,18 @@ namespace Quiz.UI.Controllers
         {
             return View();
         }
-        public IActionResult Details()
+        public async Task<IActionResult> ListTestOfSubjectManagement(string subjectId, string subjectName, string search, int page = 1, int pageSize = 1)
         {
+            ViewData["SubjectName"] = subjectName;
+            var request = new GetListTestStructureRequest()
+            {
+                Page = page,
+                PageSize = pageSize,
+                Search = search,
+                SubjectId = subjectId,
+            };
+            var listTestStructure = await _testStructureServiceClient.GetListTestStructure(request);
+            ViewBag.ListTestStructure = listTestStructure;
             return View();
         }
         public IActionResult Edit()

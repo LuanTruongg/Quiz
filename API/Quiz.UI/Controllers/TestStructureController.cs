@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Quiz.DTO.TestStructureManagement;
+using Quiz.DTO.TestSubjectManagement;
 using Quiz.Repository.Model;
 using Quiz.UI.ServicesClient;
 using Quiz.UI.ServicesClient.Implements;
@@ -40,11 +42,22 @@ namespace Quiz.UI.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> ListTestOfSubject(string subjectId, string subjectName)
+        public async Task<IActionResult> ListTestOfSubject(string subjectId, string subjectName, string search, int page = 1, int pageSize = 1)
         {
+            var request = new GetListTestStructureRequest()
+            {
+                Page = page,
+                PageSize = pageSize,
+                Search = search,
+                SubjectId = subjectId,
+            };
             ViewData["SubjectName"] = subjectName;
-            var listTestStructure = await _testStructureServiceClient.GetListTestStructure(subjectId);
+            var listTestStructure = await _testStructureServiceClient.GetListTestStructure(request);
             ViewBag.ListTestStructure = listTestStructure;
+            return View();
+        }
+        public async Task<IActionResult> Create()
+        {
             return View();
         }
     }

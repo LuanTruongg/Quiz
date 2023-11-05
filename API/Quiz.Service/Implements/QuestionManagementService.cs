@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Quiz.DTO.BaseResponse;
 using Quiz.DTO.QuestionManagement;
+using Quiz.DTO.SubjectManagement;
+using Quiz.DTO.TestStructureManagement;
 using Quiz.Infrastructure.Http;
 using Quiz.Repository;
 using Quiz.Repository.Model;
@@ -84,7 +87,7 @@ namespace Quiz.Service.Implements
 			};
 		}
 
-		public async Task<GetQuestionListResponse> GetListQuestionAsync(GetQuestionListRequest request)
+		public async Task<ApiResult<PagedResult<QuestionItem>>> GetListQuestionAsync(GetQuestionListRequest request)
 		{
 			//filter
 			var subjectExisting = await _dbContext.Subjects.FindAsync(request.SubjectId);
@@ -130,14 +133,15 @@ namespace Quiz.Service.Implements
 			var numberPage = request.Page <= 0 ? 1 : request.Page;
 			var numberPageSize = request.PageSize <= 0 ? 10 : request.PageSize;
 
-			return new GetQuestionListResponse()
-			{
-				Results = data,
-				Page = numberPage,
-				PageSize = numberPageSize,
-				Count = data.Count()
-			};
-		}
+            var pagedResult = new PagedResult<QuestionItem>()
+            {
+                TotalRecords = totalRow,
+                Page = numberPage,
+                PageSize = numberPageSize,
+                Items = data
+            };
+            return new ApiSuccessResult<PagedResult<QuestionItem>>(pagedResult);
+        }
 
 		public async Task<string> DeleteQuestionAsync(string id)
 		{
