@@ -1,5 +1,6 @@
 ﻿﻿@using Quiz.DTO.SubjectManagement
-@model GetListSubjectPagingResponse
+﻿@using Quiz.DTO.BaseResponse
+@model PagedResult<SubjectItem>
 @{
     ViewData["Title"] = "Danh sách môn học";
     Layout = "~/Views/Shared/_LayoutTeacher.cshtml";
@@ -59,7 +60,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                     @foreach (var item in Model.Results)
+                     @foreach (var item in Model.Items)
                      {
                      <tr>
                      <td>
@@ -76,7 +77,7 @@
                 </tbody>
             </table>
         </div>
-        @* @await Component.InvokeAsync("Pager", Model) *@
+        @await Component.InvokeAsync("Pager", Model)
     </div>
 </div>
 

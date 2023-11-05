@@ -73,9 +73,16 @@ namespace Quiz.Service.Implements
 			return data;
 		}
 
-        public async Task<GetListSubjectPagingResponse> GetListSubjectsPagingAsync(PagingRequest request)
+        public async Task<ApiResult<PagedResult<SubjectItem>>> GetListSubjectsPagingAsync(GetListSubjectPagingRequest request)
         {
-            var subjectExisting = _dbContext.Subjects.AsQueryable();
+			var subjectExisting = from us in _dbContext.UserSubjects
+								  join s in _dbContext.Subjects on us.SubjectId equals s.SubjectId
+								  where us.UserId == request.UserId
+								  select new SubjectItem
+								  {
+									  SubjectId = us.SubjectId,
+									  Name = s.Name
+								  };
             if (request.Search != null)
             {
                 subjectExisting = subjectExisting.Where(x => x.Name.Contains(request.Search));
@@ -94,13 +101,14 @@ namespace Quiz.Service.Implements
             var numberPage = request.Page <= 0 ? 1 : request.Page;
             var numberPageSize = request.PageSize <= 0 ? 10 : request.PageSize;
 
-            return new GetListSubjectPagingResponse()
+            var pagedResult = new PagedResult<SubjectItem>()
             {
-                Results = data,
+                TotalRecords = totalRow,
                 Page = numberPage,
                 PageSize = numberPageSize,
-                Count = data.Count()
+                Items = data
             };
+            return new ApiSuccessResult<PagedResult<SubjectItem>>(pagedResult);
         }
     }
 }

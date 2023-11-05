@@ -6,6 +6,6 @@ namespace Quiz.Service
 	{
 		Task<IEnumerable<GetSubjectResponse>> GetListSubjectsAsync();
 		Task<AddSubjectResponse> AddSubjectsAsync(AddSubjectRequest request);
-		Task<GetListSubjectPagingResponse> GetListSubjectsPagingAsync(PagingRequest request);
+		Task<ApiResult<PagedResult<SubjectItem>>> GetListSubjectsPagingAsync(GetListSubjectPagingRequest request);
 	}
 }

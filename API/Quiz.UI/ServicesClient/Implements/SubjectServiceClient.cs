@@ -21,18 +21,16 @@ namespace Quiz.UI.ServicesClient.Implements
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
         }
-        public async Task<GetListSubjectPagingResponse> GetListSubjectPaging(PagingRequest request)
+        public async Task<ApiResult<PagedResult<SubjectItem>>> GetListSubjectPaging(GetListSubjectPagingRequest request)
         {
-            if (request.Page == 0 || request.PageSize == 0)
-            {
-                request.Page = 1;
-                request.PageSize = 5;
-            }
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/subject-management/get-list-subject-paging?Page={request.Page}&PageSize={request.PageSize}");
+            var response = await client.GetAsync($"/subject-management/get-list-subject-paging?" +
+                $"Page={request.Page}&" +
+                $"PageSize={request.PageSize}&" +
+                $"UserId={request.UserId}");
             var body = await response.Content.ReadAsStringAsync();
-            var subject = JsonConvert.DeserializeObject<GetListSubjectPagingResponse>(body);
+            var subject = JsonConvert.DeserializeObject<ApiResult<PagedResult<SubjectItem>>>(body);
             return subject;
         }
     }
