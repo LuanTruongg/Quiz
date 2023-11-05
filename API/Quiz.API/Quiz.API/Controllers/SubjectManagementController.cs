@@ -50,7 +50,6 @@ namespace Quiz.API.Controllers
 			{
 				return GetResponse(200, await _service.GetListSubjectsPagingAsync(request));
 			}
-
 			throw new ErrorException(400, ErrorMessage.BadRequest);
 		}
 	}
