@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Quiz.DTO.BaseResponse;
 using Quiz.DTO.TestSubjectManagement;
 using Quiz.Infrastructure.Http;
 using Quiz.Repository;
@@ -16,12 +17,12 @@ namespace Quiz.Service.Implements
 		{
 			_dbContext = dbContext;
 		}
-		public async Task<CreateTestSubjectResponse> CreateTestSubjectAsync(CreateTestSubjectRequest request)
+		public async Task<ApiResult<CreateTestSubjectResponse>> CreateTestSubjectAsync(CreateTestSubjectRequest request)
 		{
 			var testSubjectExisting = _dbContext.TestSubjects.FirstOrDefault(x => x.TestSubjectCode == request.TestSubjectCode);
 			if (testSubjectExisting != null)
 			{
-				throw new TestException($"Test Subject Code {request.TestSubjectCode} does exist");
+				return new ApiErrorResult<CreateTestSubjectResponse>($"Test Subject Code {request.TestSubjectCode} does exist");
 			}
 			
 			var subjectExisting = _dbContext.Modules.FirstOrDefault(x => x.ModuleId == request.ListModuleId[0]);
@@ -39,8 +40,8 @@ namespace Quiz.Service.Implements
 								  };
 			if (testStructure.NumberOfQuestions > listQuestionOfSubject.Count())
 			{
-				throw new TestException($"The number of requested questions must be less than the number of existing questions");
-			}
+                return new ApiErrorResult<CreateTestSubjectResponse>($"The number of requested questions must be less than the number of existing questions");
+            }
 			var questionTotalOfModule = Math.Truncate(testStructure.NumberOfQuestions / (decimal)request.ListModuleId.Count);
 			var questionRemainder = testStructure.NumberOfQuestions % request.ListModuleId.Count == 0 ? 0 : testStructure.NumberOfQuestions % request.ListModuleId.Count;
 
@@ -48,6 +49,10 @@ namespace Quiz.Service.Implements
 			for (int j = 0; j < request.ListModuleId.Count; j++)
 			{
 				var listQuestionOfModule = await listQuestionOfSubject.Where(x => x.ModuleId == request.ListModuleId[j]).ToListAsync();
+				if(listQuestionOfModule.Count < request.ListNumQuestion[j])
+				{
+                    return new ApiErrorResult<CreateTestSubjectResponse>($"The number of requested questions must be less than the number of existing questions");
+                }
 				for (int k = 0; k < request.ListNumQuestion[j]; k++)
 				{
 					Random rand = new Random();
@@ -82,11 +87,7 @@ namespace Quiz.Service.Implements
 					throw new TestException($"{ex.Message}");
 				}
 			}
-
-			return new CreateTestSubjectResponse()
-			{
-				message = "Create success"
-			};
+			return new ApiSuccessResult<CreateTestSubjectResponse>();
 		}
 
 		public async Task<DeleteTestSubjectResponse> DeleteTestSubject(string testSubjectCode)

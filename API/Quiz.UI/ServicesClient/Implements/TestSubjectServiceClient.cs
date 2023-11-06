@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Quiz.DTO.BaseResponse;
+using Quiz.DTO.ModuleManagement;
 using Quiz.DTO.TestSubjectManagement;
 using Quiz.DTO.UserAnswerManagement;
 using Quiz.DTO.UserManagement;
@@ -24,6 +25,33 @@ namespace Quiz.UI.ServicesClient.Implements
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
         }
+
+        public async Task<ApiResult<CreateTestSubjectResponse>> CreateTestSubject(CreateTestSubjectRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync($"/test-subject-management", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if(response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<CreateTestSubjectResponse>>(result);
+            return JsonConvert.DeserializeObject<ApiErrorResult<CreateTestSubjectResponse>>(result);
+        }
+
+        public async Task<ApiResult<bool>> DeleteTestSubject(string id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.GetAsync($"/test-structure/{id}");
+            var body = await response.Content.ReadAsStringAsync();
+            if(response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
+        }
+
         public async Task<List<GetListQuestionOfTestResponse>> GetListQuestionOfTest(string testSubjectCode)
         {
             var client = _httpClientFactory.CreateClient();

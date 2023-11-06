@@ -11,5 +11,6 @@ namespace Quiz.UI.ServicesClient
         Task<string> GetNameMajor(string majorId, string departmentId);
         Task<List<GetListSubjectResponse>> GetListSubject(string majorId);
         Task<ApiResult<PagedResult<TestStructureItem>>> GetListTestStructure(GetListTestStructureRequest request);
+        Task<CreateTestStructureResponse> CreateTestStructure(CreateTestStructureRequest request);
     }
 }

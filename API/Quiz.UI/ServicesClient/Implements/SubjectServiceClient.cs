@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Quiz.DTO.BaseResponse;
 using Quiz.DTO.Common;
+using Quiz.DTO.ModuleManagement;
 using Quiz.DTO.SubjectManagement;
 using Quiz.Repository.Model;
 
@@ -32,6 +33,16 @@ namespace Quiz.UI.ServicesClient.Implements
             var body = await response.Content.ReadAsStringAsync();
             var subject = JsonConvert.DeserializeObject<ApiResult<PagedResult<SubjectItem>>>(body);
             return subject;
+        }
+        public async Task<List<GetListModuleResponse>> GetListModuleOfSubject(string subjectId)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.GetAsync($"/module-management?" +
+                $"SubjectId={subjectId}");
+            var body = await response.Content.ReadAsStringAsync();
+            var listModule = JsonConvert.DeserializeObject<List<GetListModuleResponse>>(body);
+            return listModule;
         }
     }
 }

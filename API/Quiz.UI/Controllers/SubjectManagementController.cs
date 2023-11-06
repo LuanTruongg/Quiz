@@ -39,6 +39,7 @@ namespace Quiz.UI.Controllers
         public async Task<IActionResult> ListTestOfSubjectManagement(string subjectId, string subjectName, string search, int page = 1, int pageSize = 1)
         {
             ViewData["SubjectName"] = subjectName;
+            ViewData["SubjectId"] = subjectId;
             var request = new GetListTestStructureRequest()
             {
                 Page = page,
@@ -46,6 +47,10 @@ namespace Quiz.UI.Controllers
                 Search = search,
                 SubjectId = subjectId,
             };
+            if (TempData["Notify"] != null)
+            {
+                ViewBag.SuccessMsg = TempData["Notify"];
+            }
             var listTestStructure = await _testStructureServiceClient.GetListTestStructure(request);
             ViewBag.ListTestStructure = listTestStructure;
             return View();
