@@ -2,8 +2,10 @@
 using Quiz.DTO.BaseResponse;
 using Quiz.DTO.Common;
 using Quiz.DTO.TestStructureManagement;
+using Quiz.DTO.UserManagement;
 using Quiz.Repository.Model;
 using Quiz.UI.Controllers;
+using System.Text;
 
 namespace Quiz.UI.ServicesClient.Implements
 {
@@ -93,6 +95,18 @@ namespace Quiz.UI.ServicesClient.Implements
             var body = await response.Content.ReadAsStringAsync();
             var listStructure = JsonConvert.DeserializeObject<ApiResult<PagedResult<TestStructureItem>>>(body);
             return listStructure;
+        }
+
+        public async Task<CreateTestStructureResponse> CreateTestStructure(CreateTestStructureRequest request)
+        {
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.PostAsync("/test-structure", httpContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<CreateTestStructureResponse>(responseContent);
         }
     }
 }

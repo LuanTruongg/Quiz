@@ -18,7 +18,12 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-md-6 col-xs-12">
-                    <a class="btn btn-success" asp-controller="TestStructure" asp-action="Create">Tạo bài thi</a>
+                    @Html.ActionLink(
+                        "Tạo bài thi",
+                        "Create",
+                        "TestStructure",
+                    new { subjectId = ViewData["SubjectId"], subjectName = @ViewData["SubjectName"]},
+                        new { @class = "btn btn-success"})
                 </div>
                 <div class="col-md-6 col-xs-12">
                     <form asp-action="Index" method="get">

@@ -49,9 +49,14 @@ namespace Quiz.API.Controllers
 		//{
 		//}
 
-		//[HttpDelete("{id}")]
-		//public void Delete(int id)
-		//{
-		//}
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> Delete(string id)
+		{
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.DeleteTestStructureAsync(id));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
 	}
 }

@@ -20,7 +20,7 @@ namespace Quiz.API.Controllers
 
 		}
 		[HttpGet]
-		[ProducesResponseType(typeof(GetModuleResponse), 200)]
+		[ProducesResponseType(typeof(GetListModuleResponse), 200)]
 		public async Task<IActionResult> GetListModule([FromQuery]GetListModuleRequest request)
 		{
 			if (ModelState.IsValid)
@@ -31,7 +31,7 @@ namespace Quiz.API.Controllers
 		}
 
 		[HttpGet("{moduleId}")]
-		[ProducesResponseType(typeof(GetModuleResponse), 200)]
+		[ProducesResponseType(typeof(GetListModuleResponse), 200)]
 		public async Task<IActionResult> GetModuleById(string moduleId)
 		{
 			if (ModelState.IsValid)

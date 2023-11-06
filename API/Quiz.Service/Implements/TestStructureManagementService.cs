@@ -33,6 +33,7 @@ namespace Quiz.Service.Implements
 				await _dbContext.SaveChangesAsync();
 				return new CreateTestStructureResponse()
 				{
+					TestStructureId = newTestStructure.TestStructureId,
 					Name = newTestStructure.Name,
 					Time = newTestStructure.Time,
 					NumberOfQuestion = newTestStructure.NumberOfQuestions,
@@ -45,6 +46,18 @@ namespace Quiz.Service.Implements
 				throw new TestException($"Error: {ex.Message}");
 			}
 		}
+
+        public async Task<ApiResult<bool>> DeleteTestStructureAsync(string id)
+        {
+            var testStructureExisting = _dbContext.TestStructures.FirstOrDefault(x => x.TestStructureId == id);
+			if (testStructureExisting != null)
+			{
+				return new ApiErrorResult<bool>("Test Structure does not exist");
+			}
+			_dbContext.TestStructures.Remove(testStructureExisting);
+			_dbContext.SaveChanges();
+			return new ApiSuccessResult<bool>();
+        }
 
         public async Task<ApiResult<PagedResult<TestStructureItem>>> GetListTestStructureAsync(GetListTestStructureRequest request)
         {

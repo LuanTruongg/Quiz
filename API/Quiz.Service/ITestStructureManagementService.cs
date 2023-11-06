@@ -8,5 +8,6 @@ namespace Quiz.Service
 	{
         Task<ApiResult<PagedResult<TestStructureItem>>> GetListTestStructureAsync(GetListTestStructureRequest request);
         Task<CreateTestStructureResponse> AddTestStructureAsync(CreateTestStructureRequest request);
+        Task<ApiResult<bool>> DeleteTestStructureAsync(string id);
     }
 }

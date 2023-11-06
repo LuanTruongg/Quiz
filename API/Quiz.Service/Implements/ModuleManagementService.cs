@@ -45,7 +45,7 @@ namespace Quiz.Service.Implements
 			return listModuleOfSubject;
 		}
 
-		public async Task<GetModuleResponse> EditModuleAsync(string id, EditModuleRequest request)
+		public async Task<GetListModuleResponse> EditModuleAsync(string id, EditModuleRequest request)
 		{
 			var moduleExisting = await _dbContext.Modules.FindAsync(id);
 			if (moduleExisting is null)
@@ -67,14 +67,14 @@ namespace Quiz.Service.Implements
 				Log.Error(ex.Message, ex);
 			}
 			await _dbContext.SaveChangesAsync();
-			return new GetModuleResponse()
+			return new GetListModuleResponse()
 			{
 				Name = moduleExisting.Name,
 				SubjectName = subject.Name
 			};
 		}
 
-		public async Task<IEnumerable<GetModuleResponse>> GetListModuleAsync(GetListModuleRequest request)
+		public async Task<IEnumerable<GetListModuleResponse>> GetListModuleAsync(GetListModuleRequest request)
 		{
 			var subjectExisting = await _dbContext.Subjects.FindAsync(request.SubjectId);
 			if(subjectExisting is null)
@@ -83,15 +83,16 @@ namespace Quiz.Service.Implements
 			}
 			var data = await _dbContext.Modules
 				.Where(x => x.SubjectId == request.SubjectId)
-				.Select(x => new GetModuleResponse()
+				.Select(x => new GetListModuleResponse()
 				{
+					ModuleId = x.ModuleId,
 					Name = x.Name,
 					SubjectName = x.Subject.Name
 				}).ToListAsync();
 			return data;
 		}
 
-		public async Task<GetModuleResponse> GetModuleByIdAsync(string moduleId)
+		public async Task<GetListModuleResponse> GetModuleByIdAsync(string moduleId)
 		{
 			var moduleExisting = await _dbContext.Modules.FindAsync(moduleId);
 			if (moduleExisting is null)
@@ -100,7 +101,7 @@ namespace Quiz.Service.Implements
 			}
 			var data = await _dbContext.Modules
 				.Where(x => x.ModuleId == moduleId)
-				.Select(x => new GetModuleResponse()
+				.Select(x => new GetListModuleResponse()
 				{
 					Name = x.Name,
 					SubjectName = x.Subject.Name

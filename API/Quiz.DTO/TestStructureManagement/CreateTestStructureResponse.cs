@@ -8,6 +8,7 @@ namespace Quiz.DTO.TestStructureManagement
 {
 	public class CreateTestStructureResponse
 	{
+        public string TestStructureId { get; set; }
         public string Name { get; set; }
 		public int Time { get; set; }
 		public int NumberOfQuestion { get; set; }
