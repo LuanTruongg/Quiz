@@ -1,10 +1,11 @@
-﻿@* @model LShopSolution.ViewModels.Authen.Users.RegisterRequest *@
-
+﻿@model Quiz.DTO.TestSubjectManagement.CreataStructureAndTestRequest
+@using Quiz.DTO.QuestionManagement
 @{
     ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = "~/Views/Shared/_LayoutTeacher.cshtml";
+    // List<GetListModuleResponse> listModule = ViewBag.ListModule;
 }
-<div class="container-fluid px-4">
+@* <div class="container-fluid px-4">
     <h1 class="mt-4">Thêm câu hỏi</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
@@ -12,61 +13,53 @@
     </ol>
     <div class="card mb-4">
         <div class="card-header">
-            <a class="btn btn-success" asp-controller="Question" asp-action="Index">Xem danh sách</a>
+            <a class="btn btn-success" asp-controller="Subject" asp-action="Index">Xem danh sách</a>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-4">
-                    <form asp-action="Create">
-                        @* <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group">
-                            <label asp-for="FirstName" class="control-label"></label>
-                            <input asp-for="FirstName" class="form-control" />
-                            <span asp-validation-for="FirstName" class="text-danger"></span>
+            <div class="row col-md-12">
+                <form asp-action="Create" asp-controller="TestStructure">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" value="@ViewData["SubjectId"]" asp-for="SubjectId" />
+                    <input type="hidden" value="@ViewData["SubjectName"]" asp-for="SubjectName" />
+                    <div class="d-flex justify-content-between">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label">Tên bài thi</label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Time" class="control-label">Thời gian làm bài</label>
+                                <input asp-for="Time" class="form-control" />
+                                <span asp-validation-for="Time" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="NumberOfQuestion" class="control-label">Số lượng câu hỏi</label>
+                                <input asp-for="NumberOfQuestion" class="form-control" />
+                                <span asp-validation-for="NumberOfQuestion" class="text-danger"></span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="LastName" class="control-label"></label>
-                            <input asp-for="LastName" class="form-control" />
-                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        <div class="col-md-5">
+                            @{
+                                foreach (var module in listModule)
+                                {
+                                    <fieldset class="border p-2 mt-2">
+                                        <legend class="float-none w-auto">@module.Name</legend>
+                                        <input type="text" value="@module.ModuleId" asp-for="ListModuleId" />
+                                        <input asp-for="ListNumQuestion" class="form-control" type="number" value="0" placeholder="Số lượng câu hỏi của chương này" />
+                                    </fieldset>
+                                }
+                            }
                         </div>
-                        <div class="form-group">
-                            <label asp-for="DoB" class="control-label"></label>
-                            <input asp-for="DoB" class="form-control" />
-                            <span asp-validation-for="DoB" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Email" class="control-label"></label>
-                            <input asp-for="Email" class="form-control" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="PhoneNumber" class="control-label"></label>
-                            <input asp-for="PhoneNumber" class="form-control" />
-                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="UserName" class="control-label"></label>
-                            <input asp-for="UserName" class="form-control" />
-                            <span asp-validation-for="UserName" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Password" class="control-label"></label>
-                            <input asp-for="Password" class="form-control" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="ConfirmPassword" class="control-label"></label>
-                            <input asp-for="ConfirmPassword" class="form-control" />
-                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Lưu lại" class="btn btn-primary" />
-                        </div> *@
-                    </form>
-                </div>
+                    </div>
+
+                    <div class="form-group text-center mt-3">
+                        <input type="submit" value="Lưu lại" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-
+ *@
 

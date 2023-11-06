@@ -21,8 +21,8 @@ namespace Quiz.API.Controllers
 
 		}
 		[HttpGet]
-		[ProducesResponseType(typeof(GetQuestionListResponse), 200)]
-		public async Task<IActionResult> Get([FromQuery] GetQuestionListRequest request)
+		[ProducesResponseType(typeof(GetListQuestionResponse), 200)]
+		public async Task<IActionResult> Get([FromQuery] GetListQuestionRequest request)
 		{
 			if (ModelState.IsValid)
 			{
@@ -68,5 +68,5 @@ namespace Quiz.API.Controllers
 			}
 			throw new ErrorException(400, ErrorMessage.BadRequest);
 		}
-	}
+    }
 }

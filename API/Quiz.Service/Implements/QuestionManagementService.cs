@@ -87,14 +87,14 @@ namespace Quiz.Service.Implements
 			};
 		}
 
-		public async Task<ApiResult<PagedResult<QuestionItem>>> GetListQuestionAsync(GetQuestionListRequest request)
+		public async Task<ApiResult<PagedResult<QuestionItem>>> GetListQuestionAsync(GetListQuestionRequest request)
 		{
 			//filter
 			var subjectExisting = await _dbContext.Subjects.FindAsync(request.SubjectId);
 			
 			if (subjectExisting is null)
 			{
-				throw new TestException($"Not Found Subject with Id: {request.SubjectId}");
+				return new ApiErrorResult<PagedResult<QuestionItem>>($"Not Found Subject with Id: {request.SubjectId}");
 			}
 			var questionAll = _dbContext.Questions.AsQueryable();
 
@@ -107,11 +107,14 @@ namespace Quiz.Service.Implements
 										   join module in _dbContext.Modules on question.ModuleId equals module.ModuleId
 										   join subject in _dbContext.Subjects on module.SubjectId equals subject.SubjectId
 										   select new {
+											   question.QuestionId,
 											   question.QuestionText,
 											   question.QuestionA,
 											   question.QuestionB,
 											   question.QuestionC,
 											   question.QuestionD,
+											   question.Answer,
+											   question.Difficult,
 											   subject.Name
 										   };
 				
@@ -122,11 +125,14 @@ namespace Quiz.Service.Implements
 				.Take(request.PageSize)
 				.Select(x => new QuestionItem()
 				{
+					QuestionId = x.QuestionId,
 					QuestionText = Base64.Base64Decode(x.QuestionText),
 					QuestionA = Base64.Base64Decode(x.QuestionA),
 					QuestionB = Base64.Base64Decode(x.QuestionB),
 					QuestionC = Base64.Base64Decode(x.QuestionC),
 					QuestionD = Base64.Base64Decode(x.QuestionD),
+					Difficult = x.Difficult,
+					Answer = Base64.Base64Decode(x.Answer),
 					SubjectName = x.Name
 				}).ToListAsync();
 

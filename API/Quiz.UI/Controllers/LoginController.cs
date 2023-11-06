@@ -13,6 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using System.Data;
 
 namespace Quiz.UI.Controllers
 {
@@ -102,6 +103,9 @@ namespace Quiz.UI.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Remove("Token");
+            HttpContext.Session.Remove("UserId");
+            HttpContext.Session.Remove("FullName");
+            HttpContext.Session.Remove("UserRoles");
             return RedirectToAction("Index", "Home");
         }
     }
