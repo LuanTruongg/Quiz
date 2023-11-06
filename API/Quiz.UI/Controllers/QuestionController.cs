@@ -1,12 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Quiz.DTO.QuestionManagement;
+using Quiz.UI.ServicesClient;
 
 namespace Quiz.UI.Controllers
 {
     public class QuestionController : Controller
     {
-        public IActionResult Index()
+        private readonly IQuestionServiceClient _questionServiceClient;
+        public QuestionController(IQuestionServiceClient questionServiceClient)
         {
-            return View();
+            _questionServiceClient = questionServiceClient;
+        }
+        public async Task<IActionResult> Index(GetListQuestionRequest request)
+        {
+            var filterRequest = new GetListQuestionRequest()
+            {
+                Page = request.Page == 0? 1 : request.Page,
+                PageSize = request.PageSize == 0 ? 5 : request.PageSize,
+                Search = request.Search,
+                SubjectId = request.SubjectId,
+            };
+            var listQuestion = await _questionServiceClient.GetListQuestionOfSubject(filterRequest);
+            return View(listQuestion.ResultObj);
         }
         public IActionResult Create()
         {

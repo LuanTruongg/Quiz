@@ -1,6 +1,6 @@
 ﻿namespace Quiz.DTO.QuestionManagement
 {
-	public class GetQuestionListRequest
+	public class GetListQuestionRequest
 	{
 		public string? SubjectId { get; set; }
 		public int Page { get; set; }

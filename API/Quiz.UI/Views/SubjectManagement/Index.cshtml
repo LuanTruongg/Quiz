@@ -68,10 +68,16 @@
                      </td>
                      <td>
                                 @Html.ActionLink(
-                                    "Chi tiết",
+                                    "Xem bài thi",
                                     "ListTestOfSubjectManagement",
                                     "SubjectManagement", 
                                     new { subjectId=item.SubjectId, subjectName = item.Name }, 
+                                    new{@class = "btn btn-primary"})
+                                @Html.ActionLink(
+                                    "Xem bộ câu hỏi",
+                                    "Index",
+                                    "Question",
+                                    new { subjectId=item.SubjectId, subjectName = item.Name },
                                     new{@class = "btn btn-primary"})
                      </td>
                      </tr>

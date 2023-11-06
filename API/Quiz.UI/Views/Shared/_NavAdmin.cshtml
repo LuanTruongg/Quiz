@@ -1,10 +1,6 @@
-﻿@* @model NavViewModel *@
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+﻿<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="index.html">L-Quiz</a>
+    <a class="navbar-brand ps-3" asp-action="Index" asp-controller="Home">L-Quiz</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
     <!-- Navbar Search-->
@@ -14,13 +10,6 @@
             <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
         </div>
     </form>
-@*     <form action="home/language" method="post" class="d-none d-md-inline-block form-inline me-0 me-md-3 my-2 my-md-0" id="frmChangeLanguage">
-        <div class="input-group">
-            <select class="form-control" onchange="this.form.submit()" asp-for="CurrentLanguageId" asp-items="@(new SelectList(Model.Languages, "Id", "Name",Model.CurrentLanguageId))">
-            </select>
-        </div>
-    </form> *@
-    <!-- Navbar-->
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
