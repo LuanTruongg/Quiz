@@ -3,16 +3,21 @@
     List<GetListSubjectResponse> listSubject = ViewBag.ListSubject;
 }
 @using Quiz.DTO.Common
-
+<style>
+    .custom-control:hover > a {
+        color: red;
+        transition: .5s;
+    }
+</style>
 <!-- Shop Start -->
 <div class="container-fluid pt-5">
-    <h3 class="cf-title-01">@ViewData["SubjectName"]</h3>
-    <div class="row px-xl-5">
+    <h3 class="mb-5 text-center">@ViewData["SubjectName"]</h3>
+    <div class="row px-xl-5 justify-content-center">
         <!-- Shop Sidebar Start -->
-        <div class="col-lg-7 col-md-12">
+        <div class="col-lg-10 col-md-12">
             <div class="border-bottom mb-4 pb-4">
                 <h5 class="font-weight-semi-bold mb-4">Học phần</h5>
-                <form>
+                <div class="d-flex justify-content-between">
                     @{
                         if (listSubject is null)
                         {
@@ -22,26 +27,23 @@
                         }
                         else
                         {
-
                             foreach (var subject in listSubject)
                             {
-                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3 shadow-sm p-3 mb-1 bg-white rounded">
-
+                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3 shadow p-3 mb-5 rounded col-md-5 bg-four">
                                     @Html.ActionLink(
-                        subject.Name,
-                        "ListTestOfSubject",
-                        "TestStructure",
-                        new {
-                            id = subject.SubjectId,
-                            subjectName = subject.Name
-                        },
-                        new { @class = "text-decoration-none link-secondary"})
+                                        subject.Name,
+                                        "ListTestOfSubject",
+                                        "TestStructure",
+                                        new {
+                                        id = subject.SubjectId,
+                                        subjectName = subject.Name
+                                        },
+                                        new { @class = "text-decoration-none"})
                                 </div>
                             }
                         }
-                        
                     }
-                </form>
+                </div>
             </div>
         </div>
         <!-- Shop Sidebar End -->
