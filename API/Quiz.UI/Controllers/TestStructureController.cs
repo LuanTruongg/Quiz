@@ -47,7 +47,7 @@ namespace Quiz.UI.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> ListTestOfSubject(string subjectId, string subjectName, string search, int page = 1, int pageSize = 1)
+        public async Task<IActionResult> ListTestOfSubject(string subjectId, string subjectName, string search, int page = 1, int pageSize = 5)
         {
             var request = new GetListTestStructureRequest()
             {

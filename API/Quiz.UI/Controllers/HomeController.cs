@@ -23,6 +23,17 @@ namespace Quiz.UI.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var UserRoles = HttpContext.Session.GetString("UserRoles");
+            if (!string.IsNullOrEmpty(UserRoles))
+            {
+                List<string> listRoles = new List<string>();
+                string[] listRolesSplit = UserRoles.Split(';');
+                foreach (var role in listRolesSplit)
+                {
+                    listRoles.Add(role);
+                }
+                ViewBag.ListRoles = listRoles;
+            }
             ViewBag.ListDepartment = await _homeServiceClient.GetListDepartments();
             return View();
         }
