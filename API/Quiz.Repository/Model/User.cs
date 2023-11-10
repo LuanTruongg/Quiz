@@ -12,5 +12,6 @@ namespace Quiz.Repository.Model
         public string? Address { get; set;}
         public List<UserTest> UserTests { get; set; }
         public List<UserSubject>? UserSubjects { get; set; }
+        public List<UserStructure> UserStructures { get; set; }
     }
 }

@@ -25,7 +25,9 @@ namespace Quiz.Service.Implements
 				Name = request.Name,
 				Time = request.Time,
 				NumberOfQuestions = request.NumberOfQuestion,
-				SubjectId = request.SubjectId
+				SubjectId = request.SubjectId,
+				IsFree = request.IsFree,
+				Price = request.Price,
 			};
 			try
 			{
@@ -37,7 +39,9 @@ namespace Quiz.Service.Implements
 					Name = newTestStructure.Name,
 					Time = newTestStructure.Time,
 					NumberOfQuestion = newTestStructure.NumberOfQuestions,
-                    SubjectId = newTestStructure.SubjectId
+                    SubjectId = newTestStructure.SubjectId,
+					IsFree = newTestStructure.IsFree,
+					Price = newTestStructure.Price,
                 };
 			}
 			catch (Exception ex)
@@ -76,7 +80,9 @@ namespace Quiz.Service.Implements
                     TestStructureId = x.TestStructureId,
 					Name = x.Name,
 					NumberOfQuestion = x.NumberOfQuestions,
-					Time = x.Time
+					Time = x.Time,
+					IsFree = x.IsFree,
+					Price = x.Price,
                 }).ToListAsync();
 
             var numberPage = request.Page <= 0 ? 1 : request.Page;

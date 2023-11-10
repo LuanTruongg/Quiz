@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Quiz.Repository;
 
@@ -11,9 +12,10 @@ using Quiz.Repository;
 namespace Quiz.Repository.Migrations
 {
     [DbContext(typeof(QuizDbContext))]
-    partial class QuizDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231110151214_add_table_UserStructure")]
+    partial class add_table_UserStructure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -353,18 +355,12 @@ namespace Quiz.Repository.Migrations
                     b.Property<string>("TestStructureId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("IsFree")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NumberOfQuestions")
                         .HasColumnType("int");
-
-                    b.Property<long>("Price")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("SubjectId")
                         .IsRequired()
@@ -496,7 +492,7 @@ namespace Quiz.Repository.Migrations
                             AccessFailedCount = 0,
                             Address = "Bến Tre",
                             CCCD = "202011237083",
-                            ConcurrencyStamp = "d4981056-5812-417c-9aa8-d2145c2fdf3a",
+                            ConcurrencyStamp = "3109102e-ec7e-4c6e-938f-5aaac73d9987",
                             DoB = new DateTime(2002, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "luantruong020302@gmail.com",
                             EmailConfirmed = false,
@@ -505,7 +501,7 @@ namespace Quiz.Repository.Migrations
                             Money = 1000000f,
                             NormalizedEmail = "luantruong020302@gmail.com,",
                             NormalizedUserName = "luantruong020302@gmail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBV01x325sp/H2BM8bKs2mN1zNP8uN8kA1t/V6qsTgTRtSQd6FpFaVFGTtEgcA8h3Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELvYRGAg76jUEg19d1x6pGmNpJQAt62/jJ/yapH/yvRwhUgiGxvkdlkIddGHFtmuVA==",
                             PhoneNumber = "0836151007",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -547,6 +543,12 @@ namespace Quiz.Repository.Migrations
 
                     b.Property<string>("TestStructureId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsFree")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("Price")
+                        .HasColumnType("bigint");
 
                     b.HasKey("UserId", "TestStructureId");
 
@@ -610,14 +612,14 @@ namespace Quiz.Repository.Migrations
                         new
                         {
                             Id = "69bd714f-9576-45ba-b5b7-f00649be00de",
-                            ConcurrencyStamp = "2442fcbd-1c9e-4b1c-ba03-9e708706c182",
+                            ConcurrencyStamp = "2b09fac2-27d5-4249-a07f-d5710375ea27",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
                             Id = "8d04dce2-969a-435d-bba4-df3f325983dc",
-                            ConcurrencyStamp = "0429fe79-eaaf-4f49-b711-7155bbfd8af9",
+                            ConcurrencyStamp = "d2278410-14b0-4c32-aa30-abe383e2f8d0",
                             Name = "Teacher",
                             NormalizedName = "Teacher"
                         });

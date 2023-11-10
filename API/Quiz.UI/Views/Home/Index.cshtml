@@ -72,12 +72,15 @@
         <!-- Portfolio Grid Items-->
         <div class="row gx-0">
             @{
+                int i = 1;
+                
                 foreach (var department in listDepartment)
                 {
+                    string path = $"/assets/img/d{i}.png";
                     <div class="col-lg-6">
                         <a asp-route-id="@department.DepartmentId" asp-action="ListMajor" asp-controller="TestStructure" class="text-decoration-none btn-redirect font-weight-bold py-2">
                             <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal1">
-                                <img class="img-fluid" src="~/assets/img/portfolio-1.jpg" alt="..." />
+                                <img class="img-fluid" src="@path" alt="..." />
                                 <div class="caption">
                                     <div class="caption-content">
                                         <div class="h3">@department.Name</div>
@@ -87,6 +90,7 @@
                             </div>
                         </a>
                     </div>
+                    i++;
                 }
             }
         </div>

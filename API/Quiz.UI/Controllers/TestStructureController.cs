@@ -77,7 +77,9 @@ namespace Quiz.UI.Controllers
                 Name = request.Name,
                 NumberOfQuestion = request.NumberOfQuestion,
                 SubjectId = request.SubjectId,
-                Time = request.Time
+                Time = request.Time,
+                IsFree = request.IsFree,
+                Price = request.IsFree == true ? 0 : request.Price
             };
             var testStructureIdCreated = await _testStructureServiceClient.CreateTestStructure(requestStructure);
             var requestTestSubject = new CreateTestSubjectRequest()

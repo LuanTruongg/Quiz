@@ -15,5 +15,7 @@ namespace Quiz.DTO.TestSubjectManagement
         public string SubjectName { get; set; }
         public List<string> ListModuleId { get; set; }
         public List<int> ListNumQuestion { get; set; }
+        public bool IsFree { get; set; }
+        public long Price { get; set; }
     }
 }
