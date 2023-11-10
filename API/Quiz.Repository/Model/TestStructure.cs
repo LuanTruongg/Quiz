@@ -15,5 +15,8 @@ namespace Quiz.Repository.Model
         public string SubjectId { get; set; }
         public List<TestSubject> TestSubjects { get; set; }
         public List<UserTest> UserTest { get; set; }
+        public List<UserStructure> UserStructures { get; set; }
+        public bool IsFree { get; set; }
+        public long Price { get; set; }
     }
 }

@@ -68,6 +68,9 @@
                         <th>
                             Số lượng câu hỏi
                         </th>
+                        <th>
+                            Giá
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
@@ -83,6 +86,19 @@
                          </td>
                          <td>
                             @Html.DisplayFor(modelItem => item.NumberOfQuestion)
+                         </td>
+                         <td>
+                                @{
+                                    if (item.IsFree == true)
+                                    {
+                                        <span>Free</span>
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(modelItem => item.Price)
+                                    }
+                                }
+                            
                          </td>
                          <td>
                              @Html.ActionLink("Xem bài thi", "Details", new { id=item.TestStructureId },new { @class = "btn btn-primary btn-sm"}) |

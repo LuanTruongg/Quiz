@@ -18,5 +18,7 @@ namespace Quiz.DTO.TestStructureManagement
         public string Name { get; set; }
         public int NumberOfQuestion { get; set; }
         public int Time { get; set; }
+        public bool IsFree { get; set; }
+        public long Price { get; set; }
     }
 }

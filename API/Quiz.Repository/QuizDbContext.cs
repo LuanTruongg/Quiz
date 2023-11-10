@@ -26,12 +26,8 @@ namespace Quiz.Repository
             modelBuilder.ApplyConfiguration(new UserTestConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new UserSubjectConfiguration());
+            modelBuilder.ApplyConfiguration(new UserStructureConfiguration());
 
-            //modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("AspNetUserClaims");
-            //modelBuilder.Entity<IdentityUserRole<string>>().ToTable("AspNetUserRoles").HasKey(x => new { x.UserId, x.RoleId });
-            //modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("AspNetUserLogins").HasKey(x => x.UserId);
-            //modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("AspNetRoleClaims");
-            //modelBuilder.Entity<IdentityUserToken<string>>().ToTable("AspNetUserToken").HasKey(x => x.UserId);
             modelBuilder.Seed();
 			base.OnModelCreating(modelBuilder);
         }
@@ -47,6 +43,7 @@ namespace Quiz.Repository
         public DbSet<UserAnswer> UserAnswers { get; set; }
         public DbSet<UserTest> UserTests { get; set; }
         public DbSet<UserSubject> UserSubjects { get; set; }
+        public DbSet<UserStructure> UserStructures { get; set; }
         #endregion
     }
 }
