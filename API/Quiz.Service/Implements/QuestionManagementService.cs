@@ -20,11 +20,11 @@ namespace Quiz.Service.Implements
 		{
 			_dbContext = dbContext;
 		}
-		public async Task<AddQuestionResponse> AddQuestionAsync(AddQuestionRequest request)
+		public async Task<ApiResult<bool>> AddQuestionAsync(AddQuestionRequest request)
 		{
 			var moduleExisting = await _dbContext.Modules.FindAsync(request.ModuleId);
 			if (moduleExisting is null) {
-				throw new TestException($"Not Found Module with Id: {request.ModuleId}");
+				return new ApiErrorResult<bool>($"Not Found Module with Id: {request.ModuleId}");
 			}
 			var answer = string.Empty;
 			switch (request.Answer)
@@ -74,17 +74,7 @@ namespace Quiz.Service.Implements
 			//	Answer = newQuestion.Answer,
 			//	ModuleId = newQuestion.ModuleId
 			//};
-			return new AddQuestionResponse()
-			{
-				QuestionText = result.QuestionText,
-				QuestionA = result.QuestionA,
-				QuestionB = result.QuestionB,
-				QuestionC = result.QuestionC,
-				QuestionD = result.QuestionD,
-				Answer = result.Answer,
-				Difficult = result.Difficult,
-				ModuleId = result.ModuleId
-			};
+			return new ApiSuccessResult<bool>();
 		}
 
 		public async Task<ApiResult<PagedResult<QuestionItem>>> GetListQuestionAsync(GetListQuestionRequest request)
@@ -107,16 +97,18 @@ namespace Quiz.Service.Implements
 										   join module in _dbContext.Modules on question.ModuleId equals module.ModuleId
 										   join subject in _dbContext.Subjects on module.SubjectId equals subject.SubjectId
 										   select new {
-											   question.QuestionId,
-											   question.QuestionText,
-											   question.QuestionA,
-											   question.QuestionB,
-											   question.QuestionC,
-											   question.QuestionD,
-											   question.Answer,
-											   question.Difficult,
-											   subject.Name
-										   };
+												QuestionId = question.QuestionId,
+												QuestionText = question.QuestionText,
+												QuestionA = question.QuestionA,
+												QuestionB = question.QuestionB,
+												QuestionC = question.QuestionC,
+												QuestionD = question.QuestionD,
+												Answer = question.Answer,
+												Difficult = question.Difficult,
+												Name = subject.Name,
+												ModuleId = module.ModuleId,
+												ModuleName = module.Name
+                                           };
 				
 			//paging
 			int totalRow = await getListQuestionOfSubject.CountAsync();
@@ -133,8 +125,12 @@ namespace Quiz.Service.Implements
 					QuestionD = Base64.Base64Decode(x.QuestionD),
 					Difficult = x.Difficult,
 					Answer = Base64.Base64Decode(x.Answer),
-					SubjectName = x.Name
-				}).ToListAsync();
+					SubjectName = x.Name,
+					ModuleId = x.ModuleId,
+					ModuleName = x.ModuleName
+				})
+                .OrderBy(x => x.ModuleId) 
+				.ToListAsync();
 
 			var numberPage = request.Page <= 0 ? 1 : request.Page;
 			var numberPageSize = request.PageSize <= 0 ? 10 : request.PageSize;

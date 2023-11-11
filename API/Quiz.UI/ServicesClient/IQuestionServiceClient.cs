@@ -6,5 +6,6 @@ namespace Quiz.UI.ServicesClient
     public interface IQuestionServiceClient
     {
         Task<ApiResult<PagedResult<QuestionItem>>> GetListQuestionOfSubject(GetListQuestionRequest request);
+        Task<ApiResult<bool>> CreateQuestionOfModule(CreateQuestionRequestViewModel request);
     }
 }

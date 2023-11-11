@@ -13,17 +13,24 @@
     </script>
 }
 <div class="container-fluid px-4">
+
     <h1 class="mt-4">Danh sách câu hỏi</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Danh sách câu hỏi</li>
+        <li class="breadcrumb-item"><a href="">Danh sách câu hỏi</a></li>
+        <li class="breadcrumb-item active">@ViewData["SubjectName"]</li>
     </ol>
-    <div class="card mb-4">
 
+    <div class="card mb-4">
         <div class="card-header">
             <div class="row">
                 <div class="col-md-6 col-xs-12">
-                    <a class="btn btn-success" asp-controller="Question" asp-action="Create">Thêm câu hỏi</a>
+                    @Html.ActionLink(
+                    "Thêm câu hỏi",
+                    "Create",
+                    "Question",
+                    new { subjectId = ViewData["SubjectId"], subjectName = @ViewData["SubjectName"]},
+                    new { @class = "btn btn-success"})
                 </div>
                 <div class="col-md-6 col-xs-12">
                     <form asp-action="Index" method="get">
@@ -60,6 +67,9 @@
                         <th>
                             Độ khó
                         </th>
+                        <th>
+                            Chương
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,6 +85,9 @@
                              <td>
                                 @Html.DisplayFor(modelItem => item.Difficult)
                              </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModuleName)
+                            </td>
                              <td>
                                 @Html.ActionLink("Sửa", "Edit", new { id = item.QuestionId }) |
                                 @Html.ActionLink("Xem", "Details", new { id = item.QuestionId }) |

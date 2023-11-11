@@ -17,5 +17,7 @@ namespace Quiz.DTO.QuestionManagement
         public string Answer { get; set; }
         public string Difficult { get; set; }
         public string SubjectName { get; set; }
-	}
+        public string ModuleId { get; set; }
+        public string ModuleName { get; set; }
+    }
 }
