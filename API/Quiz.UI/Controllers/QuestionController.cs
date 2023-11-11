@@ -77,9 +77,12 @@ namespace Quiz.UI.Controllers
         {
             return View();
         }
-        public IActionResult Edit()
+        [HttpGet]
+        public async Task<IActionResult> Edit(string questionId)
         {
-            return View();
+            //ViewBag.ListModule = await _subjectServiceClient.GetListModuleOfSubject(subjectId);
+            var data = await _questionServiceClient.GetQuestionById(questionId);
+            return View(data.ResultObj);
         }
         public IActionResult Delete()
         {

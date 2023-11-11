@@ -227,5 +227,28 @@ namespace Quiz.Service.Implements
 				ModuleId = result.ModuleId
 			};
 		}
-	}
+
+        public async Task<ApiResult<GetQuestionResponse>> GetQuestionByIdAsync(string id)
+        {
+            var questionExisting = _dbContext.Questions.FirstOrDefault(x => x.QuestionId == id);
+            if (questionExisting is null)
+            {
+                return new ApiErrorResult<GetQuestionResponse>($"Not Found question with Id: {id}");
+            }
+			var moduleExisting = _dbContext.Modules.FirstOrDefault(x => x.ModuleId == questionExisting.ModuleId);
+			var result = new GetQuestionResponse()
+			{
+				QuestionText = Base64.Base64Decode(questionExisting.QuestionText),
+				QuestionA = Base64.Base64Decode(questionExisting.QuestionA),
+				QuestionB = Base64.Base64Decode(questionExisting.QuestionB),
+				QuestionC = Base64.Base64Decode(questionExisting.QuestionC),
+				QuestionD = Base64.Base64Decode(questionExisting.QuestionD),
+				Answer = Base64.Base64Decode(questionExisting.Answer),
+				Difficult = questionExisting.Difficult,
+				ModuleId = moduleExisting.ModuleId,
+				ModuleName = moduleExisting.Name
+			};
+            return new ApiSuccessResult<GetQuestionResponse>(result);
+        }
+    }
 }

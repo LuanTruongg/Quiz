@@ -89,10 +89,13 @@
                                 @Html.DisplayFor(modelItem => item.ModuleName)
                             </td>
                              <td>
-                                @Html.ActionLink("Sửa", "Edit", new { id = item.QuestionId }) |
-                                @Html.ActionLink("Xem", "Details", new { id = item.QuestionId }) |
-                                @Html.ActionLink("Xóa", "Delete", new { id = item.QuestionId }) |
-                                @Html.ActionLink("Gán quyền", "GetRoleAssign", new { id = item.QuestionId })
+                                @Html.ActionLink(
+                                "Chỉnh sửa"
+                                ,"Edit"
+                                , new { questionId = item.QuestionId}
+                                , new { @class = "btn btn-primary btn-sm"}) |
+                                @Html.ActionLink("Chi tiết", "Details", new { id = item.QuestionId },new { @class = "btn btn-primary btn-sm"}) |
+                                @Html.ActionLink("Xóa", "Delete", new { id = item.QuestionId },new { @class = "btn btn-primary btn-sm"})
                              </td>
                          </tr>
                      }

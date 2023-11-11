@@ -1,17 +1,17 @@
-﻿@model Quiz.DTO.QuestionManagement.CreateQuestionRequestViewModel
+﻿@model Quiz.DTO.QuestionManagement.GetQuestionResponse
 @using Quiz.DTO.ModuleManagement
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_LayoutTeacher.cshtml";
-    List<GetListModuleResponse> listModule = ViewBag.ListModule;
+    // List<GetListModuleResponse> listModule = ViewBag.ListModule;
 }
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Thêm câu hỏi</h1>
+    <h1 class="mt-4">Chỉnh sửa câu hỏi</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a asp-controller="Teacher" asp-action="Index">Trang chủ</a></li>
         <li class="breadcrumb-item"><a href="">Danh sách câu hỏi</a></li>
-        <li class="breadcrumb-item"><a href="">@ViewData["SubjectName"]</a></li>
-        <li class="breadcrumb-item active">Thêm câu hỏi</li>
+        @* <li class="breadcrumb-item"><a href="">@ViewData["SubjectName"]</a></li> *@
+        <li class="breadcrumb-item active">Chỉnh sửa câu hỏi</li>
     </ol>
 
     <div class="card mb-4">
@@ -20,53 +20,56 @@
         </div>
         <div class="card-body">
             <div class="row col-md-12">
-                <form asp-action="CreateQuestion" asp-controller="Question">
+                <form asp-action="EditQuestion" asp-controller="Question">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" value="@ViewData["SubjectId"]" asp-for="SubjectId" />
-                    <input type="hidden" value="@ViewData["SubjectName"]" asp-for="SubjectName" />
                     <div class="d-flex justify-content-between">
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label asp-for="ModuleId" class="control-label">Chương</label>
-                                <select class="form-select" asp-for="ModuleId">
+                                @* <select class="form-select" asp-for="ModuleId">
                                     @{
-                                        foreach(var item in listModule)
+                                        foreach (var item in listModule)
                                         {
                                             <option value="@item.ModuleId">@item.Name</option>
                                         }
                                     }
-                                </select>
+                                </select> *@
                             </div>
                             <div class="form-group">
                                 <label asp-for="QuestionText" class="control-label">Câu hỏi</label>
-                                <input asp-for="QuestionText" class="form-control" />
+                                <input asp-for="QuestionText" class="form-control" value="@Model.QuestionText"/>
                                 <span asp-validation-for="QuestionText" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="QuestionA" class="control-label">Câu A</label>
-                                <input asp-for="QuestionA" class="form-control" />
+                                <input asp-for="QuestionA" class="form-control" value="@Model.QuestionA" />
                                 <span asp-validation-for="QuestionA" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="QuestionB" class="control-label">Câu B</label>
-                                <input asp-for="QuestionB" class="form-control" />
+                                <input asp-for="QuestionB" class="form-control" value="@Model.QuestionB" />
                                 <span asp-validation-for="QuestionB" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="QuestionC" class="control-label">Câu C</label>
-                                <input asp-for="QuestionC" class="form-control" />
+                                <input asp-for="QuestionC" class="form-control" value="@Model.QuestionC" />
                                 <span asp-validation-for="QuestionC" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="QuestionD" class="control-label">Câu D</label>
-                                <input asp-for="QuestionD" class="form-control" />
+                                <input asp-for="QuestionD" class="form-control" value="@Model.QuestionD" />
                                 <span asp-validation-for="QuestionD" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-5">
                             <div class="form-group">
-                                <label asp-for="Answer" class="control-label">Đáp án đúng</label>
+                                <label class="control-label">Đáp án đúng</label>
+                                <input class="form-control" value="@Model.Answer" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Answer" class="control-label">Chọn lại đáp án đúng</label>
                                 <select class="form-select" asp-for="Answer">
+                                    <option value="" selected>Chọn đáp án đúng</option>
                                     <option value="A">A</option>
                                     <option value="B">B</option>
                                     <option value="C">C</option>
@@ -74,8 +77,13 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label class="control-label">Độ khó</label>
+                                <input class="form-control" value="@Model.Difficult" />
+                            </div>
+                            <div class="form-group">
                                 <label asp-for="Difficult" class="control-label">Độ khó</label>
                                 <select class="form-select" asp-for="Difficult">
+                                    <option value="" selected>Chọn độ khó</option>
                                     <option value="Easy">Dễ</option>
                                     <option value="Normal">Thường</option>
                                     <option value="Hard">Khó</option>
