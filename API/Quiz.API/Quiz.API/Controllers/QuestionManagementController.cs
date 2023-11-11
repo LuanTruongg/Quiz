@@ -31,11 +31,16 @@ namespace Quiz.API.Controllers
 			throw new ErrorException(400, ErrorMessage.BadRequest);
 		}
 
-		//[HttpGet("{id}")]
-		//public string Get(int id)
-		//{
-		//	return "value";
-		//}
+		[HttpGet("{id}")]
+        [ProducesResponseType(typeof(GetQuestionResponse), 200)]
+        public async Task<IActionResult> Get(string id)
+		{
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetQuestionByIdAsync(id));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
 
 		[HttpPost]
 		[ProducesResponseType(typeof(AddQuestionResponse), 200)]

@@ -3,6 +3,7 @@ using Quiz.DTO.BaseResponse;
 using Quiz.DTO.QuestionManagement;
 using Quiz.DTO.SubjectManagement;
 using Quiz.DTO.TestStructureManagement;
+using System.Net.Http;
 using System.Text;
 
 namespace Quiz.UI.ServicesClient.Implements
@@ -61,6 +62,19 @@ namespace Quiz.UI.ServicesClient.Implements
             var body = await response.Content.ReadAsStringAsync();
             var listQuestion = JsonConvert.DeserializeObject<ApiResult<PagedResult<QuestionItem>>>(body);
             return listQuestion;
+        }
+
+        public async Task<ApiResult<GetQuestionResponse>> GetQuestionById(string id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.GetAsync($"/question-management/{id}");
+            var responseContent = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<ApiSuccessResult<GetQuestionResponse>>(responseContent);
+            }
+            return JsonConvert.DeserializeObject<ApiErrorResult<GetQuestionResponse>>(responseContent);
         }
     }
 }
