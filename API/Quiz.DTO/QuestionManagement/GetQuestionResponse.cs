@@ -8,6 +8,8 @@ namespace Quiz.DTO.QuestionManagement
 {
     public class GetQuestionResponse
     {
+        public string QuestionId { get; set; }
+        public string SubjectId { get; set; }
         public string QuestionText { get; init; }
         public string QuestionA { get; set; }
         public string QuestionB { get; set; }

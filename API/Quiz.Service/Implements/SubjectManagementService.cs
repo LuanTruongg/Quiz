@@ -110,5 +110,18 @@ namespace Quiz.Service.Implements
             };
             return new ApiSuccessResult<PagedResult<SubjectItem>>(pagedResult);
         }
+
+        public async Task<ApiResult<SubjectItem>> GetSubjectByIdAsync(string id)
+        {
+			var subjectExisting = _dbContext.Subjects.FirstOrDefault(x => x.SubjectId == id);
+			if (subjectExisting == null)
+				return new ApiErrorResult<SubjectItem>($"Subject with id {id} does not exist");
+			var result = new SubjectItem()
+			{
+				SubjectId = subjectExisting.SubjectId,
+				Name = subjectExisting.Name,
+			};
+			return new ApiSuccessResult<SubjectItem>(result);
+        }
     }
 }

@@ -51,6 +51,22 @@ namespace Quiz.UI.ServicesClient.Implements
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(responseContent);
         }
 
+        public async Task<ApiResult<bool>> EditQuestion(string id, EditQuestionRequest request)
+        {
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.PutAsync($"/question-management/{id}", httpContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(responseContent);
+            }
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(responseContent);
+        }
+
         public async Task<ApiResult<PagedResult<QuestionItem>>> GetListQuestionOfSubject(GetListQuestionRequest request)
         {
             var client = _httpClientFactory.CreateClient();

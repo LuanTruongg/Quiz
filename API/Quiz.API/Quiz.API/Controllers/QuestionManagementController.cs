@@ -33,7 +33,7 @@ namespace Quiz.API.Controllers
 
 		[HttpGet("{id}")]
         [ProducesResponseType(typeof(GetQuestionResponse), 200)]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> GetById(string id)
 		{
             if (ModelState.IsValid)
             {

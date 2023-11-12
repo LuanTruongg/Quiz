@@ -32,7 +32,18 @@ namespace Quiz.API.Controllers
 
 			throw new ErrorException(400, ErrorMessage.BadRequest);
 		}
-		[HttpPost] 
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(GetSubjectResponse), 200)]
+        public async Task<IActionResult> GetSubjectById(string id)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetSubjectByIdAsync(id));
+            }
+
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+        [HttpPost] 
 		[ProducesResponseType(typeof(AddSubjectResponse), 200)]
 		public async Task<IActionResult> Post([FromBody] AddSubjectRequest request)
 		{

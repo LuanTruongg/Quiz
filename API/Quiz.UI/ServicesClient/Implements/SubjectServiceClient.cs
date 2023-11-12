@@ -34,15 +34,27 @@ namespace Quiz.UI.ServicesClient.Implements
             var subject = JsonConvert.DeserializeObject<ApiResult<PagedResult<SubjectItem>>>(body);
             return subject;
         }
-        public async Task<List<GetListModuleResponse>> GetListModuleOfSubject(string subjectId)
+        public async Task<ApiResult<List<GetListModuleResponse>>> GetListModuleOfSubject(string subjectId)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
             var response = await client.GetAsync($"/module-management?" +
                 $"SubjectId={subjectId}");
             var body = await response.Content.ReadAsStringAsync();
-            var listModule = JsonConvert.DeserializeObject<List<GetListModuleResponse>>(body);
-            return listModule;
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<List<GetListModuleResponse>>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<List<GetListModuleResponse>>>(body);
+        }
+
+        public async Task<ApiResult<SubjectItem>> GetSubjectById(string id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.GetAsync($"/subject-management/{id}");
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<SubjectItem>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<SubjectItem>>(body);
         }
     }
 }

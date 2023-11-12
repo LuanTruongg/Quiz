@@ -165,12 +165,12 @@ namespace Quiz.Service.Implements
 			}
 		}
 
-		public async Task<EditQuestionResponse> EditQuestionAsync(string id, EditQuestionRequest request)
+		public async Task<ApiResult<bool>> EditQuestionAsync(string id, EditQuestionRequest request)
 		{
 			var moduleExisting = await _dbContext.Modules.FindAsync(request.ModuleId);
 			if (moduleExisting is null)
 			{
-				throw new TestException($"Not Found Module with Id: {request.ModuleId}");
+				return new ApiErrorResult<bool>($"Not Found Module with Id: {request.ModuleId}");
 			}
 			var answer = string.Empty;
 			switch (request.Answer)
@@ -191,7 +191,7 @@ namespace Quiz.Service.Implements
 			var editQuestion = await _dbContext.Questions.FindAsync(id);
 			if (editQuestion is null)
 			{
-				throw new TestException($"Not Found Question with Id: {id}");
+                return new ApiErrorResult<bool>($"Not Found Question with Id: {id}");
 			}
 			editQuestion.QuestionText = Base64.Base64Encode(request.QuestionText);
 			editQuestion.QuestionA = Base64.Base64Encode(request.QuestionA);
@@ -210,22 +210,23 @@ namespace Quiz.Service.Implements
 				Log.Error(ex.Message);
 			}
 			 _dbContext.SaveChanges();
-			var result = _dbContext.Questions.Where(x => x.QuestionId == editQuestion.QuestionId).FirstOrDefault();
-			if (result is null)
+			var findQuestion = _dbContext.Questions.Where(x => x.QuestionId == editQuestion.QuestionId).FirstOrDefault();
+			if (findQuestion is null)
 			{
-				throw new TestException($"Not Found Question with Id: {id}");
+                return new ApiErrorResult<bool>($"Not Found Question with Id: {id}");
 			}
-			return new EditQuestionResponse()
+			var result = new EditQuestionResponse()
 			{
-				QuestionText = result.QuestionText,
-				QuestionA = result.QuestionA,
-				QuestionB = result.QuestionB,
-				QuestionC = result.QuestionC,
-				QuestionD = result.QuestionD,
-				Answer = result.Answer,
-				Difficult = result.Difficult,
-				ModuleId = result.ModuleId
+				QuestionText = findQuestion.QuestionText,
+				QuestionA = findQuestion.QuestionA,
+				QuestionB = findQuestion.QuestionB,
+				QuestionC = findQuestion.QuestionC,
+				QuestionD = findQuestion.QuestionD,
+				Answer = findQuestion.Answer,
+				Difficult = findQuestion.Difficult,
+				ModuleId = findQuestion.ModuleId
 			};
+			return new ApiSuccessResult<bool>();
 		}
 
         public async Task<ApiResult<GetQuestionResponse>> GetQuestionByIdAsync(string id)
@@ -238,6 +239,7 @@ namespace Quiz.Service.Implements
 			var moduleExisting = _dbContext.Modules.FirstOrDefault(x => x.ModuleId == questionExisting.ModuleId);
 			var result = new GetQuestionResponse()
 			{
+				QuestionId = questionExisting.QuestionId,
 				QuestionText = Base64.Base64Decode(questionExisting.QuestionText),
 				QuestionA = Base64.Base64Decode(questionExisting.QuestionA),
 				QuestionB = Base64.Base64Decode(questionExisting.QuestionB),

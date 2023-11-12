@@ -20,7 +20,6 @@
         <li class="breadcrumb-item"><a href="">Danh sách câu hỏi</a></li>
         <li class="breadcrumb-item active">@ViewData["SubjectName"]</li>
     </ol>
-
     <div class="card mb-4">
         <div class="card-header">
             <div class="row">
@@ -29,7 +28,7 @@
                     "Thêm câu hỏi",
                     "Create",
                     "Question",
-                    new { subjectId = ViewData["SubjectId"], subjectName = @ViewData["SubjectName"]},
+                    new { subjectId = ViewData["SubjectId"]},
                     new { @class = "btn btn-success"})
                 </div>
                 <div class="col-md-6 col-xs-12">
@@ -49,10 +48,10 @@
         </div>
         <div class="card mb-4"></div>
         <div class="card-body">
-            @if (ViewBag.SuccessMsg != null)
+            @if (TempData["Notify"] != null)
             {
                 <div id="msgAlert" class="alert alert-success" role="alert">
-                    @ViewBag.SuccessMsg
+                    @TempData["Notify"]
                 </div>
             }
             <table class="table table-bordered">
@@ -92,9 +91,9 @@
                                 @Html.ActionLink(
                                 "Chỉnh sửa"
                                 ,"Edit"
-                                , new { questionId = item.QuestionId}
+                                , new { questionId = item.QuestionId, subjectId = ViewData["SubjectId"] }
                                 , new { @class = "btn btn-primary btn-sm"}) |
-                                @Html.ActionLink("Chi tiết", "Details", new { id = item.QuestionId },new { @class = "btn btn-primary btn-sm"}) |
+                                @Html.ActionLink("Chi tiết", "Details", new { id = item.QuestionId},new { @class = "btn btn-primary btn-sm"}) |
                                 @Html.ActionLink("Xóa", "Delete", new { id = item.QuestionId },new { @class = "btn btn-primary btn-sm"})
                              </td>
                          </tr>

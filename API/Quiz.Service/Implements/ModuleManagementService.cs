@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Quiz.DTO.BaseResponse;
 using Quiz.DTO.ModuleManagement;
 using Quiz.Infrastructure.Http;
 using Quiz.Repository;
@@ -74,22 +75,22 @@ namespace Quiz.Service.Implements
 			};
 		}
 
-		public async Task<IEnumerable<GetListModuleResponse>> GetListModuleAsync(GetListModuleRequest request)
+		public async Task<ApiResult<List<GetListModuleResponse>>> GetListModuleAsync(string subjectId)
 		{
-			var subjectExisting = await _dbContext.Subjects.FindAsync(request.SubjectId);
+			var subjectExisting = await _dbContext.Subjects.FindAsync(subjectId);
 			if(subjectExisting is null)
 			{
-				throw new TestException("Not Found");
+				return new ApiErrorResult<List<GetListModuleResponse>>("Not Found module");
 			}
 			var data = await _dbContext.Modules
-				.Where(x => x.SubjectId == request.SubjectId)
+				.Where(x => x.SubjectId == subjectId)
 				.Select(x => new GetListModuleResponse()
 				{
 					ModuleId = x.ModuleId,
 					Name = x.Name,
 					SubjectName = x.Subject.Name
 				}).ToListAsync();
-			return data;
+			return new ApiSuccessResult<List<GetListModuleResponse>>(data);
 		}
 
 		public async Task<GetListModuleResponse> GetModuleByIdAsync(string moduleId)
