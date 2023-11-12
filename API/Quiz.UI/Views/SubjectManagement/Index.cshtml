@@ -71,13 +71,13 @@
                                     "Xem bài thi",
                                     "ListTestOfSubjectManagement",
                                     "SubjectManagement", 
-                                    new { subjectId=item.SubjectId, subjectName = item.Name }, 
+                                    new { subjectId=item.SubjectId}, 
                                     new{@class = "btn btn-primary"})
                                 @Html.ActionLink(
                                     "Xem bộ câu hỏi",
                                     "Index",
                                     "Question",
-                                    new { subjectId=item.SubjectId, subjectName = item.Name },
+                                    new { subjectId=item.SubjectId },
                                     new{@class = "btn btn-primary"})
                      </td>
                      </tr>

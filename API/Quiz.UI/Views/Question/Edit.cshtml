@@ -3,17 +3,23 @@
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_LayoutTeacher.cshtml";
-    // List<GetListModuleResponse> listModule = ViewBag.ListModule;
+    List<GetListModuleResponse> listModule = ViewBag.ListModule;
+    List<string> listDiff = new List<string> { "Easy", "Normal", "Hard" };
 }
 <div class="container-fluid px-4">
     <h1 class="mt-4">Chỉnh sửa câu hỏi</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a asp-controller="Teacher" asp-action="Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a asp-controller="SubjectManagement" asp-action="Index">Trang chủ</a></li>
         <li class="breadcrumb-item"><a href="">Danh sách câu hỏi</a></li>
-        @* <li class="breadcrumb-item"><a href="">@ViewData["SubjectName"]</a></li> *@
+        <li class="breadcrumb-item"><a href="">@ViewData["SubjectName"]</a></li>
         <li class="breadcrumb-item active">Chỉnh sửa câu hỏi</li>
     </ol>
-
+    @if (TempData["Validation"] != null)
+    {
+        <div id="msgAlert" class="alert alert-warning" role="alert">
+            @TempData["Validation"]
+        </div>
+    }
     <div class="card mb-4">
         <div class="card-header">
             <a class="btn btn-success" asp-controller="Question" asp-action="Index">Xem danh sách</a>
@@ -22,18 +28,24 @@
             <div class="row col-md-12">
                 <form asp-action="EditQuestion" asp-controller="Question">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" value="@ViewData["QuestionId"]" asp-for="QuestionId" />
+                    <input type="hidden" value="@ViewData["SubjectId"]" asp-for="SubjectId" />
                     <div class="d-flex justify-content-between">
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label asp-for="ModuleId" class="control-label">Chương</label>
-                                @* <select class="form-select" asp-for="ModuleId">
+                                <select class="form-select" asp-for="ModuleId">
                                     @{
+                                        <option value="@Model.ModuleId">@Model.ModuleName</option>
                                         foreach (var item in listModule)
                                         {
-                                            <option value="@item.ModuleId">@item.Name</option>
+                                            if (item.ModuleId != Model.ModuleId)
+                                            {
+                                                <option value="@item.ModuleId">@item.Name</option>
+                                            }                                            
                                         }
                                     }
-                                </select> *@
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label asp-for="QuestionText" class="control-label">Câu hỏi</label>
@@ -63,8 +75,9 @@
                         </div>
                         <div class="col-md-5">
                             <div class="form-group">
-                                <label class="control-label">Đáp án đúng</label>
-                                <input class="form-control" value="@Model.Answer" />
+                                <label class="control-label">Đáp án đúng: </label>
+                                <br />
+                                <span class="form-control">@Model.Answer</span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Answer" class="control-label">Chọn lại đáp án đúng</label>
@@ -77,16 +90,18 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Độ khó</label>
-                                <input class="form-control" value="@Model.Difficult" />
-                            </div>
-                            <div class="form-group">
                                 <label asp-for="Difficult" class="control-label">Độ khó</label>
                                 <select class="form-select" asp-for="Difficult">
-                                    <option value="" selected>Chọn độ khó</option>
-                                    <option value="Easy">Dễ</option>
-                                    <option value="Normal">Thường</option>
-                                    <option value="Hard">Khó</option>
+                                    @{
+                                        <option value="@Model.Difficult">@Model.Difficult</option>
+                                        foreach (var item in listDiff)
+                                        {
+                                            if (item != Model.Difficult)
+                                            {
+                                                <option value="@item">@item</option>
+                                            }
+                                        }
+                                    }
                                 </select>
                             </div>
                         </div>

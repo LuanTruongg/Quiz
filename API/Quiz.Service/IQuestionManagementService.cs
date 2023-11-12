@@ -8,7 +8,7 @@ namespace Quiz.Service
 		Task<ApiResult<bool>> AddQuestionAsync(AddQuestionRequest request);
 		Task<ApiResult<PagedResult<QuestionItem>>> GetListQuestionAsync(GetListQuestionRequest request);
 		Task<string> DeleteQuestionAsync(string id);
-		Task<EditQuestionResponse> EditQuestionAsync(string id, EditQuestionRequest request);
+		Task<ApiResult<bool>> EditQuestionAsync(string id, EditQuestionRequest request);
         Task<ApiResult<GetQuestionResponse>> GetQuestionByIdAsync(string id);
     }
 }

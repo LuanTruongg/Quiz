@@ -47,7 +47,7 @@ namespace Quiz.UI.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> ListTestOfSubject(string subjectId, string subjectName, string search, int page = 1, int pageSize = 5)
+        public async Task<IActionResult> ListTestOfSubject(string subjectId, string search, int page = 1, int pageSize = 5)
         {
             var request = new GetListTestStructureRequest()
             {
@@ -56,17 +56,22 @@ namespace Quiz.UI.Controllers
                 Search = search,
                 SubjectId = subjectId,
             };
-            ViewData["SubjectName"] = subjectName;
+            var subject = await _subjectServiceClient.GetSubjectById(subjectId);
+            ViewData["SubjectId"] = subject.ResultObj.SubjectId;
+            ViewData["SubjectName"] = subject.ResultObj.Name;
             var listTestStructure = await _testStructureServiceClient.GetListTestStructure(request);
             ViewBag.ListTestStructure = listTestStructure;
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> Create(string subjectId,string subjectName)
+        public async Task<IActionResult> Create(string subjectId)
         {
-            ViewData["SubjectId"] = subjectId;
-            ViewData["SubjectName"] = subjectName;
-            ViewBag.ListModule = await _subjectServiceClient.GetListModuleOfSubject(subjectId);
+            var subject = await _subjectServiceClient.GetSubjectById(subjectId);
+            ViewData["SubjectId"] = subject.ResultObj.SubjectId;
+            ViewData["SubjectName"] = subject.ResultObj.Name;
+
+            var listModule = await _subjectServiceClient.GetListModuleOfSubject(subjectId);
+            ViewBag.ListModule = listModule.ResultObj;
             return View();
         }
         [HttpPost]
@@ -99,7 +104,6 @@ namespace Quiz.UI.Controllers
                 "ListTestOfSubjectManagement",
                 "SubjectManagement",
                 new { subjectId = request.SubjectId, 
-                    subjectName = request.SubjectName ,
                     page = 1,
                     pageSize = 5 }
                 );

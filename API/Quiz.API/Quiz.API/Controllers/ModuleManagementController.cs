@@ -21,11 +21,11 @@ namespace Quiz.API.Controllers
 		}
 		[HttpGet]
 		[ProducesResponseType(typeof(GetListModuleResponse), 200)]
-		public async Task<IActionResult> GetListModule([FromQuery]GetListModuleRequest request)
+		public async Task<IActionResult> GetListModule([FromQuery] string SubjectId)
 		{
 			if (ModelState.IsValid)
 			{
-				return GetResponse(200, await _service.GetListModuleAsync(request));
+				return GetResponse(200, await _service.GetListModuleAsync(SubjectId));
 			}
 			throw new ErrorException(400, ErrorMessage.BadRequest);
 		}

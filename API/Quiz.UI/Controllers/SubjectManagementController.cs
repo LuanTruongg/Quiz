@@ -19,7 +19,7 @@ namespace Quiz.UI.Controllers
             _subjectServiceClient = subjectServiceClient;
             _testStructureServiceClient = testStructureServiceClient;
         }
-        public async Task<IActionResult> Index(string search, int page = 1, int pageSize = 1)
+        public async Task<IActionResult> Index(string search, int page = 1, int pageSize = 5)
         {
             var userId = HttpContext.Session.GetString("UserId");
             var request = new GetListSubjectPagingRequest()
@@ -36,10 +36,11 @@ namespace Quiz.UI.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> ListTestOfSubjectManagement(string subjectId, string subjectName, string search, int page = 1, int pageSize = 1)
+        public async Task<IActionResult> ListTestOfSubjectManagement(string subjectId, string search, int page = 1, int pageSize = 5)
         {
-            ViewData["SubjectName"] = subjectName;
-            ViewData["SubjectId"] = subjectId;
+            var subject = await _subjectServiceClient.GetSubjectById(subjectId);
+            ViewData["SubjectName"] = subject.ResultObj.Name;
+            ViewData["SubjectId"] = subject.ResultObj.SubjectId;
             var request = new GetListTestStructureRequest()
             {
                 Page = page,

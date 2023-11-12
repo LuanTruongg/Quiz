@@ -8,6 +8,7 @@ namespace Quiz.UI.ServicesClient
     public interface ISubjectServiceClient
     {
         Task<ApiResult<PagedResult<SubjectItem>>> GetListSubjectPaging(GetListSubjectPagingRequest request);
-        Task<List<GetListModuleResponse>> GetListModuleOfSubject(string subjectId);
+        Task<ApiResult<List<GetListModuleResponse>>> GetListModuleOfSubject(string subjectId);
+        Task<ApiResult<SubjectItem>> GetSubjectById(string id);
     }
 }
