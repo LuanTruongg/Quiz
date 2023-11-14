@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Quiz.DTO.BaseResponse;
 using Quiz.DTO.UserTestManagement;
 using Quiz.Repository;
 using Quiz.Repository.Model;
@@ -47,6 +48,25 @@ namespace Quiz.Service.Implements
                     UserTestId = null
                 };
             }
+        }
+
+        public async Task<ApiResult<List<GetUserTestResponse>>> GetListResultUserTestAsync(string userId)
+        {
+            var listUserTest = from ut in _dbContext.UserTests
+                               join ts in _dbContext.TestStructures on ut.TestStructureId equals ts.TestStructureId
+                               where ut.UserId == userId
+                               select new GetUserTestResponse()
+                               {
+                                   UserTestId = ut.UserTestId,
+                                   TestStructureId = ut.TestStructureId,
+                                   CorrectAnswers = ut.CorrectAnswers,
+                                   NumberOfQuestions = ts.NumberOfQuestions,
+                                   Score = ut.Score,
+                                   TestStructureName = ts.Name,
+                                   Time = ts.Time
+                               };
+            var listResult = new List<GetUserTestResponse>(listUserTest);
+            return new ApiSuccessResult<List<GetUserTestResponse>>(listResult);
         }
 
         public async Task<GetResultUserTestResponse> GetResultUserTestAsync(GetResultUserTestRequest request)

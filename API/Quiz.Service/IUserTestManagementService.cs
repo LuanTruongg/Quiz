@@ -1,4 +1,6 @@
-﻿using Quiz.DTO.UserTestManagement;
+﻿using Quiz.DTO.BaseResponse;
+using Quiz.DTO.UserTestManagement;
+using Quiz.Repository.Model;
 
 namespace Quiz.Service
 {
@@ -6,5 +8,6 @@ namespace Quiz.Service
     {
         Task<AddUserTestResponse> AddUserTestAsync(AddUserTestRequest request);
         Task<GetResultUserTestResponse> GetResultUserTestAsync(GetResultUserTestRequest request);
+        Task<ApiResult<List<GetUserTestResponse>>> GetListResultUserTestAsync(string userId);
     }
 }

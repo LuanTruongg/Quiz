@@ -40,5 +40,15 @@ namespace Quiz.API.Controllers
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
+        [HttpGet("get-list-result-user-test/{userId}")]
+        [ProducesResponseType(typeof(GetResultUserTestRequest), 200)]
+        public async Task<IActionResult> GetListResultUserTest(string userId)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetListResultUserTestAsync(userId));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
     }
 }
