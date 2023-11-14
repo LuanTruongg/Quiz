@@ -14,17 +14,20 @@ namespace Quiz.UI.Controllers
         private readonly ITestStructureServiceClient _testStructureServiceClient;
         private readonly ISubjectServiceClient _subjectServiceClient;
         private readonly ITestSubjectServiceClient _testSubjectServiceClient;
+        private readonly IUserManagementServiceClient _userManagementServiceClient;
 
         public TestStructureController(
             ILogger<HomeController> logger, 
             ITestStructureServiceClient testStructureServiceClient, 
             ITestSubjectServiceClient testSubjectServiceClient,
-            ISubjectServiceClient subjectServiceClient)
+            ISubjectServiceClient subjectServiceClient,
+            IUserManagementServiceClient userManagementServiceClient)
         {
             _logger = logger;
             _testStructureServiceClient = testStructureServiceClient;
             _testSubjectServiceClient = testSubjectServiceClient;
             _subjectServiceClient = subjectServiceClient;
+            _userManagementServiceClient = userManagementServiceClient;
         }
         public IActionResult Index()
         {
@@ -59,6 +62,12 @@ namespace Quiz.UI.Controllers
             var subject = await _subjectServiceClient.GetSubjectById(subjectId);
             ViewData["SubjectId"] = subject.ResultObj.SubjectId;
             ViewData["SubjectName"] = subject.ResultObj.Name;
+            var userId = HttpContext.Session.GetString("UserId");
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var userStructures = await _userManagementServiceClient.GetListUserStructuresById(userId);
+                ViewBag.UserStructures = userStructures.ResultObj;
+            }
             var listTestStructure = await _testStructureServiceClient.GetListTestStructure(request);
             ViewBag.ListTestStructure = listTestStructure;
             return View();

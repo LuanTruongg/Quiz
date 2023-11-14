@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Quiz.DTO.BaseResponse;
 using Quiz.DTO.UserManagement;
 using Quiz.Infrastructure.Http;
+using Quiz.Repository;
 using Quiz.Repository.Model;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -18,14 +20,15 @@ namespace Quiz.Service.Implements
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<IdentityRole<string>> _roleManager;
         private readonly IConfiguration _config;
-
+        private readonly QuizDbContext _dbcontext;
         public UserManagementService(UserManager<User> userManager, SignInManager<User> signInManager,
-            RoleManager<IdentityRole<string>> roleManager, IConfiguration config)
+            RoleManager<IdentityRole<string>> roleManager, IConfiguration config, QuizDbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _config = config;
+            _dbcontext = dbContext;
         }
         public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
         {
@@ -100,6 +103,15 @@ namespace Quiz.Service.Implements
             return new ApiSuccessResult<GetProfileResponse>(result);
         }
 
+        public async Task<ApiResult<List<string>>> GetUserStructuresById(string userId)
+        {
+            var UserStructuresExisting = await _dbcontext.UserStructures
+                .Where(x => x.UserId == userId)
+                .Select(x => x.TestStructureId)
+                .ToListAsync();
+            return new ApiSuccessResult<List<string>>(UserStructuresExisting);
+        }
+
         public async Task<RegisterResponse> RegisterAsync(RegisterRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
@@ -135,6 +147,42 @@ namespace Quiz.Service.Implements
                 Success = true,
                 Message = "Đăng ký không thành công"
             };
+        }
+
+        public async Task<ApiResult<bool>> UserBuyingTestAsync(UserBuyingTestRequest request)
+        {
+            var userExisting = await _userManager.FindByIdAsync(request.UserId);
+            if (userExisting == null)
+            {
+                return new ApiErrorResult<bool>("Không tìn thấy người dùng");
+            }
+            var testStructureExisting = _dbcontext.TestStructures.FirstOrDefault(x => x.TestStructureId == request.TestStructureId);
+            if (testStructureExisting == null)
+            {
+                return new ApiErrorResult<bool>("Không tìn thấy bài thi");
+            }
+            if(userExisting.Money < testStructureExisting.Price)
+            {
+                return new ApiErrorResult<bool>("Số dư không đủ");
+            }
+            var newUserStructure = new UserStructure()
+            {
+                UserId = request.UserId,
+                TestStructureId = request.TestStructureId,
+            };
+            try
+            {
+                await _dbcontext.UserStructures.AddAsync(newUserStructure);
+                var totalMoney = userExisting.Money - testStructureExisting.Price;
+                userExisting.Money = totalMoney;
+                await _userManager.UpdateAsync(userExisting);
+                await _dbcontext.SaveChangesAsync();
+                return new ApiSuccessResult<bool>();
+            }
+            catch (Exception ex) { 
+                return new ApiErrorResult<bool>(ex.Message);
+            }
+            
         }
     }
 }

@@ -108,5 +108,17 @@ namespace Quiz.UI.ServicesClient.Implements
             var responseContent = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<CreateTestStructureResponse>(responseContent);
         }
+
+        public async Task<ApiResult<TestStructureItem>> GetTestStructureById(string id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.GetAsync($"/test-structure/" +
+                $"{id}");
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<TestStructureItem>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<TestStructureItem>>(body);
+        }
     }
 }

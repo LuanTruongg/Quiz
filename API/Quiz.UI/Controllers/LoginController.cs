@@ -21,7 +21,7 @@ namespace Quiz.UI.Controllers
     {
         private readonly ILoginServiceClient _service;
         private readonly IConfiguration _configuration;
-        public LoginController(ILoginServiceClient service, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public LoginController(ILoginServiceClient service, IConfiguration configuration)
         {
             _service = service;
             _configuration = configuration;

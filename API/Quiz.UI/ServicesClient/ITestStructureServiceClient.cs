@@ -12,5 +12,6 @@ namespace Quiz.UI.ServicesClient
         Task<List<GetListSubjectResponse>> GetListSubject(string majorId);
         Task<ApiResult<PagedResult<TestStructureItem>>> GetListTestStructure(GetListTestStructureRequest request);
         Task<CreateTestStructureResponse> CreateTestStructure(CreateTestStructureRequest request);
+        Task<ApiResult<TestStructureItem>> GetTestStructureById(string id);
     }
 }
