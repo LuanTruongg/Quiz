@@ -97,5 +97,25 @@ namespace Quiz.Service.Implements
             };
             return new ApiSuccessResult<PagedResult<TestStructureItem>>(result);
         }
+
+        public async Task<ApiResult<TestStructureItem>> GetTestStructureByIdAsync(string id)
+        {
+            var testStructureExisting = _dbContext.TestStructures.FirstOrDefault(x => x.TestStructureId == id);
+            if (testStructureExisting == null)
+            {
+                return new ApiErrorResult<TestStructureItem>("Test Structure does not exist");
+            }
+			var result = new TestStructureItem()
+			{
+				TestStructureId = testStructureExisting.TestStructureId,
+				Name = testStructureExisting.Name,
+				NumberOfQuestion = testStructureExisting.NumberOfQuestions,
+				Time = testStructureExisting.Time,
+				IsFree= testStructureExisting.IsFree,
+				Price= testStructureExisting.Price,
+				SubjectId = testStructureExisting.SubjectId,
+			};
+            return new ApiSuccessResult<TestStructureItem>(result);
+        }
     }
 }

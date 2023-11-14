@@ -1,12 +1,13 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ApiResult<PagedResult<TestStructureItem>> listTestStructure = ViewBag.ListTestStructure;
+    List<string> userStructures = ViewBag.UserStructures;
 }
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @using Quiz.DTO.TestStructureManagement
 @using Quiz.DTO.BaseResponse
-
+@using System.Globalization;
 <!-- Shop Start -->
 <div class="container-fluid pt-5">
     <h3 class="cf-title-01">@ViewData["SubjectName"]</h3>
@@ -36,18 +37,55 @@
                                             </div>
                                             <div class="col-md-3 col-lg-3 col-xl-3 border-sm-start-none border-start">
                                                 <div class="d-flex flex-row align-items-center mb-1">
-                                                    <h4 class="mb-1 me-1">Free</h4>
-                                                    <span class="text-danger"><s>$20.99</s></span>
+                                                   @{
+                                                        if (testStructure.IsFree is true)
+                                                        {
+                                                            <h6 class="text-success">Free </h6>
+                                                        }
+                                                        else
+                                                        {
+                                                            CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");   // try with "en-US"
+                                                            string price = long.Parse(testStructure.Price.ToString()).ToString("#,###", cul.NumberFormat);
+                                                            <h4 class="text-success">@price đ</h4>
+                                                        }
+                                                    }
                                                 </div>
-                                                <h6 class="text-success">Free </h6>
+
                                                 <div class="d-flex flex-column mt-4">
                                                     @{
-                                                        var token = HttpContextAccessor.HttpContext.Session.GetString("Token");
-                                                        if(token is null)
+                                                        bool checkBought = false;
+                                                        if(userStructures is not null)
                                                         {
-                                                            
-                                                                <a asp-action="Index" asp-controller="Login" class="btn btn-primary btn-sm">Vào thi</a>
-                                                            
+                                                            foreach (var structureItem in userStructures)
+                                                            {
+                                                                if (testStructure.TestStructureId == structureItem)
+                                                                {
+                                                                    checkBought = true;
+                                                                }
+                                                            }
+                                                        } 
+                                                        var token = HttpContextAccessor.HttpContext.Session.GetString("Token");
+
+                                                        if (token is null && testStructure.IsFree is true)
+                                                        {
+                                                            <a asp-action="Index" asp-controller="Login" class="btn btn-primary btn-sm">Vào thi</a>
+                                                        }
+
+                                                        else if (testStructure.IsFree is false && token is not null && checkBought == false)
+                                                        {
+                                                            @Html.ActionLink(
+                                                                "Mua",
+                                                                "BuyConfirm",
+                                                                "UserManagement",
+                                                                new {
+                                                                testStructureId = testStructure.TestStructureId,
+                                                                userId = HttpContextAccessor.HttpContext.Session.GetString("UserId")
+                                                                },
+                                                                new { @class = "btn btn-primary btn-sm"})
+                                                        }
+                                                        else if (testStructure.IsFree is false && token is null && checkBought == false)
+                                                        {
+                                                            <a asp-action="Index" asp-controller="Login" class="btn btn-primary btn-sm">Mua</a>
                                                         }
                                                         else
                                                         {
@@ -77,4 +115,5 @@
         @await Component.InvokeAsync("Pager", listTestStructure.ResultObj)
     </div>
 </div>
+
 <!-- Shop End -->

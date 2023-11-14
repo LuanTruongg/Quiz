@@ -12,14 +12,21 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="7.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Quiz.API\VnPayLib\VnPayLib.csproj" />
     <ProjectReference Include="..\Quiz.DTO\Quiz.DTO.csproj" />
     <ProjectReference Include="..\Quiz.Infrastructure\Quiz.Infrastructure.csproj" />
     <ProjectReference Include="..\Quiz.Repository\Quiz.Repository.csproj" />
     <ProjectReference Include="..\Quiz.Service\Quiz.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Payments\" />
   </ItemGroup>
 
 </Project>

@@ -12,12 +12,15 @@ namespace Quiz.UI.Controllers
     {
         private readonly ISubjectServiceClient _subjectServiceClient;
         private readonly ITestStructureServiceClient _testStructureServiceClient;
+        private readonly IUserManagementServiceClient _userManagementServiceClient;
         public SubjectManagementController(
             ISubjectServiceClient subjectServiceClient,
-            ITestStructureServiceClient testStructureServiceClient)
+            ITestStructureServiceClient testStructureServiceClient,
+            IUserManagementServiceClient userManagementServiceClient)
         {
             _subjectServiceClient = subjectServiceClient;
             _testStructureServiceClient = testStructureServiceClient;
+            _userManagementServiceClient = userManagementServiceClient;
         }
         public async Task<IActionResult> Index(string search, int page = 1, int pageSize = 5)
         {

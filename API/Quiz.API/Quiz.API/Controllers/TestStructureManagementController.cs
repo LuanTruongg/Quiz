@@ -28,11 +28,15 @@ namespace Quiz.API.Controllers
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
 
-		//[HttpGet("{id}")]
-		//public string Get(int id)
-		//{
-		//	return "value";
-		//}
+		[HttpGet("{id}")]
+		public async Task<IActionResult> Get(string id)
+		{
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetTestStructureByIdAsync(id));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
 
 		[HttpPost]
 		public async Task<IActionResult> Post([FromBody] CreateTestStructureRequest request)
