@@ -3,6 +3,7 @@ using Quiz.DTO.BaseResponse;
 using Quiz.DTO.TestStructureManagement;
 using Quiz.DTO.TestSubjectManagement;
 using Quiz.DTO.UserManagement;
+using Quiz.DTO.UserTestManagement;
 using System.Net.Http;
 using System.Text;
 
@@ -21,6 +22,18 @@ namespace Quiz.UI.ServicesClient.Implements
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
+        }
+
+        public async Task<ApiResult<List<GetUserTestResponse>>> GetListUserResultById(string userId)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.GetAsync($"/user-test-management/get-list-result-user-test/" +
+                $"{userId}");
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<List<GetUserTestResponse>>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<List<GetUserTestResponse>>>(body);
         }
 
         public async Task<ApiResult<List<string>>> GetListUserStructuresById(string userId)
