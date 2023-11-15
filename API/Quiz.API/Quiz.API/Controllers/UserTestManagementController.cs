@@ -31,7 +31,7 @@ namespace Quiz.API.Controllers
         }
 
         [HttpPost("get-result-user-test")]
-        [ProducesResponseType(typeof(GetResultUserTestRequest), 200)]
+        [ProducesResponseType(typeof(GetResultUserTestResponse), 200)]
         public async Task<IActionResult> GetResultUserTest([FromBody] GetResultUserTestRequest request)
         {
             if (ModelState.IsValid)
@@ -41,7 +41,7 @@ namespace Quiz.API.Controllers
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
         [HttpGet("get-list-result-user-test/{userId}")]
-        [ProducesResponseType(typeof(GetResultUserTestRequest), 200)]
+        [ProducesResponseType(typeof(GetUserTestResponse), 200)]
         public async Task<IActionResult> GetListResultUserTest(string userId)
         {
             if (ModelState.IsValid)

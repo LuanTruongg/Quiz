@@ -1,6 +1,8 @@
 ﻿@using Quiz.DTO.UserManagement
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     GetProfileResponse profile = ViewBag.Profile;
+    var userId = HttpContextAccessor.HttpContext.Session.GetString("UserId");
 }
 <style>
     .form-control:focus {
@@ -56,9 +58,10 @@
             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3 shadow mb-5 rounded col-md-12 bg-four">
                 @Html.ActionLink(
                 "Xem Bài Thi",
-                "",
-                "",
+                "GetListTest",
+                "UserManagement",
                 new {
+                    userId = userId
                 },
                 new { @class = "text-decoration-none w-100 h-100 p-3 text-center"})
             </div>
