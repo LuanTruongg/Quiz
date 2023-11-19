@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Quiz.DTO.Common;
+using Quiz.DTO.UserManagement;
 using Quiz.Repository;
 using Quiz.Repository.Model;
 using System;
@@ -12,9 +14,11 @@ namespace Quiz.Service.Implements
 {
     public class CommonService : ICommonService
     {
+        private readonly RoleManager<IdentityRole<string>> _roleManager;
         private readonly QuizDbContext _dbContext;
-        public CommonService(QuizDbContext dbContext)
+        public CommonService(QuizDbContext dbContext, RoleManager<IdentityRole<string>> roleManager)
         {
+            _roleManager = roleManager;
             _dbContext = dbContext;
         }
 
@@ -66,6 +70,17 @@ namespace Quiz.Service.Implements
                                         };
             var result2 = await subjectExistingFilter.ToListAsync();
             return result2;
+        }
+
+        public Task<List<RoleItem>> GetRolesAsync()
+        {
+            var rolesExisting = _roleManager.Roles.AsQueryable();
+            var listRole = rolesExisting.Select(x => new RoleItem()
+            {
+                Id = x.Id,
+                Name = x.Name
+            }).ToListAsync();
+            return listRole;
         }
 
         public async Task<string> GetTestSubjectCode(string testStructureId)
