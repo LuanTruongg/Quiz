@@ -1,4 +1,5 @@
 ﻿using Quiz.DTO.Common;
+using Quiz.DTO.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace Quiz.Service
         Task<IEnumerable<GetListDepartmentResponse>> GetListDepartmentAsync();
         Task<IEnumerable<GetListSubjectResponse>> GetListSubjectAsync(string majorId);
         Task<string> GetTestSubjectCode(string testStructureId);
+        Task<List<RoleItem>> GetRolesAsync();
     }
 }

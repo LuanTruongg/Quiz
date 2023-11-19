@@ -56,13 +56,21 @@ namespace Quiz.API.Controllers
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
         [HttpGet("get-test-subject-code/{testStructureId?}")]
-        [AllowAnonymous]
         [ProducesResponseType(typeof(GetListDepartmentResponse), 200)]
         public async Task<IActionResult> GetTestSubJectCode(string testStructureId)
         {
             if (ModelState.IsValid)
             {
                 return GetResponse(200, await _service.GetTestSubjectCode(testStructureId));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+        [HttpGet("get-roles")]
+        public async Task<IActionResult> GetRoles()
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetRolesAsync());
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }

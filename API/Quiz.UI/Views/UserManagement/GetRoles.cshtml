@@ -1,0 +1,61 @@
+﻿@using Quiz.DTO.UserManagement;
+@model AssignRolesRequest
+@{
+    ViewData["Title"] = "RoleAssign";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    List<RoleItem> listRole = ViewBag.ListRole;
+    IList<string> listRoleUser = ViewBag.ListRoleUser;
+}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Gán quyền</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Gán quyền</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-controller="UserManagement" asp-action="GetListUser">Xem danh sách</a>
+        </div>
+        <div class="card-body">
+            <div class="col-md-4">
+                <form asp-action="RoleAssign">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" value="@ViewBag.UserId" asp-for="UserId"/>
+                    @for (var i = 0; i < listRole.Count; i++)
+                    {
+                        <div class="form-group">
+                            <label>
+                                @listRole[i].Name
+                                @{
+                                    if (listRoleUser.Count > 0)
+                                    {
+                                        foreach(var roles in listRoleUser)
+                                        {
+                                            if (listRole[i].Name == roles)
+                                            {
+                                                <input type="checkbox" asp-for="Roles[i].Selected" checked/>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" asp-for="Roles[i].Selected" />
+                                    }
+                                    
+                                }
+
+                                <input type="hidden" asp-for="Roles[i].Id" value="@listRole[i].Id">
+                                <input type="hidden" asp-for="Roles[i].Name" value="@listRole[i].Name">
+                            </label>
+
+                        </div>
+                    }
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

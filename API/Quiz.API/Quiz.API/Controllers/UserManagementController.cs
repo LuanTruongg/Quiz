@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Quiz.DTO.BaseResponse;
 using Quiz.DTO.UserManagement;
 using Quiz.Infrastructure.Constraint;
 using Quiz.Infrastructure.Http;
@@ -32,6 +33,51 @@ namespace Quiz.API.Controllers
             if (ModelState.IsValid)
             {
                 return GetResponse(200, await _userManagementService.GetUserStructuresById(userId));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+        [HttpGet("list-user")]
+        public async Task<IActionResult> GetListUser([FromQuery] PagingRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _userManagementService.GetListUserAsync(request));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+        [HttpGet("list-user/{userId}")]
+        public async Task<IActionResult> GetUserById(string userId)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _userManagementService.GetUserByIdAsync(userId));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+        [HttpPut("list-user/{userId}")]
+        public async Task<IActionResult> Edit([FromBody] EditUserRequest request, string userId)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _userManagementService.EditUserAsync(request, userId));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+        [HttpGet("list-user/{userId}/get-roles")]
+        public async Task<IActionResult> GetRolesUser(string userId)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _userManagementService.GetRolesUserAsync(userId));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+        [HttpPut("list-user/{userId}/assign-roles")]
+        public async Task<IActionResult> AssignRolesUser(string userId, [FromBody] RoleAssignRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _userManagementService.AssignRolesAsync(userId, request));
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
