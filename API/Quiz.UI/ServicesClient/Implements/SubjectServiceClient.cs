@@ -56,5 +56,23 @@ namespace Quiz.UI.ServicesClient.Implements
                 return JsonConvert.DeserializeObject<ApiSuccessResult<SubjectItem>>(body);
             return JsonConvert.DeserializeObject<ApiErrorResult<SubjectItem>>(body);
         }
+
+        public async Task<List<GetTeacherItem>> GetListTeacher()
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.GetAsync($"/common/get-list-teacher");
+            var body = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<GetTeacherItem>>(body);
+        }
+
+        public async Task<List<GetTeacherItem>> GetListTeacherOfSubject(string subjectId)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.GetAsync($"/common/get-list-teacher-of-subject/{subjectId}");
+            var body = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<GetTeacherItem>>(body);
+        }
     }
 }
