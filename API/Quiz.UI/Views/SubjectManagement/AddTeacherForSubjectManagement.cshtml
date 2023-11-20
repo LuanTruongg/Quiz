@@ -1,0 +1,85 @@
+﻿@using Quiz.DTO.Common
+@using Quiz.DTO.SubjectManagement
+@model AddTeacherForSubject
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutTeacher.cshtml";
+    List<GetTeacherItem> listTeacher = ViewBag.ListTeacher;
+}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Thêm bài thi</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a>Trang chủ</a></li>
+        <li class="breadcrumb-item"><a>@ViewBag.SubjectName</a></li>
+        <li class="breadcrumb-item active">Thêm giáo viên giảng dạy</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-controller="Subject" asp-action="Index">Xem danh sách</a>
+        </div>
+        <div class="card-body">
+            <div class="row col-md-12">
+                <form asp-action="AddTeacherForSubject" asp-controller="SubjectManagement">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" value="@ViewBag.SubjectId" asp-for="SubjectId" />
+                    <div class="d-flex justify-content-between">
+                        <div class="col-md-5">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Tên Người dùng
+                                        </th>
+                                        <th>
+                                            Email
+                                        </th>
+                                        <th>
+                                            Giới tính
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 0; i < listTeacher.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @listTeacher[i].FullName
+                                            </td>
+                                            <td>
+                                                @listTeacher[i].Email
+                                            </td>
+                                            <td>
+                                                @{
+                                                    if (@listTeacher[i].Sex is true)
+                                                    {
+                                                        <span>Nam</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Nữ</span>
+                                                    }
+                                                }
+
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" asp-for="User[i].Select" />
+                                                <input type="hidden" asp-for="User[i].UserId" value="@listTeacher[i].UserId">
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="form-group text-center mt-3">
+                        <input type="submit" value="Lưu lại" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

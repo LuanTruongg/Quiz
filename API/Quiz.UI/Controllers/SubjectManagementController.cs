@@ -59,11 +59,45 @@ namespace Quiz.UI.Controllers
             ViewBag.ListTestStructure = listTestStructure;
             return View();
         }
-        public IActionResult Edit()
+        public async Task<IActionResult> ListSubjectManagement(string search, int page = 1, int pageSize = 5)
         {
+            var userId = HttpContext.Session.GetString("UserId");
+            var request = new GetListSubjectPagingRequest()
+            {
+                Page = page,
+                PageSize = pageSize,
+                UserId = userId,
+                Search = search
+            };
+            if (TempData["Notify"] != null)
+            {
+                ViewBag.SuccessMsg = TempData["Notify"];
+            }
+            var listsubject = await _subjectServiceClient.GetListSubjectPaging(request);
+            return View(listsubject.ResultObj);
+        }
+        public async Task<IActionResult> GetTeacherOfSubjectManagement(string subjectId)
+        {
+            var subject = await _subjectServiceClient.GetSubjectById(subjectId);
+            ViewBag.SubjectId = subject.ResultObj.SubjectId;
+            ViewBag.SubjectName = subject.ResultObj.Name;
+
+            var listTeacherOfSubject = await _subjectServiceClient.GetListTeacherOfSubject(subjectId);
+            ViewBag.ListTeacherOfSubject = listTeacherOfSubject;
             return View();
         }
-        public IActionResult Delete()
+        public async Task<IActionResult> AddTeacherForSubjectManagement(string subjectId)
+        {
+            var subject = await _subjectServiceClient.GetSubjectById(subjectId);
+            ViewBag.SubjectId = subject.ResultObj.SubjectId;
+            ViewBag.SubjectName = subject.ResultObj.Name;
+            
+            var listTeacher = await _subjectServiceClient.GetListTeacher();
+            ViewBag.ListTeacher = listTeacher;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddTeacherForSubject(AddTeacherForSubject request)
         {
             return View();
         }

@@ -74,5 +74,23 @@ namespace Quiz.API.Controllers
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
+        [HttpGet("get-list-teacher")]
+        public async Task<IActionResult> GetListTecher()
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetListTeacherAsync());
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+        [HttpGet("get-list-teacher-of-subject/{subjectId}")]
+        public async Task<IActionResult> GetListTecherOfSubject(string subjectId)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetListTeacherOfSubjectAsync(subjectId));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
     }
 }
