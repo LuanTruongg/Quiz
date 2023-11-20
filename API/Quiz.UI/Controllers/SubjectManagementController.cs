@@ -91,15 +91,29 @@ namespace Quiz.UI.Controllers
             var subject = await _subjectServiceClient.GetSubjectById(subjectId);
             ViewBag.SubjectId = subject.ResultObj.SubjectId;
             ViewBag.SubjectName = subject.ResultObj.Name;
-            
+            if (TempData["Notify"] != null)
+            {
+                ViewBag.Error = TempData["Notify"];
+            }
             var listTeacher = await _subjectServiceClient.GetListTeacher();
             ViewBag.ListTeacher = listTeacher;
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> AddTeacherForSubject(AddTeacherForSubject request)
+        public async Task<IActionResult> AddTeacherForSubject(AddTeacherForSubjectRequest request)
         {
-            return View();
+            var result = await _subjectServiceClient.AddTeacherForSubject(request);
+            if (result.IsSuccessed)
+            {
+                TempData["Notify"] = "Thêm thành công";
+                return RedirectToAction("ListSubjectManagement", "SubjectManagement");
+            }
+            else
+            {
+                TempData["Notify"] = result.Message;
+                return RedirectToAction("AddTeacherForSubjectManagement", "SubjectManagement");
+            }
+            
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿@using Quiz.DTO.Common
 @using Quiz.DTO.SubjectManagement
-@model AddTeacherForSubject
+@model AddTeacherForSubjectRequest
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_LayoutTeacher.cshtml";
@@ -18,6 +18,12 @@
             <a class="btn btn-success" asp-controller="Subject" asp-action="Index">Xem danh sách</a>
         </div>
         <div class="card-body">
+            @if (ViewBag.Error != null)
+            {
+                <div id="msgAlert" class="alert alert-error" role="alert">
+                    @ViewBag.Error
+                </div>
+            }
             <div class="row col-md-12">
                 <form asp-action="AddTeacherForSubject" asp-controller="SubjectManagement">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
