@@ -3,7 +3,9 @@ using Quiz.DTO.BaseResponse;
 using Quiz.DTO.Common;
 using Quiz.DTO.ModuleManagement;
 using Quiz.DTO.SubjectManagement;
+using Quiz.DTO.TestStructureManagement;
 using Quiz.Repository.Model;
+using System.Text;
 
 namespace Quiz.UI.ServicesClient.Implements
 {
@@ -73,6 +75,22 @@ namespace Quiz.UI.ServicesClient.Implements
             var response = await client.GetAsync($"/common/get-list-teacher-of-subject/{subjectId}");
             var body = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<GetTeacherItem>>(body);
+        }
+
+        public async Task<ApiResult<bool>> AddTeacherForSubject(AddTeacherForSubjectRequest request)
+        {
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.PostAsync("/subject-management/add-teacher-for-subject", httpContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(responseContent);
+            }
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(responseContent);
         }
     }
 }

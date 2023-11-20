@@ -13,5 +13,6 @@ namespace Quiz.UI.ServicesClient
         Task<ApiResult<SubjectItem>> GetSubjectById(string id);
         Task<List<GetTeacherItem>> GetListTeacherOfSubject(string subjectId);
         Task<List<GetTeacherItem>> GetListTeacher();
+        Task<ApiResult<bool>> AddTeacherForSubject(AddTeacherForSubjectRequest request);
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Quiz.DTO.SubjectManagement
 {
-    public class AddTeacherForSubject
+    public class AddTeacherForSubjectRequest
     {
         public string SubjectId { get; set; }
         public List<SelectUser> User { get; set; }

@@ -63,5 +63,15 @@ namespace Quiz.API.Controllers
 			}
 			throw new ErrorException(400, ErrorMessage.BadRequest);
 		}
-	}
+        [HttpPost("add-teacher-for-subject")]
+        [ProducesResponseType(typeof(GetListSubjectPagingResponse), 200)]
+        public async Task<IActionResult> AddTeacherForSubject([FromBody] AddTeacherForSubjectRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.AddTeachersForSubjectAsync(request));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+    }
 }

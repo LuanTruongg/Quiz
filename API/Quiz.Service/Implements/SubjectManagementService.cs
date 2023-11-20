@@ -64,7 +64,46 @@ namespace Quiz.Service.Implements
 			};
 			return result;
 		}
-		public async Task<IEnumerable<GetSubjectResponse>> GetListSubjectsAsync()
+
+        public async Task<ApiResult<bool>> AddTeachersForSubjectAsync(AddTeacherForSubjectRequest request)
+        {
+			var subjectExisting = _dbContext.Subjects.FirstOrDefault(x => x.SubjectId == request.SubjectId);
+			if (subjectExisting == null)
+			{
+				return new ApiErrorResult<bool>("Môn học không tồn tại");
+			}
+			foreach(var user in request.User)
+			{
+				if(user.Select is true)
+				{
+					var userExisting = _dbContext.UserSubjects
+						.Where(x => x.SubjectId == request.SubjectId)
+						.FirstOrDefault(x => x.UserId == user.UserId);
+					if(userExisting is null)
+					{
+						var newUserSubject = new UserSubject()
+						{
+							SubjectId = request.SubjectId,
+							UserId = user.UserId,
+						};
+						try
+						{
+                            await _dbContext.UserSubjects.AddAsync(newUserSubject);
+                            await _dbContext.SaveChangesAsync();
+							return new ApiSuccessResult<bool>();
+                        }
+						catch (Exception ex)
+						{
+							return new ApiErrorResult<bool>(ex.Message);
+						}
+					}               
+                }
+                
+            }
+            return new ApiSuccessResult<bool>();
+        }
+
+        public async Task<IEnumerable<GetSubjectResponse>> GetListSubjectsAsync()
 		{
 			var data = await _dbContext.Subjects.Select(x => new GetSubjectResponse()
 			{
