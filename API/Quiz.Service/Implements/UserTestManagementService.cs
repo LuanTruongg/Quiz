@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Quiz.DTO.BaseResponse;
+using Quiz.DTO.UserManagement;
 using Quiz.DTO.UserTestManagement;
 using Quiz.Repository;
 using Quiz.Repository.Model;
