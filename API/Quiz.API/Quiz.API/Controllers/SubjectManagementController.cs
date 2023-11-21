@@ -73,5 +73,6 @@ namespace Quiz.API.Controllers
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
+
     }
 }

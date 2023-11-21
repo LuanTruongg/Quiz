@@ -5,6 +5,7 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_LayoutTeacher.cshtml";
     List<GetTeacherItem> listTeacher = ViewBag.ListTeacher;
+    List<GetTeacherItem> listTeacherOfSubject = ViewBag.ListTeacherOfSubject;
 }
 <div class="container-fluid px-4">
     <h1 class="mt-4">Thêm bài thi</h1>
@@ -69,7 +70,23 @@
 
                                             </td>
                                             <td>
-                                                <input type="checkbox" asp-for="User[i].Select" />
+                                                @{
+                                                    if (listTeacherOfSubject.Count > 0)
+                                                    {
+                                                        foreach (var user in listTeacherOfSubject)
+                                                        {
+                                                            if (listTeacher[i].UserId == user.UserId)
+                                                            {
+                                                                <input type="checkbox" asp-for="User[i].Select" checked />
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox" asp-for="User[i].Select" />
+                                                    }
+                                                }
+                                                
                                                 <input type="hidden" asp-for="User[i].UserId" value="@listTeacher[i].UserId">
                                             </td>
                                         </tr>

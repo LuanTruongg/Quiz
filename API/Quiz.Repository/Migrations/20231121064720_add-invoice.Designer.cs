@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Quiz.Repository;
 
@@ -11,9 +12,10 @@ using Quiz.Repository;
 namespace Quiz.Repository.Migrations
 {
     [DbContext(typeof(QuizDbContext))]
-    partial class QuizDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231121064720_add-invoice")]
+    partial class addinvoice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -496,7 +498,7 @@ namespace Quiz.Repository.Migrations
                             AccessFailedCount = 0,
                             Address = "Bến Tre",
                             CCCD = "202011237083",
-                            ConcurrencyStamp = "df233510-1ab2-4f4b-bd59-0e089b09f21c",
+                            ConcurrencyStamp = "f549b582-a613-42bc-9b2e-0474189c5423",
                             DoB = new DateTime(2002, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "luantruong020302@gmail.com",
                             EmailConfirmed = false,
@@ -505,7 +507,7 @@ namespace Quiz.Repository.Migrations
                             Money = 1000000f,
                             NormalizedEmail = "luantruong020302@gmail.com,",
                             NormalizedUserName = "luantruong020302@gmail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFbu7zO7LNDus00Bf34PN/OL8PbF7XcBT6lVcYSrw26D6rozzmnJCKQpWICfsgIJ4A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEC4PCwEgtjMl4WhCTHSznzvRvdOmHDno7AuU1wrH53h5gTsUGBIuEfdbCa9M1JWssQ==",
                             PhoneNumber = "0836151007",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -542,30 +544,24 @@ namespace Quiz.Repository.Migrations
 
             modelBuilder.Entity("Quiz.Repository.Model.UserStructure", b =>
                 {
-                    b.Property<int>("UserStructureId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserStructureId"), 1L, 1);
-
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("TestStructureId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserStructureId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserStructureId"), 1L, 1);
 
                     b.Property<DateTime>("PurchaseDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("UserStructureId", "UserId", "TestStructureId");
+                    b.HasKey("UserId", "TestStructureId", "UserStructureId");
 
                     b.HasIndex("TestStructureId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UserStructures", (string)null);
                 });
@@ -625,14 +621,14 @@ namespace Quiz.Repository.Migrations
                         new
                         {
                             Id = "69bd714f-9576-45ba-b5b7-f00649be00de",
-                            ConcurrencyStamp = "5733e500-711d-4586-a136-d05012e25cb1",
+                            ConcurrencyStamp = "e94045b7-a195-47a1-bae7-fe4ee489a925",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
                             Id = "8d04dce2-969a-435d-bba4-df3f325983dc",
-                            ConcurrencyStamp = "204e1bb5-dd5a-4286-adc9-b9a59533b575",
+                            ConcurrencyStamp = "f8752b8d-ec35-4bad-9602-0440155ee256",
                             Name = "Teacher",
                             NormalizedName = "Teacher"
                         });

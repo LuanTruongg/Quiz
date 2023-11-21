@@ -1,4 +1,5 @@
 ﻿using Quiz.DTO.BaseResponse;
+using Quiz.DTO.UserManagement;
 using Quiz.DTO.UserTestManagement;
 using Quiz.Repository.Model;
 

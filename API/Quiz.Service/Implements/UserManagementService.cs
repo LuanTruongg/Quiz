@@ -10,6 +10,7 @@ using Quiz.Repository;
 using Quiz.Repository.Model;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
@@ -172,6 +173,49 @@ namespace Quiz.Service.Implements
             return new ApiSuccessResult<PagedResult<UserItem>>(result);
         }
 
+        public async Task<ApiResult<PagedResult<UserStructureItem>>> GetListUserBoughtTestAsync(GetListUserStructureRequest request)
+        {
+            var testStructureExisting = _dbcontext.TestStructures.FirstOrDefault(x => x.TestStructureId == request.TestStructureId);
+            if (testStructureExisting == null)
+            {
+                return new ApiErrorResult<PagedResult<UserStructureItem>>("Không tồn tại bài thi này");
+            }
+            var usersStructureExisting = _dbcontext.UserStructures.AsQueryable();
+            if (request.Search != null)
+            {
+                usersStructureExisting = usersStructureExisting.Where(x => x.Email.Contains(request.Search));
+            }
+
+            int totalRow = usersStructureExisting.Count();
+
+            var data = await usersStructureExisting
+                .Join(_dbcontext.Users,
+                us => us.UserId,
+                u => u.Id,
+                (us, u) => new UserStructureItem()
+                {
+                    UserId = us.UserId,
+                    Email = u.Email,
+                    FullName = u.Fullname,
+                    PurchaseDate = us.PurchaseDate,
+                })
+                .Skip((request.Page - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .ToListAsync();
+
+            var numberPage = request.Page <= 0 ? 1 : request.Page;
+            var numberPageSize = request.PageSize <= 0 ? 10 : request.PageSize;
+
+            var result = new PagedResult<UserStructureItem>()
+            {
+                TotalRecords = totalRow,
+                Page = numberPage,
+                PageSize = numberPageSize,
+                Items = data
+            };
+            return new ApiSuccessResult<PagedResult<UserStructureItem>>(result);
+        }
+
         public async Task<ApiResult<GetProfileResponse>> GetMyProfileAsync(string userId)
         {
             var userExisting = await _userManager.FindByIdAsync(userId);
@@ -295,6 +339,8 @@ namespace Quiz.Service.Implements
             {
                 UserId = request.UserId,
                 TestStructureId = request.TestStructureId,
+                PurchaseDate = DateTime.Now,
+                Email = userExisting.Email
             };
             try
             {

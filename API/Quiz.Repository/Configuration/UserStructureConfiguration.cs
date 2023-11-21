@@ -14,7 +14,8 @@ namespace Quiz.Repository.Configuration
         public void Configure(EntityTypeBuilder<UserStructure> builder)
         {
             builder.ToTable("UserStructures");
-            builder.HasKey(x => new { x.UserId, x.TestStructureId });
+            builder.HasKey(x => new { x.UserStructureId, x.UserId, x.TestStructureId});
+            builder.Property(x => x.UserStructureId).IsRequired().ValueGeneratedOnAdd();
             builder.HasOne(x => x.User).WithMany(x => x.UserStructures).HasForeignKey(x => x.UserId);
             builder.HasOne(x => x.TestStructure).WithMany(x => x.UserStructures).HasForeignKey(x => x.TestStructureId);
         }

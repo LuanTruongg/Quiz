@@ -97,6 +97,8 @@ namespace Quiz.UI.Controllers
             }
             var listTeacher = await _subjectServiceClient.GetListTeacher();
             ViewBag.ListTeacher = listTeacher;
+            var listTeacherOfSubject = await _subjectServiceClient.GetListTeacherOfSubject(subjectId);
+            ViewBag.ListTeacherOfSubject = listTeacherOfSubject;
             return View();
         }
         [HttpPost]

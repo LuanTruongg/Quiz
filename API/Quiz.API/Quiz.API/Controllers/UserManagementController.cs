@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Quiz.DTO.BaseResponse;
 using Quiz.DTO.UserManagement;
+using Quiz.DTO.UserTestManagement;
 using Quiz.Infrastructure.Constraint;
 using Quiz.Infrastructure.Http;
 using Quiz.Service;
@@ -78,6 +79,16 @@ namespace Quiz.API.Controllers
             if (ModelState.IsValid)
             {
                 return GetResponse(200, await _userManagementService.AssignRolesAsync(userId, request));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+        [HttpGet("get-list-user-bought-test")]
+        [ProducesResponseType(typeof(GetUserTestResponse), 200)]
+        public async Task<IActionResult> GetListUserBoughtTest([FromQuery] GetListUserStructureRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _userManagementService.GetListUserBoughtTestAsync(request));
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
