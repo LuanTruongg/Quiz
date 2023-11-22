@@ -101,8 +101,9 @@
                             
                          </td>
                          <td>
-                             @Html.ActionLink("Xem bài thi", "Details", new { id=item.TestStructureId },new { @class = "btn btn-primary btn-sm"}) |
-                             @Html.ActionLink("Xem bộ câu hỏi", "Index", "Quenstion", new { id=item.TestStructureId },new { @class = "btn btn-primary btn-sm"}) |
+                             @Html.ActionLink("Xem bài thi", "Details", new { id=item.TestStructureId },new { @class = "btn btn-primary btn-sm"})
+                                @Html.ActionLink("Xem người mua", "GetListUserBougthTest","SubjectManagement", new { testStructureId=item.TestStructureId },new { @class = "btn btn-primary btn-sm"})
+                             @Html.ActionLink("Xem bộ câu hỏi", "Index", "Quenstion", new { id=item.TestStructureId },new { @class = "btn btn-primary btn-sm"}) 
                              @Html.ActionLink("Xóa", "Delete", new { id=item.TestStructureId },new { @class = "btn btn-primary btn-sm"})
                          </td>
                      </tr>

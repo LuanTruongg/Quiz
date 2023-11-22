@@ -4,6 +4,7 @@ using Quiz.DTO.Common;
 using Quiz.DTO.ModuleManagement;
 using Quiz.DTO.SubjectManagement;
 using Quiz.DTO.TestStructureManagement;
+using Quiz.DTO.UserManagement;
 using Quiz.Repository.Model;
 using System.Text;
 
@@ -91,6 +92,20 @@ namespace Quiz.UI.ServicesClient.Implements
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(responseContent);
             }
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(responseContent);
+        }
+
+        public async Task<ApiResult<PagedResult<UserStructureItem>>> GetListUserBoughtTest(GetListUserStructureRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.GetAsync($"/user-management/get-list-user-bought-test" +
+                $"?TestStructureId={request.TestStructureId}" +
+                $"&Page={request.Page}" +
+                $"&PageSize={request.PageSize}");
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<PagedResult<UserStructureItem>>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<PagedResult<UserStructureItem>>>(body);
         }
     }
 }
