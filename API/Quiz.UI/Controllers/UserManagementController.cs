@@ -69,10 +69,6 @@ namespace Quiz.UI.Controllers
             var listResultUserTest = await _userManagementServiceClient.GetListUserResultById(userId);
             return View(listResultUserTest.ResultObj);
         }
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
         [HttpGet("/list-user")]
         public async Task<IActionResult> GetListUser(PagingRequest request)
         {

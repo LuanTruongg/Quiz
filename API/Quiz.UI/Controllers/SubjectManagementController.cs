@@ -2,6 +2,7 @@
 using Quiz.DTO.BaseResponse;
 using Quiz.DTO.SubjectManagement;
 using Quiz.DTO.TestStructureManagement;
+using Quiz.DTO.UserManagement;
 using Quiz.Repository.Model;
 using Quiz.UI.ServicesClient;
 using Quiz.UI.ServicesClient.Implements;
@@ -114,8 +115,19 @@ namespace Quiz.UI.Controllers
             {
                 TempData["Notify"] = result.Message;
                 return RedirectToAction("AddTeacherForSubjectManagement", "SubjectManagement");
-            }
-            
+            }            
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetListUserBougthTest(string testStructureId)
+        {
+            var request = new GetListUserStructureRequest()
+            {
+                TestStructureId = testStructureId,
+                Page = 1,
+                PageSize = 5
+            };
+            var result = await _subjectServiceClient.GetListUserBoughtTest(request);
+            return View(result.ResultObj);          
         }
     }
 }

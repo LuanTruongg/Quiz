@@ -180,7 +180,7 @@ namespace Quiz.Service.Implements
             {
                 return new ApiErrorResult<PagedResult<UserStructureItem>>("Không tồn tại bài thi này");
             }
-            var usersStructureExisting = _dbcontext.UserStructures.AsQueryable();
+            var usersStructureExisting = _dbcontext.UserStructures.AsQueryable().Where(x=>x.TestStructureId == request.TestStructureId);
             if (request.Search != null)
             {
                 usersStructureExisting = usersStructureExisting.Where(x => x.Email.Contains(request.Search));
