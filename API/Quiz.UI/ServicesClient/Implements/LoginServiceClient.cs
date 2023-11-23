@@ -65,5 +65,19 @@ namespace Quiz.UI.ServicesClient.Implements
                 return JsonConvert.DeserializeObject<ApiSuccessResult<GetProfileResponse>>(responseContent);
             return JsonConvert.DeserializeObject<ApiErrorResult<GetProfileResponse>>(responseContent);
         }
+
+        public async Task<ApiResult<bool>> UpdateMoney(AddMoneyRequest request)
+        {
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.PutAsync("/identity/update-money", httpContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(responseContent);
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(responseContent);
+        }
     }
 }

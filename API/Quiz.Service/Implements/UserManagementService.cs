@@ -33,6 +33,25 @@ namespace Quiz.Service.Implements
             _dbcontext = dbContext;
         }
 
+        public async Task<ApiResult<bool>> UpdateMoneyAsync(AddMoneyRequest request)
+        {
+            var user = await _userManager.FindByIdAsync(request.UserId);
+            if (user == null)
+            {
+                return new ApiErrorResult<bool>("Tài khoản không tồn tại");
+            }
+            user.Money = user.Money + request.Money;
+            try
+            {
+                _dbcontext.Users.Update(user);
+                _dbcontext.SaveChanges();
+                return new ApiSuccessResult<bool>();
+            }catch (Exception ex)
+            {
+                return new ApiErrorResult<bool>(ex.Message);
+            }
+        }
+
         public async Task<ApiResult<bool>> AssignRolesAsync(string userId, RoleAssignRequest request)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
