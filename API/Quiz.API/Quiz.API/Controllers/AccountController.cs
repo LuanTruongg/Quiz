@@ -49,5 +49,14 @@ namespace Quiz.API.Controllers
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
+        [HttpPut("update-money")]
+        public async Task<IActionResult> AddMoney([FromBody] AddMoneyRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.UpdateMoneyAsync(request));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
     }
 }

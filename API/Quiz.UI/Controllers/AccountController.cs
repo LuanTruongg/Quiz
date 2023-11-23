@@ -1,6 +1,8 @@
 ﻿using log4net;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Common;
+using Quiz.DTO.UserManagement;
 using Quiz.UI.Models;
 using Quiz.UI.ServicesClient;
 using Serilog;
@@ -12,10 +14,12 @@ namespace Quiz.UI.Controllers
     {
         private readonly ILoginServiceClient _service;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public AccountController(ILoginServiceClient service, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _service = service;
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<IActionResult> Index()
         {
@@ -72,7 +76,8 @@ namespace Quiz.UI.Controllers
 
             vnpay.AddRequestData("vnp_CreateDate", order.CreatedDate.ToString("yyyyMMddHHmmss"));
             vnpay.AddRequestData("vnp_CurrCode", "VND");
-            vnpay.AddRequestData("vnp_IpAddr", "192.168.1.21");
+            var ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+            vnpay.AddRequestData("vnp_IpAddr", ip);
             vnpay.AddRequestData("vnp_Locale", "vn");
             vnpay.AddRequestData("vnp_OrderInfo", "Thanh toan don hang:" + order.OrderId);
             vnpay.AddRequestData("vnp_OrderType", "other"); //default value: other
@@ -126,35 +131,42 @@ namespace Quiz.UI.Controllers
 
                 long vnp_Amount = Convert.ToInt64(vnpay.GetResponseData("vnp_Amount")) / 100;
                 String bankCode = vnpay.GetResponseData("vnp_BankCode");
+                var request = new AddMoneyRequest()
+                {
+                    Money = vnp_Amount,
+                    UserId = _httpContextAccessor.HttpContext.Session.GetString("UserId")
+                };
+                var updateMoney = await _service.UpdateMoney(request);
                 //String bankCode = Request.QueryString["vnp_BankCode"];
                 //RHQNVCBZRYLKYUCRTUPCADKPQWUWREUA
                 //
-                bool checkSignature = vnpay.ValidateSignature(vnp_SecureHash, vnp_HashSecret);
-                if (checkSignature)
-                {
-                    if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00")
-                    {
-                        //Thanh toan thanh cong
-                        Log.Information("Thanh toan thanh cong, OrderId={0}, VNPAY TranId={1}", orderId, vnpayTranId);
-                        return $"Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ {vnp_Amount}";
-                    }
-                    else
-                    {
-                        //Thanh toan khong thanh cong. Ma loi: vnp_ResponseCode
-                        Log.Information("Thanh toan loi, OrderId={0}, VNPAY TranId={1},ResponseCode={2}", orderId, vnpayTranId, vnp_ResponseCode);
-                        return "Có lỗi xảy ra trong quá trình xử lý.Mã lỗi: " + vnp_ResponseCode;
-                    }
-                    //displayTmnCode.InnerText = "Mã Website (Terminal ID):" + TerminalID;
-                    //displayTxnRef.InnerText = "Mã giao dịch thanh toán:" + orderId.ToString();
-                    //displayVnpayTranNo.InnerText = "Mã giao dịch tại VNPAY:" + vnpayTranId.ToString();
-                    //displayAmount.InnerText = "Số tiền thanh toán (VND):" + vnp_Amount.ToString();
-                    //displayBankCode.InnerText = "Ngân hàng thanh toán:" + bankCode;
-                }
-                else
-                {
-                    //Log.Information("Invalid signature, InputData={0}", Request.);
-                    return "Có lỗi xảy ra trong quá trình xử lý";
-                }
+                //bool checkSignature = vnpay.ValidateSignature(vnp_SecureHash, vnp_HashSecret);
+                //if (checkSignature)
+                //{
+                //    if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00")
+                //    {
+                //        //Thanh toan thanh cong
+                //        Log.Information("Thanh toan thanh cong, OrderId={0}, VNPAY TranId={1}", orderId, vnpayTranId);
+                //        return $"Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ {vnp_Amount}";
+                //    }
+                //    else
+                //    {
+                //        //Thanh toan khong thanh cong. Ma loi: vnp_ResponseCode
+                //        Log.Information("Thanh toan loi, OrderId={0}, VNPAY TranId={1},ResponseCode={2}", orderId, vnpayTranId, vnp_ResponseCode);
+                //        return "Có lỗi xảy ra trong quá trình xử lý.Mã lỗi: " + vnp_ResponseCode;
+                //    }
+                //    //displayTmnCode.InnerText = "Mã Website (Terminal ID):" + TerminalID;
+                //    //displayTxnRef.InnerText = "Mã giao dịch thanh toán:" + orderId.ToString();
+                //    //displayVnpayTranNo.InnerText = "Mã giao dịch tại VNPAY:" + vnpayTranId.ToString();
+                //    //displayAmount.InnerText = "Số tiền thanh toán (VND):" + vnp_Amount.ToString();
+                //    //displayBankCode.InnerText = "Ngân hàng thanh toán:" + bankCode;
+                //}
+                //else
+                //{
+                //    //Log.Information("Invalid signature, InputData={0}", Request.);
+                //    return "Có lỗi xảy ra trong quá trình xử lý";
+                //}
+                return $"Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ {vnp_Amount}";
             }
             return "Có lỗi xảy ra trong quá trình xử lý";
         }
