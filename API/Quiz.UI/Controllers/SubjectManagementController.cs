@@ -25,6 +25,7 @@ namespace Quiz.UI.Controllers
         }
         public async Task<IActionResult> Index(string search, int page = 1, int pageSize = 5)
         {
+            
             var userId = HttpContext.Session.GetString("UserId");
             var request = new GetListSubjectPagingRequest()
             {
@@ -33,6 +34,7 @@ namespace Quiz.UI.Controllers
                 UserId = userId,
                 Search = search
             };
+            ViewBag.Search = request.Search;
             var listsubject = await _subjectServiceClient.GetListSubjectPaging(request);
             return View(listsubject.ResultObj);
         }

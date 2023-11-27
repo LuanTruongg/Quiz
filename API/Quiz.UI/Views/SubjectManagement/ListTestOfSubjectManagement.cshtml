@@ -5,50 +5,48 @@
 @using Microsoft.AspNetCore.Http
 @using Quiz.DTO.TestStructureManagement
 @using Quiz.DTO.BaseResponse
-
-
 <div class="container-fluid">
     <h1 class="mt-4">@ViewData["SubjectName"]</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a asp-controller="SubjectManagement" asp-action="Index">Danh sách môn học</a></li>
         <li class="breadcrumb-item active">@ViewData["SubjectName"]</li>
     </ol>
     <div class="card mb-4">
 
         <div class="card-header">
-            <div class="row">
-                <div class="col-md-6 col-xs-12">
-                    @Html.ActionLink(
+            <div class="row d-flex align-content-between">
+                <div class="col-md-6">
+                    <form asp-action="Index" method="get">
+                        <div class="row">
+                            <div class="col-md-9 p-0">
+                                <input type="text" name="search" class="form-control" value="@ViewBag.Search" />
+                            </div>
+                            <div class="col-md-3 p-0">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-6 d-flex justify-content-end">
+                    <div class="col-md-2">
+                        @Html.ActionLink(
                         "Tạo bài thi",
                         "Create",
                         "TestStructure",
                         new { subjectId = ViewData["SubjectId"]},
                         new { @class = "btn btn-success"})
-                </div>
-                <div class="col-md-6 col-xs-12">
-                    @Html.ActionLink(
+                    </div>
+                    <div class="col-md-2">
+                        @Html.ActionLink(
                         "Thêm câu hỏi",
                         "Create",
                         "Question",
-                    new { subjectId = ViewData["SubjectId"], subjectName = @ViewData["SubjectName"]},
+                        new { subjectId = ViewData["SubjectId"], subjectName = @ViewData["SubjectName"]},
                         new { @class = "btn btn-success"})
-                </div>
-                <div class="col-md-6 col-xs-12">
-                    <form asp-action="Index" method="get">
-                        <div class="row">
-                            <div class="col-md-9">
-                                <input type="text" name="keyword" class="form-control" value="@ViewBag.Keyword" />
-                            </div>
-                            <div class="col-md-3">
-                                <button type="submit" class="btn btn-primary">Tìm</button>
-                                <button type="button" class="btn btn-dark" onclick="window.location.href='Users/Index'">Reset</button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="card mb-4"></div>
         <div class="card-body">
             @if (ViewBag.SuccessMsg != null)
             {
@@ -56,57 +54,74 @@
                     @ViewBag.SuccessMsg
                 </div>
             }
-            <table class="table table-bordered">
+            <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>
-                            Tên bài thi
-                        </th>
-                        <th>
-                            Thời gian
-                        </th>
-                        <th>
-                            Số lượng câu hỏi
-                        </th>
-                        <th>
-                            Giá
-                        </th>
-                        <th></th>
+                        <th scope="col">#</th>
+                        <th scope="col">Tên bài thi</th>
+                        <th scope="col">Thời gian</th>
+                        <th scope="col">Số lượng câu hỏi</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in listTestStructure.ResultObj.Items)
-                     {
-                     <tr>
-                         <td>
-                             @Html.DisplayFor(modelItem => item.Name)
-                         </td>
-                         <td>
-                            @Html.DisplayFor(modelItem => item.Time)
-                         </td>
-                         <td>
-                            @Html.DisplayFor(modelItem => item.NumberOfQuestion)
-                         </td>
-                         <td>
+                    @{
+                        int i = 1;
+                        foreach (var item in listTestStructure.ResultObj.Items)
+                        {
+                        <tr>
+                            <td>
                                 @{
-                                    if (item.IsFree == true)
-                                    {
-                                        <span>Free</span>
-                                    }
-                                    else
-                                    {
-                                        @Html.DisplayFor(modelItem => item.Price)
-                                    }
+                                    @Html.DisplayFor(modelItem => i);
+                                    i++;
                                 }
-                            
-                         </td>
-                         <td>
-                             @Html.ActionLink("Xem bài thi", "Details", new { id=item.TestStructureId },new { @class = "btn btn-primary btn-sm"})
-                                @Html.ActionLink("Xem người mua", "GetListUserBougthTest","SubjectManagement", new { testStructureId=item.TestStructureId },new { @class = "btn btn-primary btn-sm"})
-                             @Html.ActionLink("Xem bộ câu hỏi", "Index", "Quenstion", new { id=item.TestStructureId },new { @class = "btn btn-primary btn-sm"}) 
-                             @Html.ActionLink("Xóa", "Delete", new { id=item.TestStructureId },new { @class = "btn btn-primary btn-sm"})
-                         </td>
-                     </tr>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                               @Html.DisplayFor(modelItem => item.Time)
+                            </td>
+                            <td>
+                               @Html.DisplayFor(modelItem => item.NumberOfQuestion)
+                            </td>
+                            <td>
+                                   @{
+                                       if (item.IsFree == true)
+                                       {
+                                           <span>Free</span>
+                                       }
+                                       else
+                                       {
+                                           @Html.DisplayFor(modelItem => item.Price)
+                                       }
+                                   }
+                               
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                        <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                            <i class="fa-light fa-ellipsis-vertical"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                @Html.ActionLink("Xem bài thi", "Details", new { id=item.TestStructureId },new { @class = "dropdown-item"})
+                                            </li>
+                                            <li>
+                                                @Html.ActionLink("Xem người mua", "GetListUserBougthTest","SubjectManagement", new { testStructureId=item.TestStructureId },new { @class = "dropdown-item"})
+                                            </li>
+                                            <li>
+                                                @Html.ActionLink("Xem bộ câu hỏi", "Index", "Quenstion", new { id=item.TestStructureId },new { @class = "dropdown-item"})
+                                            </li>
+                                            <li>
+                                                @Html.ActionLink("Xóa", "Delete", new { id=item.TestStructureId },new { @class = "dropdown-item"})
+                                            </li>
+                                        </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        }
                      }
                 </tbody>
             </table>
