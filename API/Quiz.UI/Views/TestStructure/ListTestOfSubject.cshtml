@@ -45,8 +45,16 @@
                                                         else
                                                         {
                                                             CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");   // try with "en-US"
-                                                            string price = long.Parse(testStructure.Price.ToString()).ToString("#,###", cul.NumberFormat);
-                                                            <h4 class="text-success">@price đ</h4>
+                                                            string money;
+                                                            if (testStructure.Price == 0)
+                                                            {
+                                                                money = "0";
+                                                            }
+                                                            else
+                                                            {
+                                                                money = long.Parse(testStructure.Price.ToString()).ToString("#,###", cul.NumberFormat);
+                                                            }
+                                                            <h4 class="text-success">@money đ</h4>
                                                         }
                                                     }
                                                 </div>

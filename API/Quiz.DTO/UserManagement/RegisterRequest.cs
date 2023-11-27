@@ -35,5 +35,9 @@ namespace Quiz.DTO.UserManagement
         [Display(Name = "Xác nhận mật khẩu")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
+        [Display(Name = "Giới tính")]
+        public bool Sex { get; set; }
+        [Display(Name = "Địa chỉ")]
+        public string Address { get; set; }
     }
 }

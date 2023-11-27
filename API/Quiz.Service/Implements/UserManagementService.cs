@@ -301,16 +301,20 @@ namespace Quiz.Service.Implements
             return new ApiSuccessResult<List<string>>(UserStructuresExisting);
         }
 
-        public async Task<RegisterResponse> RegisterAsync(RegisterRequest request)
+        public async Task<ApiResult<bool>> RegisterAsync(RegisterRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
             if (user != null)
             {
-                throw new TestException("Tai khoan da ton tai");
+                return new ApiErrorResult<bool>("Tài khoản đã tồn tại");
             }
             if (await _userManager.FindByEmailAsync(request.Email) != null)
             {
-                throw new TestException("Email da ton tai");
+                return new ApiErrorResult<bool>("Email đã được sử dụng");
+            }
+            if (request.Password != request.ConfirmPassword)
+            {
+                return new ApiErrorResult<bool>("Mật khẩu không trùng khớp");
             }
             user = new User()
             {
@@ -321,21 +325,15 @@ namespace Quiz.Service.Implements
                 Fullname = request.FullName,
                 UserName = request.UserName,
                 PhoneNumber = request.PhoneNumber,
+                Sex = request.Sex,
+                Address = request.Address,
             };
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
             {
-                return new RegisterResponse()
-                {
-                    Success = true,
-                    Message = "Đăng ký thành công"
-                };
+                return new ApiSuccessResult<bool>();
             }
-            return new RegisterResponse()
-            {
-                Success = true,
-                Message = "Đăng ký không thành công"
-            };
+            return new ApiErrorResult<bool>("Đăng ký không thành công");
         }
 
         public async Task<ApiResult<bool>> UserBuyingTestAsync(UserBuyingTestRequest request)

@@ -119,17 +119,20 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-action="Index" asp-controller="Account">My profile</a></li>
                                 @{
-                                    foreach(var role in listRoles)
+                                    if(listRoles != null)
                                     {
-                                        if(role == "Admin")
+                                        foreach (var role in listRoles)
                                         {
-                                            <li><a class="dropdown-item" asp-action="Index" asp-controller="Admin">Admin Page</a></li>
+                                            if (role == "Admin")
+                                            {
+                                                <li><a class="dropdown-item" asp-action="Index" asp-controller="Admin">Admin Page</a></li>
+                                            }
+                                            if (role == "Teacher")
+                                            {
+                                                <li><a class="dropdown-item" asp-action="Index" asp-controller="Teacher">Teacher Page</a></li>
+                                            }
                                         }
-                                        if (role == "Teacher")
-                                        {
-                                            <li><a class="dropdown-item" asp-action="Index" asp-controller="Teacher">Teacher Page</a></li>
-                                        }
-                                    }
+                                    }                                    
                                 }
                                 <li><a class="dropdown-item" asp-action="Logout" asp-controller="Login">Log out</a></li>
                             </ul>
