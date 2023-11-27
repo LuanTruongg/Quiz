@@ -32,6 +32,7 @@ namespace Quiz.UI.ServicesClient.Implements
             var response = await client.GetAsync($"/subject-management/get-list-subject-paging?" +
                 $"Page={request.Page}&" +
                 $"PageSize={request.PageSize}&" +
+                $"Search={request.Search}&" +
                 $"UserId={request.UserId}");
             var body = await response.Content.ReadAsStringAsync();
             var subject = JsonConvert.DeserializeObject<ApiResult<PagedResult<SubjectItem>>>(body);

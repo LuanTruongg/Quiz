@@ -124,7 +124,7 @@ namespace Quiz.Service.Implements
 								  };
             if (request.Search != null)
             {
-                subjectExisting = subjectExisting.Where(x => x.Name.Contains(request.Search));
+                subjectExisting = subjectExisting.Where(x => x.Name.Contains(request.Search) || x.SubjectId.Contains(request.Search));
             }
 
             int totalRow = subjectExisting.Count();
