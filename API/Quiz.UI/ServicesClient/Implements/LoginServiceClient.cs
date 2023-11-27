@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Quiz.DTO.BaseResponse;
 using Quiz.DTO.UserManagement;
+using Quiz.Repository.Model;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Text;
@@ -64,6 +65,20 @@ namespace Quiz.UI.ServicesClient.Implements
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ApiSuccessResult<GetProfileResponse>>(responseContent);
             return JsonConvert.DeserializeObject<ApiErrorResult<GetProfileResponse>>(responseContent);
+        }
+
+        public async Task<ApiResult<bool>> Register(RegisterRequest request)
+        {
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.PostAsync("/identity/register", httpContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(responseContent);
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(responseContent);
         }
 
         public async Task<ApiResult<bool>> UpdateMoney(AddMoneyRequest request)

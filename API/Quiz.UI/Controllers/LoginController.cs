@@ -75,6 +75,30 @@ namespace Quiz.UI.Controllers
             return principal;
         }
 
+        public IActionResult Register()
+        {
+            if(TempData["Notify"] != null)
+            {
+                ViewData["Message"] = TempData["Notify"];
+            }           
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterDefault(RegisterRequest request)
+        {
+            request.UserName = request.Email;
+            var result = await _service.Register(request);
+            if (result.IsSuccessed)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                TempData["Notify"] = result.Message;
+                return RedirectToAction("Register", "Login");
+            }
+        }
         //public async Task Login()
         //{
         //    await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties()

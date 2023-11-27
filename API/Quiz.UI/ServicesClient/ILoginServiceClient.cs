@@ -10,5 +10,6 @@ namespace Quiz.UI.ServicesClient
         Task<string> GetListRoleFromToken(string token);
         Task<ApiResult<GetProfileResponse>> GetMyProfile(string userId);
         Task<ApiResult<bool>> UpdateMoney(AddMoneyRequest request);
+        Task<ApiResult<bool>> Register(RegisterRequest request);
     }
 }

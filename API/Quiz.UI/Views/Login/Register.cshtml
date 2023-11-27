@@ -1,0 +1,102 @@
+﻿@using Quiz.DTO.UserManagement
+@model RegisterRequest
+@{
+
+    Layout = null;
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/Quiz.UI.styles.css" asp-append-version="true" />
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                     class="img-fluid" alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                @{
+                    if (ViewData["Message"] != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewData["Message"]
+                        </div>
+                    }
+                }
+                <form asp-action="RegisterDefault" asp-controller="Login" method="post">
+                    <label class="form-label" for="form3Example3">Họ và Tên</label>
+                    <div class="form-outline mb-4">
+                        <input type="text" id="form3Example3" class="form-control form-control-lg"
+                               placeholder="Full Name" asp-for="FullName" required />
+                    </div>
+
+                    <label class="form-label" for="form3Example3">Email</label>
+                    <div class="form-outline mb-4">
+                        <input type="email" id="form3Example3" class="form-control form-control-lg"
+                               placeholder="Email" asp-for="Email" required />
+                    </div>
+
+                    <!-- Password input -->
+                    <label class="form-label" for="form3Example4">Mật khẩu</label>
+                    <div class="form-outline mb-3">
+                        <input type="password" id="form3Example4" class="form-control form-control-lg"
+                               placeholder="Enter password" asp-for="Password" required/>
+                    </div>
+
+                    <label class="form-label" for="form3Example4">Xác nhận mật khẩu</label>
+                    <div class="form-outline mb-3">
+                        <input type="password" id="form3Example4" class="form-control form-control-lg"
+                               placeholder="Confirm password" asp-for="ConfirmPassword" required />
+                    </div>
+
+                    <label class="form-label" for="form3Example3">Căn Cước Công Dân</label>
+                    <div class="form-outline mb-4">
+                        <input type="text" id="form3Example3" class="form-control form-control-lg"
+                               placeholder="CCCD" asp-for="CCCD" required />
+                    </div>
+
+                    <label class="form-label" for="form3Example4">Ngày sinh</label>
+                    <div class="form-outline mb-3">
+                        <input type="date" id="form3Example4" class="form-control form-control-lg"
+                               placeholder="Date of Birth" asp-for="DoB" required />
+                    </div>
+
+                    <label class="form-label" for="form3Example4">Số điện thoại</label>
+                    <div class="form-outline mb-3">
+                        <input type="text" id="form3Example4" class="form-control form-control-lg"
+                               placeholder="Phone Number" asp-for="PhoneNumber" required />
+                    </div>
+
+                    <label class="form-label" for="form3Example4">Địa chỉ</label>
+                    <div class="form-outline mb-3">
+                        <input type="text" id="form3Example4" class="form-control form-control-lg"
+                               placeholder="Address" asp-for="Address" required />
+                    </div>
+
+                    <label class="form-label" for="form3Example4">Giới tính</label>
+                    <div class="form-outline mb-3 d-flex">
+                        <div class="col-md-3">
+                            <input type="checkbox" asp-for="Sex" />
+                            Nam
+                        </div>
+                        <div>
+                            <input type="checkbox" class="ml-3"/>
+                            Nữ
+                        </div>
+                    </div>
+
+                    <div class="text-center text-lg-start mt-4 pt-2 d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                            Đăng ký
+                        </button>
+                        <a asp-area="" asp-controller="Login" asp-action="LoginGoogle" class="btn btn-lg btn-google text-uppercase btn-outline shadow bg-white rounded"><img src="https://img.icons8.com/color/16/000000/google-logo.png"> Signup Using Google</a>
+                    </div>
+                    <p class="small fw-bold mt-2 pt-1 mb-0">
+                        Đã có tài khoản? <a asp-controller="Login" asp-action="Index" class="link-danger">Đăng Nhập</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
