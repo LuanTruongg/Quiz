@@ -56,8 +56,7 @@ namespace Quiz.UI.Controllers
                         subjectId = request.SubjectId,
                         page = 1,
                         pageSize = 5
-                    }
-                    );
+                    });
             }
             else
             {
@@ -73,10 +72,6 @@ namespace Quiz.UI.Controllers
                     }
                     );
             }
-        }
-        public IActionResult Details()
-        {
-            return View();
         }
         [HttpGet]
         public async Task<IActionResult> Edit(string questionId, string subjectId)
@@ -147,9 +142,36 @@ namespace Quiz.UI.Controllers
                     });
             }
         }
-        public IActionResult Delete()
+        public async Task<IActionResult> Delete(string id,string subjectId)
         {
-            return View();
+            var result = await _questionServiceClient.DeleteQuestion(id);
+            if (!result.IsSuccessed)
+            {
+                TempData["Notify"] = result.Message;
+                return RedirectToAction(
+                    "Index",
+                    "Question",
+                    new
+                    {
+                        subjectId = subjectId,
+                        page = 1,
+                        pageSize = 5
+                    }
+                    );
+            }
+            else
+            {
+                TempData["Notify"] = "Xoá thành công";
+                return RedirectToAction(
+                    "Index",
+                    "Question",
+                    new
+                    {
+                        subjectId = subjectId,
+                        page = 1,
+                        pageSize = 5
+                    });
+            }
         }
     }
 }

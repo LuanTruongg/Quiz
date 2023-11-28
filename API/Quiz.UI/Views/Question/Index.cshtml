@@ -16,9 +16,9 @@
 
     <h1 class="mt-4">Danh sách câu hỏi</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-        <li class="breadcrumb-item"><a href="">Danh sách câu hỏi</a></li>
-        <li class="breadcrumb-item active">@ViewData["SubjectName"]</li>
+        <li class="breadcrumb-item"><a asp-controller="SubjectManagement" asp-action="Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="">@ViewData["SubjectName"]</a></li>
+        <li class="breadcrumb-item active">Danh sách câu hỏi</li>
     </ol>
     <div class="card mb-4">
         <div class="card-header">
@@ -54,9 +54,10 @@
                     @TempData["Notify"]
                 </div>
             }
-            <table class="table table-bordered">
+            <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th scope="col">#</th>
                         <th>
                             Câu hỏi
                         </th>
@@ -72,31 +73,54 @@
                     </tr>
                 </thead>
                 <tbody>
-                     @foreach (var item in Model.Items)
-                     {
-                         <tr>
-                             <td>
-                                @Html.DisplayFor(modelItem => item.QuestionText)
-                             </td>
-                             <td>
-                                @Html.DisplayFor(modelItem => item.Answer)
-                             </td>
-                             <td>
-                                @Html.DisplayFor(modelItem => item.Difficult)
-                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ModuleName)
-                            </td>
-                             <td>
-                                @Html.ActionLink(
-                                "Chỉnh sửa"
-                                ,"Edit"
-                                , new { questionId = item.QuestionId, subjectId = ViewData["SubjectId"] }
-                                , new { @class = "btn btn-primary btn-sm"}) |
-                                @Html.ActionLink("Chi tiết", "Details", new { id = item.QuestionId},new { @class = "btn btn-primary btn-sm"}) |
-                                @Html.ActionLink("Xóa", "Delete", new { id = item.QuestionId },new { @class = "btn btn-primary btn-sm"})
-                             </td>
-                         </tr>
+                     @{
+                        int i = 1;
+                        foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td>
+                                    @{
+                                        @Html.DisplayFor(modelItem => i)
+                                        ;
+                                        i++;
+                                    }
+                                </td>
+                                <td>
+                                   @Html.DisplayFor(modelItem => item.QuestionText)
+                                </td>
+                                <td>
+                                   @Html.DisplayFor(modelItem => item.Answer)
+                                </td>
+                                <td>
+                                   @Html.DisplayFor(modelItem => item.Difficult)
+                                </td>
+                               <td>
+                                   @Html.DisplayFor(modelItem => item.ModuleName)
+                               </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                            <i class="fa-light fa-ellipsis-vertical"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                @Html.ActionLink(
+                                                    "Chỉnh sửa"
+                                                    ,"Edit"
+                                                    , new { questionId = item.QuestionId, subjectId = ViewData["SubjectId"] }
+                                                    , new { @class = "dropdown-item"})
+                                            </li>
+                                            <li>
+                                                @Html.ActionLink(
+                                                    "Xóa",
+                                                    "Delete",
+                                                    new { id = item.QuestionId, subjectId = ViewData["SubjectId"] },new { @class = "dropdown-item"})
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
                      }
                 </tbody>
             </table>

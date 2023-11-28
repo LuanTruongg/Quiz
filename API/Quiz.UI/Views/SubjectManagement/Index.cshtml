@@ -121,7 +121,7 @@
                                         @Html.DisplayFor(modelItem => i);
                                         i++;
                                     }
-                            </td>
+                                </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.SubjectId)
                             </td>
@@ -133,27 +133,27 @@
                             </td>
                             <td>
                                 <div class="dropdown">
-                                        <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                            <i class="fa-light fa-ellipsis-vertical"></i>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                @Html.ActionLink(
-                                                "Xem bài thi",
-                                                "ListTestOfSubjectManagement",
-                                                "SubjectManagement",
-                                                new { subjectId=item.SubjectId},
-                                                new{@class = "dropdown-item"})
-                                            </li>
-                                            <li>
-                                                @Html.ActionLink(
-                                                "Xem bộ câu hỏi",
-                                                "Index",
-                                                "Question",
-                                                new { subjectId=item.SubjectId },
-                                                new{@class = "dropdown-item"})
-                                            </li>      
-                                        </ul>
+                                    <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                        <i class="fa-light fa-ellipsis-vertical"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            @Html.ActionLink(
+                                            "Xem bài thi",
+                                            "ListTestOfSubjectManagement",
+                                            "SubjectManagement",
+                                            new { subjectId=item.SubjectId},
+                                            new{@class = "dropdown-item"})
+                                        </li>
+                                        <li>
+                                            @Html.ActionLink(
+                                            "Xem bộ câu hỏi",
+                                            "Index",
+                                            "Question",
+                                            new { subjectId=item.SubjectId },
+                                            new{@class = "dropdown-item"})
+                                        </li>      
+                                    </ul>
                                 </div>
                             </td>
                         </tr>
