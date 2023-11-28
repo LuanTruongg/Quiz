@@ -145,23 +145,23 @@ namespace Quiz.Service.Implements
             return new ApiSuccessResult<PagedResult<QuestionItem>>(pagedResult);
         }
 
-		public async Task<string> DeleteQuestionAsync(string id)
+		public async Task<ApiResult<bool>> DeleteQuestionAsync(string id)
 		{
 			var questionExisting = await _dbContext.Questions.FindAsync(id);
 			if (questionExisting is null)
 			{
-				throw new TestException($"Not Found Subject with Id: {id}");
+				return new ApiErrorResult<bool>($"Not Found Subject with Id: {id}");
 			}
 			try
 			{
 				_dbContext.Questions.Remove(questionExisting);
 				await _dbContext.SaveChangesAsync();
-				return $"Delete success question: {Base64.Base64Decode(questionExisting.QuestionText)} ";
+				return new ApiSuccessResult<bool>();
 			}
 			catch (Exception ex)
 			{
 				Log.Error(ex.Message);
-				throw new TestException(ex.Message);
+                return new ApiErrorResult<bool>(ex.Message);
 			}
 		}
 

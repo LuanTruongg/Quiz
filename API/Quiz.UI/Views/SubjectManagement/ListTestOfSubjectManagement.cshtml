@@ -87,17 +87,16 @@
                                @Html.DisplayFor(modelItem => item.NumberOfQuestion)
                             </td>
                             <td>
-                                   @{
-                                       if (item.IsFree == true)
-                                       {
-                                           <span>Free</span>
-                                       }
-                                       else
-                                       {
-                                           @Html.DisplayFor(modelItem => item.Price)
-                                       }
-                                   }
-                               
+                                @{
+                                    if (item.IsFree == true)
+                                    {
+                                        <span>Free</span>
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(modelItem => item.Price)
+                                    }
+                                }
                             </td>
                             <td>
                                 <div class="dropdown">

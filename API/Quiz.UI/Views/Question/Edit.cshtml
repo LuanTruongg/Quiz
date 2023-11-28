@@ -10,8 +10,8 @@
     <h1 class="mt-4">Chỉnh sửa câu hỏi</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a asp-controller="SubjectManagement" asp-action="Index">Trang chủ</a></li>
-        <li class="breadcrumb-item"><a href="">Danh sách câu hỏi</a></li>
         <li class="breadcrumb-item"><a href="">@ViewData["SubjectName"]</a></li>
+        <li class="breadcrumb-item"><a href="">Danh sách câu hỏi</a></li>
         <li class="breadcrumb-item active">Chỉnh sửa câu hỏi</li>
     </ol>
     @if (TempData["Validation"] != null)
@@ -22,7 +22,12 @@
     }
     <div class="card mb-4">
         <div class="card-header">
-            <a class="btn btn-success" asp-controller="Question" asp-action="Index">Xem danh sách</a>
+            @Html.ActionLink(
+            "Xem bộ câu hỏi",
+            "Index",
+            "Question",
+            new { subjectId=@ViewData["SubjectId"]},
+            new{@class = "btn btn-success"})
         </div>
         <div class="card-body">
             <div class="row col-md-12">

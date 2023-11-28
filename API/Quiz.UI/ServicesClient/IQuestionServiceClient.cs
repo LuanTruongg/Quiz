@@ -9,5 +9,6 @@ namespace Quiz.UI.ServicesClient
         Task<ApiResult<bool>> CreateQuestionOfModule(CreateQuestionRequestViewModel request);
         Task<ApiResult<bool>> EditQuestion(string id, EditQuestionRequest request);
         Task<ApiResult<GetQuestionResponse>> GetQuestionById(string id);
+        Task<ApiResult<bool>> DeleteQuestion(string id);
     }
 }
