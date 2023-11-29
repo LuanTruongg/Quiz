@@ -95,7 +95,12 @@
                             }
                     }
                         <div class="col-md-9"><label class="labels">Money</label><h5>@money đ</h5></div>
-                        <div class="col-md-3"><label class="labels"> </label><h5 style="text-align:right"><a class="btn btn-primary profile-button bg-success" href="@ViewBag.url">Nạp tiền</a></h5></div>
+                        <div class="col-md-3">
+                            <label class="labels"></label>
+                            <h5 style="text-align:right">
+                                <a class="btn btn-primary profile-button bg-success" asp-action="Payment" asp-controller="Account">Nạp tiền</a>
+                            </h5>
+                        </div>
                 </div>
                     <div class="mt-5 text-center"><button class="btn btn-primary profile-button bg-primary" type="submit">Save Profile</button></div>
             </div>
