@@ -26,16 +26,25 @@ namespace Quiz.UI.Controllers
             var userId = HttpContext.Session.GetString("UserId");
             var profile = await _service.GetMyProfile(userId);
             ViewBag.Profile = profile.ResultObj;
-            ViewBag.url = await UrlPayment(2, "test");
             return View();
+        }
+        public IActionResult Payment()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> PaymentSelect(long money)
+        {
+            var url = await UrlPayment(2, money);
+            return Redirect(url);
+            //return RedirectToAction("PayComplete");
         }
         public async Task<IActionResult> PayComplete()
         {
-            ViewBag.Success =  await VnPayReturn();
+            ViewBag.Success = await VnPayReturn();
             return View();
         }
-
-        public async Task<string> UrlPayment(int TypePaymentVn, string orderCode)
+        public async Task<string> UrlPayment(int TypePaymentVn, long money )
         {
             //Get Config Info
             string vnp_Returnurl = _configuration.GetSection("VnPay:vnp_Returnurl").Value; //URL nhan ket qua tra ve 
@@ -49,7 +58,7 @@ namespace Quiz.UI.Controllers
             //Get payment input
             OrderInfo order = new OrderInfo();
             order.OrderId = DateTime.Now.Ticks; // Giả lập mã giao dịch hệ thống merchant gửi sang VNPAY
-            order.Amount = 10000; // Giả lập số tiền thanh toán hệ thống merchant gửi sang VNPAY 100,000 VND
+            order.Amount = money; // Giả lập số tiền thanh toán hệ thống merchant gửi sang VNPAY 100,000 VND
             order.Status = "0"; //0: Trạng thái thanh toán "chờ thanh toán" hoặc "Pending" khởi tạo giao dịch chưa có IPN
             order.CreatedDate = DateTime.Now;
             //Save order to db
@@ -166,7 +175,7 @@ namespace Quiz.UI.Controllers
                 //    //Log.Information("Invalid signature, InputData={0}", Request.);
                 //    return "Có lỗi xảy ra trong quá trình xử lý";
                 //}
-                return $"Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ {vnp_Amount}";
+                return $"Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ";
             }
             return "Có lỗi xảy ra trong quá trình xử lý";
         }
