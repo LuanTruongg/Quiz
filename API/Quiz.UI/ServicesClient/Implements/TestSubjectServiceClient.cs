@@ -34,29 +34,40 @@ namespace Quiz.UI.ServicesClient.Implements
             var json = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync($"/test-subject-management", httpContent);
+            var response = await client.PostAsync($"/quiz/test-subject-management", httpContent);
             var result = await response.Content.ReadAsStringAsync();
             if(response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ApiSuccessResult<CreateTestSubjectResponse>>(result);
             return JsonConvert.DeserializeObject<ApiErrorResult<CreateTestSubjectResponse>>(result);
         }
 
+        public async Task<ApiResult<bool>> DeleteTestStructure(string id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.DeleteAsync($"/quiz/test-structure/{id}");
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
+        }
+
         public async Task<ApiResult<bool>> DeleteTestSubject(string id)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/test-structure/{id}");
+            var response = await client.DeleteAsync($"/quiz/test-structure/{id}");
             var body = await response.Content.ReadAsStringAsync();
             if(response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
         }
 
-        public async Task<List<GetListQuestionOfTestResponse>> GetListQuestionOfTest(string testSubjectCode)
+        public async Task<List<GetListQuestionOfTestResponse>> GetListQuestionOfTest(string testStructureId)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/test-subject-management?TestSubjectCode={testSubjectCode}");
+            var response = await client.GetAsync($"/quiz/test-subject-management?TestStructureId={testStructureId}");
             var body = await response.Content.ReadAsStringAsync();
             var listQuestion = JsonConvert.DeserializeObject<List<GetListQuestionOfTestResponse>>(body);
             return listQuestion;
@@ -75,7 +86,7 @@ namespace Quiz.UI.ServicesClient.Implements
             var json = JsonConvert.SerializeObject(content);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync($"/user-test-management/get-result-user-test", httpContent);
+            var response = await client.PostAsync($"/quiz/user-test-management/get-result-user-test", httpContent);
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<GetResultUserTestResponse>(result);
         }
@@ -84,7 +95,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/common/get-test-subject-code/{testStructureId}");
+            var response = await client.GetAsync($"/quiz/common/get-test-subject-code/{testStructureId}");
             var body = await response.Content.ReadAsStringAsync();
             return body.ToString();
         }
@@ -108,7 +119,7 @@ namespace Quiz.UI.ServicesClient.Implements
             var json = JsonConvert.SerializeObject(content);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("/user-answer-management", httpContent);
+            var response = await client.PostAsync("/quiz/user-answer-management", httpContent);
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<AddUserAnswerResponse>(result);
         }
@@ -131,7 +142,7 @@ namespace Quiz.UI.ServicesClient.Implements
             var json = JsonConvert.SerializeObject(content);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync($"/user-test-management", httpContent);
+            var response = await client.PostAsync($"/quiz/user-test-management", httpContent);
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<AddUserTestResponse>(result);

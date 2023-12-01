@@ -8,6 +8,6 @@ namespace Quiz.DTO.TestSubjectManagement
 {
     public class GetListQuestionOfTestRequest
     {
-        public string TestSubjectCode { get; set; }
+        public string TestStructureId { get; set; }
     }
 }

@@ -17,7 +17,7 @@
         </div>
         <div class="card-body">
             <div class="row col-md-12">
-                <form asp-action="Create" asp-controller="TestStructure">
+                <form asp-action="Create" asp-controller="TestStructure" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" value="@ViewData["SubjectId"]" asp-for="SubjectId"/>
                     <input type="hidden" value="@ViewData["SubjectName"]" asp-for="SubjectName" />

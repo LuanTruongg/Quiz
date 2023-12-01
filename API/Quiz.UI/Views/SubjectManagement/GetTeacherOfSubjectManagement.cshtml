@@ -17,11 +17,10 @@
     <h1 class="mt-4">Danh sách người dùng</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-        <li class="breadcrumb-item"><a>@ViewBag.SubjectName</a></li>
+        <li class="breadcrumb-item"><a href="">@ViewBag.SubjectName</a></li>
         <li class="breadcrumb-item active">Danh sách giảng viên</li>
     </ol>
     <div class="card mb-4">
-
         <div class="card-header">
             <div class="row">
                 <div class="col-md-6 col-xs-12">
@@ -32,7 +31,7 @@
                     new { subjectId = ViewBag.SubjectId},
                     new { @class = "btn btn-success"})
                 </div>
-                <div class="col-md-6 col-xs-12">
+               @*  <div class="col-md-6 col-xs-12">
                     <form asp-action="Index" method="get">
                         <div class="row">
                             <div class="col-md-9">
@@ -44,10 +43,9 @@
                             </div>
                         </div>
                     </form>
-                </div>
+                </div> *@
             </div>
         </div>
-        <div class="card mb-4"></div>
         <div class="card-body">
             @if (ViewBag.SuccessMsg != null)
             {
@@ -55,49 +53,63 @@
                     @ViewBag.SuccessMsg
                 </div>
             }
-            <table class="table table-bordered">
+            <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>
-                            Tên Người dùng
-                        </th>
-                        <th>
-                            Email
-                        </th>
-                        <th>
-                            Giới tính
-                        </th>
-                        <th></th>
+                        <th scope="col">#</th>
+                        <th scope="col">Tên Người dùng</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Giới tính</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in listTeacherOfSubject)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FullName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Email)
-                            </td>
-                            <td>
-                                @{
-                                    if (item.Sex is true)
-                                    {
-                                        <span>Nam</span>
+                     @{
+                        int i = 1;
+                        foreach (var item in listTeacherOfSubject)
+                        {
+                            <tr>
+                                <td>
+                                    @{
+                                        @Html.DisplayFor(modelItem => i)
+                                        ;
+                                        i++;
                                     }
-                                    else
-                                    {
-                                        <span>Nữ</span>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @{
+                                        if (item.Sex is true)
+                                        {
+                                            <span>Nam</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Nữ</span>
+                                        }
                                     }
-                                }
 
-                            </td>
-                            <td>
-                                @Html.ActionLink("Huỷ dạy", "", new {  userId=item.UserId,  subjectId = ViewBag.SubjectId })
-                            </td>
-                        </tr>
-                    }
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                            <i class="fa-light fa-ellipsis-vertical"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                @Html.ActionLink("Huỷ dạy", "", new {  userId=item.UserId,  subjectId = ViewBag.SubjectId },new{@class = "dropdown-item"})
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                </td>
+                            </tr>
+                        }
+                      }
                 </tbody>
             </table>
         </div>
