@@ -15,8 +15,8 @@ namespace Quiz.UI.Controllers
         public async Task<IActionResult> Index(string testStructureId)
         {
             ViewBag.TestStructureId = testStructureId;
-            var testSubjectCode = await _testSubjectServiceClient.GetTestSubjectCode(testStructureId);
-            ViewBag.ListQuestion = await _testSubjectServiceClient.GetListQuestionOfTest(testSubjectCode);
+            //var testSubjectCode = await _testSubjectServiceClient.GetTestSubjectCode(testStructureId);
+            ViewBag.ListQuestion = await _testSubjectServiceClient.GetListQuestionOfTest(testStructureId);
             return View();
         }
         [HttpPost]

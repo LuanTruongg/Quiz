@@ -1,0 +1,15 @@
+{
+  "SwaggerEndpoints": [
+    {
+      "Key": "quizapi",
+      "TransformByOcelotConfig": false,
+      "Config": [
+        {
+          "Name": "Quiz API",
+          "Version": "1.0",
+          "Url": "http://localhost:13001/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ]
+}

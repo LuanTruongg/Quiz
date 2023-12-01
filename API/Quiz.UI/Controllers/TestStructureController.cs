@@ -107,6 +107,18 @@ namespace Quiz.UI.Controllers
             if (!result.IsSuccessed)
             {
                 await _testSubjectServiceClient.DeleteTestSubject(testStructureIdCreated.TestStructureId);
+                await _testSubjectServiceClient.DeleteTestStructure(testStructureIdCreated.TestStructureId);
+                TempData["Notify"] = "Tạo bài thi không thành công";
+                return RedirectToAction(
+                    "ListTestOfSubjectManagement",
+                    "SubjectManagement",
+                    new
+                    {
+                        subjectId = request.SubjectId,
+                        page = 1,
+                        pageSize = 5
+                    }
+                    );
             }
             TempData["Notify"] = "Tạo bài thi thành công";
             return RedirectToAction(

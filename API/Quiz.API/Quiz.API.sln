@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quiz.UI", "..\Quiz.UI\Quiz.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VnPayLib", "VnPayLib\VnPayLib.csproj", "{484D76C6-0F63-48DE-B0C2-2D5D0F065510}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quiz.Gateway", "..\Quiz.Gateway\Quiz.Gateway.csproj", "{D272ED4A-A482-4F21-BA35-1D980D0875C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{484D76C6-0F63-48DE-B0C2-2D5D0F065510}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{484D76C6-0F63-48DE-B0C2-2D5D0F065510}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{484D76C6-0F63-48DE-B0C2-2D5D0F065510}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D272ED4A-A482-4F21-BA35-1D980D0875C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D272ED4A-A482-4F21-BA35-1D980D0875C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D272ED4A-A482-4F21-BA35-1D980D0875C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D272ED4A-A482-4F21-BA35-1D980D0875C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

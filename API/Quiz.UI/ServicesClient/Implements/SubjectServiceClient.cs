@@ -29,7 +29,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/subject-management/get-list-subject-paging?" +
+            var response = await client.GetAsync($"/quiz/subject-management/get-list-subject-paging?" +
                 $"Page={request.Page}&" +
                 $"PageSize={request.PageSize}&" +
                 $"Search={request.Search}&" +
@@ -42,7 +42,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/module-management?" +
+            var response = await client.GetAsync($"/quiz/module-management?" +
                 $"SubjectId={subjectId}");
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
@@ -54,7 +54,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/subject-management/{id}");
+            var response = await client.GetAsync($"/quiz/subject-management/{id}");
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ApiSuccessResult<SubjectItem>>(body);
@@ -65,7 +65,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/common/get-list-teacher");
+            var response = await client.GetAsync($"/quiz/common/get-list-teacher");
             var body = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<GetTeacherItem>>(body);
         }
@@ -74,7 +74,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/common/get-list-teacher-of-subject/{subjectId}");
+            var response = await client.GetAsync($"/quiz/common/get-list-teacher-of-subject/{subjectId}");
             var body = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<GetTeacherItem>>(body);
         }
@@ -86,7 +86,7 @@ namespace Quiz.UI.ServicesClient.Implements
 
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.PostAsync("/subject-management/add-teacher-for-subject", httpContent);
+            var response = await client.PostAsync("/quiz/subject-management/add-teacher-for-subject", httpContent);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
@@ -99,7 +99,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/user-management/get-list-user-bought-test" +
+            var response = await client.GetAsync($"/quiz/user-management/get-list-user-bought-test" +
                 $"?TestStructureId={request.TestStructureId}" +
                 $"&Page={request.Page}" +
                 $"&PageSize={request.PageSize}");

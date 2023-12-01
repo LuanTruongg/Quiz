@@ -159,7 +159,8 @@ namespace Quiz.Service.Implements
             var usersExisting = _dbcontext.Users.AsQueryable();
             if (request.Search != null)
             {
-                usersExisting = usersExisting.Where(x => x.Email.Contains(request.Search));
+                usersExisting = usersExisting
+                    .Where(x => x.Email.Contains(request.Search) || x.Fullname.Contains(request.Search)||x.PhoneNumber.Contains(request.Search));
             }
 
             int totalRow = usersExisting.Count();
@@ -169,7 +170,7 @@ namespace Quiz.Service.Implements
                 .Select(x => new UserItem()
                 {
                     UserId = x.Id,
-                    Fullname = x.Email,
+                    Fullname = x.Fullname,
                     CCCD = x.CCCD,
                     Email = x.Email,
                     DoB = x.DoB,

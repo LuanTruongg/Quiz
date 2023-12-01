@@ -26,7 +26,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync("/common/get-list-department");
+            var response = await client.GetAsync("/quiz/common/get-list-department");
             var body = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<GetListDepartmentResponse>>(body);
         }
@@ -35,7 +35,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/common/get-list-major/{departmentId}");
+            var response = await client.GetAsync($"/quiz/common/get-list-major/{departmentId}");
             var body = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<GetListMajorResponse>>(body);
         }

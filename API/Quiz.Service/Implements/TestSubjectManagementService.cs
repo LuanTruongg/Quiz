@@ -115,7 +115,7 @@ namespace Quiz.Service.Implements
         public async Task<List<GetListQuestionOfTestResponse>> GetListQuestionOfTestAsync(GetListQuestionOfTestRequest request)
         {
 			var listAllQuestion = await _dbContext.TestSubjects.
-				Where(x => x.TestSubjectCode == request.TestSubjectCode)
+				Where(x => x.TestStructureId == request.TestStructureId)
 				.Select(x => new GetListQuestionOfTestResponse
                 {
 					QuestionId = x.QuestionId,

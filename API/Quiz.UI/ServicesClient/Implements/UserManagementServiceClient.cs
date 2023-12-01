@@ -33,7 +33,7 @@ namespace Quiz.UI.ServicesClient.Implements
             var json = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PutAsync($"/user-management/list-user/{request.UserId}/assign-roles", httpContent);
+            var response = await client.PutAsync($"/quiz/user-management/list-user/{request.UserId}/assign-roles", httpContent);
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
@@ -48,7 +48,7 @@ namespace Quiz.UI.ServicesClient.Implements
             var json = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PutAsync($"/user-management/list-user/{request.UserId}", httpContent);
+            var response = await client.PutAsync($"/quiz/user-management/list-user/{request.UserId}", httpContent);
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
@@ -59,9 +59,10 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/user-management/list-user" +
+            var response = await client.GetAsync($"/quiz/user-management/list-user" +
                 $"?Page={request.Page}" +
-                $"&PageSize={request.PageSize}");
+                $"&PageSize={request.PageSize}"+
+                $"&Search={request.Search}");
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ApiSuccessResult<PagedResult<UserItem>>>(body);
@@ -72,7 +73,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/user-test-management/get-list-result-user-test/" +
+            var response = await client.GetAsync($"/quiz/user-test-management/get-list-result-user-test/" +
                 $"{userId}");
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
@@ -84,7 +85,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/user-management/" +
+            var response = await client.GetAsync($"/quiz/user-management/" +
                 $"{userId}");
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
@@ -96,7 +97,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/common/get-roles");
+            var response = await client.GetAsync($"/quiz/common/get-roles");
             var body = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<RoleItem>>(body);
         }
@@ -105,7 +106,7 @@ namespace Quiz.UI.ServicesClient.Implements
     {
         var client = _httpClientFactory.CreateClient();
         client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-        var response = await client.GetAsync($"/user-management/list-user/{userId}");
+        var response = await client.GetAsync($"/quiz/user-management/list-user/{userId}");
         var body = await response.Content.ReadAsStringAsync();
         if (response.IsSuccessStatusCode)
             return JsonConvert.DeserializeObject<ApiSuccessResult<UserItem>>(body);
@@ -116,7 +117,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/user-management/list-user/{userId}/get-roles");
+            var response = await client.GetAsync($"/quiz/user-management/list-user/{userId}/get-roles");
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ApiSuccessResult<IList<string>>>(body);
@@ -131,7 +132,7 @@ namespace Quiz.UI.ServicesClient.Implements
             var json = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync($"/user-management", httpContent);
+            var response = await client.PostAsync($"/quiz/user-management", httpContent);
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);

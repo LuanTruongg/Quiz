@@ -42,7 +42,7 @@ namespace Quiz.UI.ServicesClient.Implements
 
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.PostAsync("/question-management", httpContent);
+            var response = await client.PostAsync("/quiz/question-management", httpContent);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
@@ -55,7 +55,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.DeleteAsync($"question-management/{id}");
+            var response = await client.DeleteAsync($"/quiz/question-management/{id}");
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
@@ -71,7 +71,7 @@ namespace Quiz.UI.ServicesClient.Implements
 
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.PutAsync($"/question-management/{id}", httpContent);
+            var response = await client.PutAsync($"/quiz/question-management/{id}", httpContent);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
@@ -84,7 +84,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"question-management" +
+            var response = await client.GetAsync($"/quiz/question-management" +
                 $"?SubjectId={request.SubjectId}" +
                 $"&Page={request.Page}" +
                 $"&PageSize={request.PageSize}");
@@ -97,7 +97,7 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/question-management/{id}");
+            var response = await client.GetAsync($"/quiz/question-management/{id}");
             var responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {

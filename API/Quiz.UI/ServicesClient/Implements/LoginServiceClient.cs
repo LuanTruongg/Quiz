@@ -31,7 +31,7 @@ namespace Quiz.UI.ServicesClient.Implements
 
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.PostAsync("/identity/login", httpContent);
+            var response = await client.PostAsync("/quiz/identity/login", httpContent);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<AuthenticationResponse>(responseContent);
@@ -60,7 +60,7 @@ namespace Quiz.UI.ServicesClient.Implements
 
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.PostAsync("/identity/my-profile", httpContent);
+            var response = await client.PostAsync("/quiz/identity/my-profile", httpContent);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ApiSuccessResult<GetProfileResponse>>(responseContent);
@@ -74,7 +74,7 @@ namespace Quiz.UI.ServicesClient.Implements
 
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.PostAsync("/identity/register", httpContent);
+            var response = await client.PostAsync("/quiz/identity/register", httpContent);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(responseContent);
@@ -88,7 +88,7 @@ namespace Quiz.UI.ServicesClient.Implements
 
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.PutAsync("/identity/update-money", httpContent);
+            var response = await client.PutAsync("/quiz/identity/update-money", httpContent);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(responseContent);
