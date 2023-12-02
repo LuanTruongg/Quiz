@@ -1,0 +1,65 @@
+﻿@model AddSubjectRequest
+@using Quiz.DTO.SubjectManagement
+@using Quiz.DTO.Common
+@{
+    List<GetListMajorResponse> listMajor = ViewBag.ListMajor;
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Thêm bài thi</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Thêm bài thi</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-controller="Subject" asp-action="Index">Xem danh sách</a>
+        </div>
+        <div class="card-body">
+            @if (ViewBag.Error != null)
+            {
+                <div id="msgAlert" class="alert alert-error" role="alert">
+                    @ViewBag.Error
+                </div>
+            }
+            <div class="row col-md-12">
+                <form asp-action="CreateSubject" asp-controller="SubjectManagement" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="d-flex justify-content-between">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label asp-for="SubjectId" class="control-label">Mã môn học</label>
+                                <input asp-for="SubjectId" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label">Tên môn học</label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label">Tên môn học</label>
+                                <select class="form-select" asp-for="MajorId">
+                                    @{
+                                        foreach(var item in listMajor)
+                                        {
+                                            <option value="@item.MajorId"> @item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="form-group text-center mt-3">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

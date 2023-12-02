@@ -24,6 +24,18 @@ namespace Quiz.Service.Implements
             _userManager = userManager;
         }
 
+        public async Task<List<GetListMajorResponse>> GetListAllMajorAsync()
+        {
+            var majorExisting = _dbContext.Majors.AsQueryable();
+
+            var result = await majorExisting.Select(x => new GetListMajorResponse
+            {
+                MajorId = x.MajorId,
+                Name = x.Name
+            }).ToListAsync();
+            return result;
+        }
+
         public async Task<IEnumerable<GetListDepartmentResponse>> GetListDepartmentAsync()
         {
             var departmentExisting = await _dbContext.Departments.Select(x => new GetListDepartmentResponse

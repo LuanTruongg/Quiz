@@ -14,14 +14,17 @@ namespace Quiz.UI.Controllers
         private readonly ISubjectServiceClient _subjectServiceClient;
         private readonly ITestStructureServiceClient _testStructureServiceClient;
         private readonly IUserManagementServiceClient _userManagementServiceClient;
+        private readonly IHomeServiceClient _homeServiceClient;
         public SubjectManagementController(
             ISubjectServiceClient subjectServiceClient,
             ITestStructureServiceClient testStructureServiceClient,
-            IUserManagementServiceClient userManagementServiceClient)
+            IUserManagementServiceClient userManagementServiceClient,
+            IHomeServiceClient homeServiceClient)
         {
             _subjectServiceClient = subjectServiceClient;
             _testStructureServiceClient = testStructureServiceClient;
             _userManagementServiceClient = userManagementServiceClient;
+            _homeServiceClient = homeServiceClient;
         }
         public async Task<IActionResult> Index(string search, int page = 1, int pageSize = 5)
         {
@@ -76,7 +79,7 @@ namespace Quiz.UI.Controllers
             {
                 ViewBag.SuccessMsg = TempData["Notify"];
             }
-            var listsubject = await _subjectServiceClient.GetListSubjectPaging(request);
+            var listsubject = await _subjectServiceClient.GetListAllSubjectPaging(request);
             return View(listsubject.ResultObj);
         }
         public async Task<IActionResult> GetTeacherOfSubjectManagement(string subjectId)
@@ -130,6 +133,31 @@ namespace Quiz.UI.Controllers
             };
             var result = await _subjectServiceClient.GetListUserBoughtTest(request);
             return View(result.ResultObj);          
+        }
+        [HttpGet]
+        public async Task<IActionResult> AddSubject()
+        {
+            if (TempData["Notify"] != null)
+            {
+                ViewBag.Error = TempData["Notify"];
+            }
+            ViewBag.ListMajor = await _homeServiceClient.GetListAllMajor();
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateSubject(AddSubjectRequest request)
+        {
+            var result = await _subjectServiceClient.AddSubject(request);
+            if (result.IsSuccessed)
+            {
+                TempData["Notify"] = "Thêm thành công";
+                return RedirectToAction("ListSubjectManagement", "SubjectManagement");
+            }
+            else
+            {
+                TempData["Notify"] = result.Message;
+                return RedirectToAction("AddSubject", "SubjectManagement");
+            }
         }
     }
 }

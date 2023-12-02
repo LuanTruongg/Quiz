@@ -56,7 +56,7 @@
                                 {
                                     <fieldset class="border p-2 mt-2">
                                         <legend class="float-none w-auto">@module.Name</legend>
-                                        <input type="text" value="@module.ModuleId" asp-for="ListModuleId" />
+                                        <input type="hidden" value="@module.ModuleId" asp-for="ListModuleId" />
                                         <input asp-for="ListNumQuestion" class="form-control" type="number" value="0" placeholder="Số lượng câu hỏi của chương này" />
                                     </fieldset>
                                 }
