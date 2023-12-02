@@ -14,7 +14,7 @@ namespace Quiz.Service.Implements
         {
             _dbContext = dbContext;
         }
-		public async Task<AddSubjectResponse> AddSubjectsAsync(AddSubjectRequest request)
+		public async Task<ApiResult<bool>> AddSubjectsAsync(AddSubjectRequest request)
 		{
 			var subjectExisting = await _dbContext.Subjects.FindAsync(request.SubjectId);
 			var newSubject = new Subject();
@@ -33,7 +33,7 @@ namespace Quiz.Service.Implements
 				else
 				{
 					if (request.MajorId is null) {
-						throw new TestException("MajorId cannot be empty");
+						return new ApiErrorResult<bool>("MajorId cannot be empty");
 					}
 					newSubject = new Subject
 					{
@@ -51,18 +51,11 @@ namespace Quiz.Service.Implements
 			}
 			else
 			{
-				throw new TestException("SubjectId was already used");
+                return new ApiErrorResult<bool>("SubjectId was already used");
 			}
 			await _dbContext.Subjects.AddAsync(newSubject);
 			await _dbContext.SaveChangesAsync();
-			var result = new AddSubjectResponse()
-			{
-				SubjectId = newSubject.SubjectId,
-				Name = newSubject.Name,
-				General = newSubject.General,
-				MajorId = addMajorSubject.MajorId
-			};
-			return result;
+            return new ApiSuccessResult<bool>();
 		}
 
         public async Task<ApiResult<bool>> AddTeachersForSubjectAsync(AddTeacherForSubjectRequest request)
@@ -114,14 +107,30 @@ namespace Quiz.Service.Implements
 
         public async Task<ApiResult<PagedResult<SubjectItem>>> GetListSubjectsPagingAsync(GetListSubjectPagingRequest request)
         {
-			var subjectExisting = from us in _dbContext.UserSubjects
-								  join s in _dbContext.Subjects on us.SubjectId equals s.SubjectId
-								  where us.UserId == request.UserId
-								  select new SubjectItem
-								  {
-									  SubjectId = us.SubjectId,
-									  Name = s.Name
-								  };
+			IQueryable<SubjectItem> subjectExisting;
+            if (request.UserId != null)
+            {
+                var subjectExisting1 = from us in _dbContext.UserSubjects
+                                      join s in _dbContext.Subjects on us.SubjectId equals s.SubjectId
+                                      where us.UserId == request.UserId
+                                      select new SubjectItem
+                                      {
+                                          SubjectId = us.SubjectId,
+                                          Name = s.Name
+                                      };
+				subjectExisting = subjectExisting1;
+            }
+			else
+			{
+                var subjectExisting2= from s in _dbContext.Subjects
+                                      select new SubjectItem
+                                      {
+                                          SubjectId = s.SubjectId,
+                                          Name = s.Name
+                                      };
+				subjectExisting = subjectExisting2;
+            }
+            
             if (request.Search != null)
             {
                 subjectExisting = subjectExisting.Where(x => x.Name.Contains(request.Search) || x.SubjectId.Contains(request.Search));

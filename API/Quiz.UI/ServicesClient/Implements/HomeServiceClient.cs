@@ -2,6 +2,7 @@
 using Quiz.DTO.BaseResponse;
 using Quiz.DTO.Common;
 using Quiz.DTO.UserManagement;
+using Quiz.Repository.Model;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -22,6 +23,16 @@ namespace Quiz.UI.ServicesClient.Implements
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
         }
+
+        public async Task<List<GetListMajorResponse>> GetListAllMajor()
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.GetAsync($"/quiz/common/get-list-major");
+            var body = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<GetListMajorResponse>>(body);
+        }
+
         public async Task<List<GetListDepartmentResponse>> GetListDepartments()
         {
             var client = _httpClientFactory.CreateClient();
@@ -35,7 +46,8 @@ namespace Quiz.UI.ServicesClient.Implements
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
-            var response = await client.GetAsync($"/quiz/common/get-list-major/{departmentId}");
+            var response = await client.GetAsync($"/quiz/common/get-list-major" +
+                $"&id={departmentId}");
             var body = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<GetListMajorResponse>>(body);
         }

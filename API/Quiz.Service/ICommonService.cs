@@ -11,6 +11,7 @@ namespace Quiz.Service
     public interface ICommonService
     {
         Task<IEnumerable<GetListMajorResponse>> GetListMajorAsync(string departmentId);
+        Task<List<GetListMajorResponse>> GetListAllMajorAsync();
         Task<IEnumerable<GetListDepartmentResponse>> GetListDepartmentAsync();
         Task<IEnumerable<GetListSubjectResponse>> GetListSubjectAsync(string majorId);
         Task<string> GetTestSubjectCode(string testStructureId);

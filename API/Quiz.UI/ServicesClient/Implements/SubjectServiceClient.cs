@@ -108,5 +108,33 @@ namespace Quiz.UI.ServicesClient.Implements
                 return JsonConvert.DeserializeObject<ApiSuccessResult<PagedResult<UserStructureItem>>>(body);
             return JsonConvert.DeserializeObject<ApiErrorResult<PagedResult<UserStructureItem>>>(body);
         }
+
+        public async Task<ApiResult<bool>> AddSubject(AddSubjectRequest request)
+        {
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.PostAsync("/quiz/subject-management", httpContent);
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
+        }
+
+        public async Task<ApiResult<PagedResult<SubjectItem>>> GetListAllSubjectPaging(GetListSubjectPagingRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.GetAsync($"/quiz/subject-management/get-list-subject-paging?" +
+                $"Page={request.Page}&" +
+                $"PageSize={request.PageSize}&" +
+                $"Search={request.Search}&");
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<PagedResult<SubjectItem>>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<PagedResult<SubjectItem>>>(body);
+        }
     }
 }

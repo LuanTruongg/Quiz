@@ -7,5 +7,6 @@ namespace Quiz.UI.ServicesClient
     {
         Task<List<GetListDepartmentResponse>> GetListDepartments();
         Task<List<GetListMajorResponse>> GetListMajor(string departmentId);
+        Task<List<GetListMajorResponse>> GetListAllMajor();
     }
 }
