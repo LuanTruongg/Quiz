@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Quiz.DTO.BaseResponse;
 using Quiz.DTO.Common;
 using Quiz.DTO.UserManagement;
 using Quiz.Repository;
@@ -117,6 +118,16 @@ namespace Quiz.Service.Implements
                        };
             List<GetTeacherItem> getListTeacher = new List<GetTeacherItem>(data);
             return getListTeacher;
+        }
+
+        public async Task<ApiResult<Major>> GetMajorAsync(string majorId)
+        {
+            var result = _dbContext.Majors.FirstOrDefault(x => x.MajorId == majorId);
+            if(result is null)
+            {
+                return new ApiErrorResult<Major>("Not Found");
+            }
+            return new ApiSuccessResult<Major>(result);
         }
 
         public Task<List<RoleItem>> GetRolesAsync()

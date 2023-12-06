@@ -100,5 +100,14 @@ namespace Quiz.API.Controllers
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
+        [HttpGet("get-major/{majorId}")]
+        public async Task<IActionResult> GetMajor(string majorId)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetMajorAsync(majorId));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
     }
 }
