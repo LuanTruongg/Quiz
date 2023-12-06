@@ -1,6 +1,7 @@
 ﻿using Quiz.DTO.BaseResponse;
 using Quiz.DTO.Common;
 using Quiz.DTO.TestStructureManagement;
+using Quiz.Repository.Model;
 
 namespace Quiz.UI.ServicesClient
 {
@@ -13,5 +14,6 @@ namespace Quiz.UI.ServicesClient
         Task<ApiResult<PagedResult<TestStructureItem>>> GetListTestStructure(GetListTestStructureRequest request);
         Task<CreateTestStructureResponse> CreateTestStructure(CreateTestStructureRequest request);
         Task<ApiResult<TestStructureItem>> GetTestStructureById(string id);
+        Task<ApiResult<Major>> GetMajor(string majorId);
     }
 }

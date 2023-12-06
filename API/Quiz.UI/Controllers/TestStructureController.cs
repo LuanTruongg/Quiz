@@ -44,7 +44,8 @@ namespace Quiz.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> ListSubject(string majorId, string departmentId)
         {
-            ViewData["SubjectName"] = await _testStructureServiceClient.GetNameMajor(majorId, departmentId);
+            var major = await _testStructureServiceClient.GetMajor(majorId);
+            ViewData["SubjectName"] = major.ResultObj.Name;
             var listSubject = await _testStructureServiceClient.GetListSubject(majorId);
             ViewBag.ListSubject = listSubject;
             return View();

@@ -120,5 +120,16 @@ namespace Quiz.UI.ServicesClient.Implements
                 return JsonConvert.DeserializeObject<ApiSuccessResult<TestStructureItem>>(body);
             return JsonConvert.DeserializeObject<ApiErrorResult<TestStructureItem>>(body);
         }
+
+        public async Task<ApiResult<Major>> GetMajor(string majorId)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.GetAsync($"/quiz/common/get-major/{majorId}");
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<Major>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<Major>>(body);
+        }
     }
 }

@@ -1,5 +1,7 @@
-﻿using Quiz.DTO.Common;
+﻿using Quiz.DTO.BaseResponse;
+using Quiz.DTO.Common;
 using Quiz.DTO.UserManagement;
+using Quiz.Repository.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +20,6 @@ namespace Quiz.Service
         Task<List<RoleItem>> GetRolesAsync();
         Task<List<GetTeacherItem>> GetListTeacherAsync();
         Task<List<GetTeacherItem>> GetListTeacherOfSubjectAsync(string subjectId);
+        Task<ApiResult<Major>> GetMajorAsync(string majorId);
     }
 }
