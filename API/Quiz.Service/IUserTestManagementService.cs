@@ -10,5 +10,6 @@ namespace Quiz.Service
         Task<AddUserTestResponse> AddUserTestAsync(AddUserTestRequest request);
         Task<GetResultUserTestResponse> GetResultUserTestAsync(GetResultUserTestRequest request);
         Task<ApiResult<List<GetUserTestResponse>>> GetListResultUserTestAsync(string userId);
+        Task<ApiResult<PagedResult<GetUserTestResponse>>> GetListResultUserTestManagementAsync(GetListResultUserTestRequest request);
     }
 }

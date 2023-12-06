@@ -5,6 +5,7 @@
 @using Microsoft.AspNetCore.Http
 @using Quiz.DTO.TestStructureManagement
 @using Quiz.DTO.BaseResponse
+@using Quiz.DTO.UserTestManagement
 <div class="container-fluid">
     <h1 class="mt-4">@ViewData["SubjectName"]</h1>
     <ol class="breadcrumb mb-4">
@@ -34,14 +35,6 @@
                         "Create",
                         "TestStructure",
                         new { subjectId = ViewData["SubjectId"]},
-                        new { @class = "btn btn-success"})
-                    </div>
-                    <div class="col-md-2">
-                        @Html.ActionLink(
-                        "Thêm câu hỏi",
-                        "Create",
-                        "Question",
-                        new { subjectId = ViewData["SubjectId"], subjectName = @ViewData["SubjectName"]},
                         new { @class = "btn btn-success"})
                     </div>
                 </div>
@@ -105,7 +98,16 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                @Html.ActionLink("Xem bài thi", "Details", new { id=item.TestStructureId },new { @class = "dropdown-item"})
+                                                @Html.ActionLink(
+                                                    "Xem kết quả", 
+                                                    "ListResultTested", 
+                                                    "UserTestManagement", 
+                                                    new GetListResultUserTestRequest { 
+                                                        TestStructureId= item.TestStructureId,
+                                                        Page=1,
+                                                        PageSize = 5
+                                                    },
+                                                    new { @class = "dropdown-item"})
                                             </li>
                                             <li>
                                                 @Html.ActionLink("Xem người mua", "GetListUserBougthTest","SubjectManagement", new { testStructureId=item.TestStructureId },new { @class = "dropdown-item"})

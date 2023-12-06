@@ -10,6 +10,7 @@ namespace Quiz.DTO.UserTestManagement
     {
         public string UserTestId { get; set; }
         public string UserId { get; set; }
+        public string FullName { get; set; }
         public int CorrectAnswers { get; set; }
         public decimal Score { get; set; }
         public string TestStructureId { get; set; }
