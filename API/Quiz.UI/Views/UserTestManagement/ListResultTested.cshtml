@@ -1,0 +1,80 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutTeacher.cshtml";
+}
+@using Microsoft.AspNetCore.Http
+@using Quiz.DTO.UserTestManagement
+@using Quiz.DTO.BaseResponse
+@model PagedResult<GetUserTestResponse>
+<div class="container-fluid">
+    <h1 class="mt-4">@ViewData["SubjectName"]</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-controller="SubjectManagement" asp-action="Index">Danh sách môn học</a></li>
+        <li class="breadcrumb-item active">@ViewData["SubjectName"]</li>
+    </ol>
+    <div class="card mb-4">
+
+        <div class="card-header">
+            <div class="row d-flex align-content-between">
+                <div class="col-md-6">
+                    <form asp-action="ListResultTested" asp-controller="UserTestManagement" method="get">
+                        <div class="row">
+                            <div class="col-md-9 p-0">
+                                <input type="text" name="search" class="form-control" value="@ViewBag.Search" />
+                            </div>
+                            <div class="col-md-3 p-0">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            @if (ViewBag.SuccessMsg != null)
+            {
+                <div id="msgAlert" class="alert alert-success" role="alert">
+                    @ViewBag.SuccessMsg
+                </div>
+            }
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Họ Tên</th>
+                        <th scope="col">Số câu đúng</th>
+                        <th scope="col">Điểm</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                        foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td>
+                                    @{
+                                        @Html.DisplayFor(modelItem => i)
+                                        ;
+                                        i++;
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CorrectAnswers)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Score)
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @await Component.InvokeAsync("Pager", Model)
+</div>

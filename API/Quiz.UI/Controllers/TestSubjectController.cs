@@ -36,10 +36,6 @@ namespace Quiz.UI.Controllers
             var score = await _testSubjectServiceClient.GetResultUserTest(userTestId); 
             return View(score);
         }
-        public IActionResult Create()
-        {
-            return View();
-        }
         public IActionResult Details()
         {
             return View();

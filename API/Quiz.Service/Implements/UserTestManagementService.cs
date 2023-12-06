@@ -70,6 +70,47 @@ namespace Quiz.Service.Implements
             return new ApiSuccessResult<List<GetUserTestResponse>>(listResult);
         }
 
+        public async Task<ApiResult<PagedResult<GetUserTestResponse>>> GetListResultUserTestManagementAsync(GetListResultUserTestRequest request)
+        {
+            var listUserTest = from ut in _dbContext.UserTests
+                               join ts in _dbContext.TestStructures on ut.TestStructureId equals ts.TestStructureId
+                               join u in _dbContext.Users on ut.UserId equals u.Id
+                               where ut.TestStructureId == ts.TestStructureId
+                               select new GetUserTestResponse()
+                               {
+                                   UserId = ut.UserId,
+                                   FullName = u.Fullname,
+                                   TestStructureId = ts.TestStructureId,
+                                   CorrectAnswers = ut.CorrectAnswers,
+                                   NumberOfQuestions = ts.NumberOfQuestions,
+                                   Score = ut.Score,
+                               };
+
+            if (request.Search != null)
+            {
+                listUserTest = listUserTest
+                    .Where(x => x.FullName.Contains(request.Search));
+            }
+
+            int totalRow = listUserTest.Count();
+
+            var data = await listUserTest.Skip((request.Page - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .ToListAsync();
+
+            var numberPage = request.Page <= 0 ? 1 : request.Page;
+            var numberPageSize = request.PageSize <= 0 ? 10 : request.PageSize;
+
+            var result = new PagedResult<GetUserTestResponse>()
+            {
+                TotalRecords = totalRow,
+                Page = numberPage,
+                PageSize = numberPageSize,
+                Items = data
+            };
+            return new ApiSuccessResult<PagedResult<GetUserTestResponse>>(result);
+        }
+
         public async Task<GetResultUserTestResponse> GetResultUserTestAsync(GetResultUserTestRequest request)
         {
             var userTestExisting = _dbContext.UserTests

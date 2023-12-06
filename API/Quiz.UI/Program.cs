@@ -60,6 +60,7 @@ builder.Services.AddScoped<ITestSubjectServiceClient, TestSubjectServiceClient>(
 builder.Services.AddScoped<ISubjectServiceClient, SubjectServiceClient>();
 builder.Services.AddScoped<IQuestionServiceClient, QuestionServiceClient>();
 builder.Services.AddScoped<IUserManagementServiceClient, UserManagementServiceClient>();
+builder.Services.AddScoped<IUserTestManagementServiceClient, UserTestManagementServiceClient>();
 
 var host = WebApplication.CreateBuilder(args).Services.BuildServiceProvider();
 Thread.Sleep(5000);

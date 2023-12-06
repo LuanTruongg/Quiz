@@ -50,5 +50,15 @@ namespace Quiz.API.Controllers
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
+        [HttpGet("get-list-result-user-test-management")]
+        [ProducesResponseType(typeof(GetUserTestResponse), 200)]
+        public async Task<IActionResult> GetListResultUserTest([FromQuery] GetListResultUserTestRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetListResultUserTestManagementAsync(request));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
     }
 }
