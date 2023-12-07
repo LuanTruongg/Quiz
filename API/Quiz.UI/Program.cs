@@ -66,7 +66,7 @@ builder.Services.AddScoped<ISubjectServiceClient, SubjectServiceClient>();
 builder.Services.AddScoped<IQuestionServiceClient, QuestionServiceClient>();
 builder.Services.AddScoped<IUserManagementServiceClient, UserManagementServiceClient>();
 builder.Services.AddScoped<IUserTestManagementServiceClient, UserTestManagementServiceClient>();
-
+builder.Services.AddScoped<IRolesService, RolesService>();
 var host = WebApplication.CreateBuilder(args).Services.BuildServiceProvider();
 Thread.Sleep(5000);
 
