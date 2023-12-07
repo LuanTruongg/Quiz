@@ -100,6 +100,18 @@
                 <div class="container w-100 shadow-sm p-3 mb-5 bg-white rounded">
                 <div class="question w-100">
                     <div class="py-2 h5"><b>Câu @(i+1): @Base64.Base64Decode(listQuestion[i].QuestionText)</b></div>
+                        @{
+                            if (!string.IsNullOrEmpty(listQuestion[i].Image))
+                            {
+                                <img src="~/uploaded/@listQuestion[i].Image" class="w-50 my-3" />
+                            }
+                            if (!string.IsNullOrEmpty(listQuestion[i].Audio))
+                            {
+                                <audio controls>
+                                    <source src="~/uploaded/@listQuestion[i].Audio" type="audio/ogg" >
+                                </audio>
+                            }
+                        }
                     <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
                             <input type="hidden" value="@listQuestion[i].QuestionId" name="UserAnswerRequest[@i].QuestionId" />
                         <label class="options">

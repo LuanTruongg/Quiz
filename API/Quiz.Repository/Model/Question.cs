@@ -20,5 +20,8 @@ namespace Quiz.Repository.Model
         public string Answer { get; set; }
         public string Difficult { get; set; }
 		public List<TestSubject> TestSubjects { get; set; }
+        public string? Image { get; set; }
+        public string? Audio { get; set; }
+
     }
 }

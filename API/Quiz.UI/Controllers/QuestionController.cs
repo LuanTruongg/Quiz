@@ -1,8 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting.Internal;
 using Quiz.DTO.QuestionManagement;
 using Quiz.Repository.Model;
 using Quiz.UI.ServicesClient;
 using Quiz.UI.ServicesClient.Implements;
+using System.Collections;
+using System.Text;
 
 namespace Quiz.UI.Controllers
 {
@@ -10,11 +16,12 @@ namespace Quiz.UI.Controllers
     {
         private readonly IQuestionServiceClient _questionServiceClient;
         private readonly ISubjectServiceClient _subjectServiceClient;
-        public QuestionController(IQuestionServiceClient questionServiceClient, ISubjectServiceClient subjectServiceClient)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public QuestionController(IQuestionServiceClient questionServiceClient, ISubjectServiceClient subjectServiceClient, IWebHostEnvironment webHostEnvironment)
         {
             _questionServiceClient = questionServiceClient;
             _subjectServiceClient = subjectServiceClient;
-
+            _webHostEnvironment = webHostEnvironment;
         }
         public async Task<IActionResult> Index(GetListQuestionRequest request)
         {
@@ -44,7 +51,31 @@ namespace Quiz.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateQuestion(CreateQuestionRequestViewModel request)
         {
-            var result = await _questionServiceClient.CreateQuestionOfModule(request);
+            IFormFile file;
+            string uniqueFileNameImg = "";
+            string uniqueFileNameAudio = "";
+            try
+            {
+                if(request.Image != null)
+                {
+                    uniqueFileNameImg = GetUniqueFileName(request.Image.FileName);
+                    var uploads = Path.Combine(_webHostEnvironment.WebRootPath, "uploaded");
+                    var filePath = Path.Combine(uploads, uniqueFileNameImg);
+                    request.Image.CopyTo(new FileStream(filePath, FileMode.Create));
+                }
+                if (request.Audio != null)
+                {
+                    uniqueFileNameAudio = GetUniqueFileName(request.Audio.FileName);
+                    var uploads = Path.Combine(_webHostEnvironment.WebRootPath, "uploaded");
+                    var filePath = Path.Combine(uploads, uniqueFileNameAudio);
+                    request.Audio.CopyTo(new FileStream(filePath, FileMode.Create));
+                }
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine(ex.Message);
+            }
+            var result = await _questionServiceClient.CreateQuestionOfModule(request, uniqueFileNameImg, uniqueFileNameAudio);
             if (!result.IsSuccessed)
             {
                 TempData["Notify"] = result.Message;
@@ -73,6 +104,16 @@ namespace Quiz.UI.Controllers
                     );
             }
         }
+        private string GetUniqueFileName(string fileName)
+        {
+            fileName = Path.GetFileName(fileName);
+            return Path.GetFileNameWithoutExtension(fileName)
+                      + "_"
+                      + Guid.NewGuid().ToString().Substring(0, 4)
+                      + Path.GetExtension(fileName);
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> Edit(string questionId, string subjectId)
         {

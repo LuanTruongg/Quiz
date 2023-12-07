@@ -15,5 +15,7 @@ namespace Quiz.DTO.TestSubjectManagement
         public string AnswerB { get; set; }
         public string AnswerC { get; set; }
         public string AnswerD { get; set; }
+        public string Image { get; set; }
+        public string Audio { get; set; }
     }
 }

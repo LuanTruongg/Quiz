@@ -1,4 +1,6 @@
-﻿namespace Quiz.DTO.QuestionManagement
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Quiz.DTO.QuestionManagement
 {
 	public class AddQuestionRequest
 	{
@@ -10,5 +12,7 @@
 		public char Answer { get; set; }
 		public string Difficult { get; set; }
 		public string ModuleId { get; set; }
-	}
+        public string Image { get; set; }
+        public string Audio { get; set; }
+    }
 }
