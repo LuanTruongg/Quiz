@@ -55,7 +55,15 @@ namespace Quiz.Service.Implements
 				Difficult = request.Difficult,
 				ModuleId = request.ModuleId
 			};
-			try
+			if (request.Image != null)
+			{
+				newQuestion.Image = request.Image;
+			}
+            if (request.Audio != null)
+            {
+                newQuestion.Audio = request.Audio;
+            }
+            try
 			{
 				await _dbContext.Questions.AddAsync(newQuestion);
 			} catch (Exception ex)

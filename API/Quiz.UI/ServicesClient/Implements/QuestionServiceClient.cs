@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Quiz.DTO.BaseResponse;
 using Quiz.DTO.QuestionManagement;
-using Quiz.DTO.SubjectManagement;
-using Quiz.DTO.TestStructureManagement;
-using System.Net.Http;
+using System.Web;
 using System.Text;
+using System.IO;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Quiz.UI.ServicesClient.Implements
 {
@@ -13,18 +13,21 @@ namespace Quiz.UI.ServicesClient.Implements
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         public QuestionServiceClient(
             IHomeServiceClient homeServiceClient,
             IHttpClientFactory httpClientFactory,
             IConfiguration configuration,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IWebHostEnvironment webHostEnvironment)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
+            _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<ApiResult<bool>> CreateQuestionOfModule(CreateQuestionRequestViewModel request)
+        public async Task<ApiResult<bool>> CreateQuestionOfModule(CreateQuestionRequestViewModel request, string imgName, string audioName)
         {
             var content = new AddQuestionRequest()
             {
@@ -35,8 +38,11 @@ namespace Quiz.UI.ServicesClient.Implements
                 QuestionC = request.QuestionC,
                 QuestionD = request.QuestionD,
                 Answer = request.Answer,
-                Difficult = request.Difficult
+                Difficult = request.Difficult,
+                Image = imgName,
+                Audio = audioName
             };
+
             var json = JsonConvert.SerializeObject(content);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -49,6 +55,14 @@ namespace Quiz.UI.ServicesClient.Implements
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(responseContent);
             }
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(responseContent);
+        }
+        private string GetUniqueFileName(string fileName)
+        {
+            fileName = Path.GetFileName(fileName);
+            return Path.GetFileNameWithoutExtension(fileName)
+                      + "_"
+                      + Guid.NewGuid().ToString().Substring(0, 4)
+                      + Path.GetExtension(fileName);
         }
 
         public async Task<ApiResult<bool>> DeleteQuestion(string id)

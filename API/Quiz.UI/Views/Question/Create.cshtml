@@ -20,7 +20,7 @@
         </div>
         <div class="card-body">
             <div class="row col-md-12">
-                <form asp-action="CreateQuestion" asp-controller="Question">
+                <form asp-action="CreateQuestion" asp-controller="Question" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" value="@ViewData["SubjectId"]" asp-for="SubjectId" />
                     <input type="hidden" value="@ViewData["SubjectName"]" asp-for="SubjectName" />
@@ -41,6 +41,17 @@
                                 <label asp-for="QuestionText" class="control-label">Câu hỏi</label>
                                 <input asp-for="QuestionText" class="form-control" />
                                 <span asp-validation-for="QuestionText" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label asp-for="Image" class="control-label w-100">Hình ảnh</label>
+                                <input asp-for="Image" type="file" class="from-control">
+                                <span asp-validation-for="Image" class="text-danger"></span>
+
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Audio" class="control-label w-100">Âm thanh</label>
+                                <input asp-for="Audio" type="file" class="from-control">
+                                <span asp-validation-for="Audio" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="QuestionA" class="control-label">Câu A</label>

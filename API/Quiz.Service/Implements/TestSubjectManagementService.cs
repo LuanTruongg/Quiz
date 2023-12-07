@@ -123,8 +123,10 @@ namespace Quiz.Service.Implements
 					AnswerA = x.Question.QuestionA,
 					AnswerB = x.Question.QuestionB,
 					AnswerC = x.Question.QuestionC,
-					AnswerD = x.Question.QuestionD
-				}).ToListAsync();
+					AnswerD = x.Question.QuestionD,
+					Image = x.Question.Image,
+                    Audio = x.Question.Audio
+                }).ToListAsync();
 			return listAllQuestion;
         }
 

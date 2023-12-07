@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Quiz.DTO.ModuleManagement;
 using Quiz.DTO.QuestionManagement;
 using Quiz.Infrastructure.Constraint;
@@ -43,7 +44,8 @@ namespace Quiz.API.Controllers
         }
 
 		[HttpPost]
-		[ProducesResponseType(typeof(AddQuestionResponse), 200)]
+        [ProducesResponseType(typeof(AddQuestionResponse), 200)]
+
 		public async Task<IActionResult> Post([FromBody] AddQuestionRequest request)
 		{
 			if (ModelState.IsValid)

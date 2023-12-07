@@ -27,6 +27,8 @@
 
   <ItemGroup>
     <Folder Include="Models\Payments\" />
+    <Folder Include="UploadedFiles\" />
+    <Folder Include="wwwroot\uploaded\" />
   </ItemGroup>
 
 </Project>
