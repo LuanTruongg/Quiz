@@ -15,16 +15,19 @@ namespace Quiz.UI.Controllers
         private readonly ITestStructureServiceClient _testStructureServiceClient;
         private readonly IUserManagementServiceClient _userManagementServiceClient;
         private readonly IHomeServiceClient _homeServiceClient;
+        private readonly IRolesService _rolesService;
         public SubjectManagementController(
             ISubjectServiceClient subjectServiceClient,
             ITestStructureServiceClient testStructureServiceClient,
             IUserManagementServiceClient userManagementServiceClient,
-            IHomeServiceClient homeServiceClient)
+            IHomeServiceClient homeServiceClient,
+            IRolesService rolesService)
         {
             _subjectServiceClient = subjectServiceClient;
             _testStructureServiceClient = testStructureServiceClient;
             _userManagementServiceClient = userManagementServiceClient;
             _homeServiceClient = homeServiceClient;
+            _rolesService = rolesService;
         }
         public async Task<IActionResult> Index(string search, int page = 1, int pageSize = 5)
         {
@@ -84,80 +87,114 @@ namespace Quiz.UI.Controllers
         }
         public async Task<IActionResult> GetTeacherOfSubjectManagement(string subjectId)
         {
-            var subject = await _subjectServiceClient.GetSubjectById(subjectId);
-            ViewBag.SubjectId = subject.ResultObj.SubjectId;
-            ViewBag.SubjectName = subject.ResultObj.Name;
+            var checkRoles = _rolesService.CheckAdmin(HttpContext);
+            if (checkRoles is true)
+            {
+                var subject = await _subjectServiceClient.GetSubjectById(subjectId);
+                ViewBag.SubjectId = subject.ResultObj.SubjectId;
+                ViewBag.SubjectName = subject.ResultObj.Name;
 
-            var listTeacherOfSubject = await _subjectServiceClient.GetListTeacherOfSubject(subjectId);
-            ViewBag.ListTeacherOfSubject = listTeacherOfSubject;
-            return View();
+                var listTeacherOfSubject = await _subjectServiceClient.GetListTeacherOfSubject(subjectId);
+                ViewBag.ListTeacherOfSubject = listTeacherOfSubject;
+                return View();
+            }
+            return Unauthorized();
+
         }
         public async Task<IActionResult> AddTeacherForSubjectManagement(string subjectId)
         {
-            var subject = await _subjectServiceClient.GetSubjectById(subjectId);
-            ViewBag.SubjectId = subject.ResultObj.SubjectId;
-            ViewBag.SubjectName = subject.ResultObj.Name;
-            if (TempData["Notify"] != null)
+            var checkRoles = _rolesService.CheckAdmin(HttpContext);
+            if (checkRoles is true)
             {
-                ViewBag.Error = TempData["Notify"];
+                var subject = await _subjectServiceClient.GetSubjectById(subjectId);
+                ViewBag.SubjectId = subject.ResultObj.SubjectId;
+                ViewBag.SubjectName = subject.ResultObj.Name;
+                if (TempData["Notify"] != null)
+                {
+                    ViewBag.Error = TempData["Notify"];
+                }
+                var listTeacher = await _subjectServiceClient.GetListTeacher();
+                ViewBag.ListTeacher = listTeacher;
+                var listTeacherOfSubject = await _subjectServiceClient.GetListTeacherOfSubject(subjectId);
+                ViewBag.ListTeacherOfSubject = listTeacherOfSubject;
+                return View();
             }
-            var listTeacher = await _subjectServiceClient.GetListTeacher();
-            ViewBag.ListTeacher = listTeacher;
-            var listTeacherOfSubject = await _subjectServiceClient.GetListTeacherOfSubject(subjectId);
-            ViewBag.ListTeacherOfSubject = listTeacherOfSubject;
-            return View();
+            return Unauthorized();
+
         }
         [HttpPost]
         public async Task<IActionResult> AddTeacherForSubject(AddTeacherForSubjectRequest request)
         {
-            var result = await _subjectServiceClient.AddTeacherForSubject(request);
-            if (result.IsSuccessed)
+            var checkRoles = _rolesService.CheckAdmin(HttpContext);
+            if (checkRoles is true)
             {
-                TempData["Notify"] = "Thêm thành công";
-                return RedirectToAction("ListSubjectManagement", "SubjectManagement");
+                var result = await _subjectServiceClient.AddTeacherForSubject(request);
+                if (result.IsSuccessed)
+                {
+                    TempData["Notify"] = "Thêm thành công";
+                    return RedirectToAction("ListSubjectManagement", "SubjectManagement");
+                }
+                else
+                {
+                    TempData["Notify"] = result.Message;
+                    return RedirectToAction("AddTeacherForSubjectManagement", "SubjectManagement");
+                }
             }
-            else
-            {
-                TempData["Notify"] = result.Message;
-                return RedirectToAction("AddTeacherForSubjectManagement", "SubjectManagement");
-            }            
+            return Unauthorized();
+
         }
         [HttpGet]
         public async Task<IActionResult> GetListUserBougthTest(string testStructureId)
         {
-            var request = new GetListUserStructureRequest()
+            var checkRoles = _rolesService.CheckTeacher(HttpContext);
+            if (checkRoles is true)
             {
-                TestStructureId = testStructureId,
-                Page = 1,
-                PageSize = 5
-            };
-            var result = await _subjectServiceClient.GetListUserBoughtTest(request);
-            return View(result.ResultObj);          
+                var request = new GetListUserStructureRequest()
+                {
+                    TestStructureId = testStructureId,
+                    Page = 1,
+                    PageSize = 5
+                };
+                var result = await _subjectServiceClient.GetListUserBoughtTest(request);
+                return View(result.ResultObj);
+            }
+            return Unauthorized();
         }
         [HttpGet]
         public async Task<IActionResult> AddSubject()
         {
-            if (TempData["Notify"] != null)
+            var checkRoles = _rolesService.CheckAdmin(HttpContext);
+            if (checkRoles is true)
             {
-                ViewBag.Error = TempData["Notify"];
+                if (TempData["Notify"] != null)
+                {
+                    ViewBag.Error = TempData["Notify"];
+                }
+                ViewBag.ListMajor = await _homeServiceClient.GetListAllMajor();
+                return View();
             }
-            ViewBag.ListMajor = await _homeServiceClient.GetListAllMajor();
-            return View();
+            return Unauthorized();
+            
         }
         [HttpPost]
         public async Task<IActionResult> CreateSubject(AddSubjectRequest request)
         {
-            var result = await _subjectServiceClient.AddSubject(request);
-            if (result.IsSuccessed)
+            var checkRoles = _rolesService.CheckAdmin(HttpContext);
+            if (checkRoles is true)
             {
-                TempData["Notify"] = "Thêm thành công";
-                return RedirectToAction("ListSubjectManagement", "SubjectManagement");
+                var result = await _subjectServiceClient.AddSubject(request);
+                if (result.IsSuccessed)
+                {
+                    TempData["Notify"] = "Thêm thành công";
+                    return RedirectToAction("ListSubjectManagement", "SubjectManagement");
+                }
+                else
+                {
+                    TempData["Notify"] = result.Message;
+                    return RedirectToAction("AddSubject", "SubjectManagement");
+                }
             }
-            else
-            {
-                TempData["Notify"] = result.Message;
-                return RedirectToAction("AddSubject", "SubjectManagement");
-            }
+            return Unauthorized();
         }
     }
 }
