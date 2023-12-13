@@ -97,7 +97,7 @@ namespace Quiz.UI.Controllers
             }
             return RedirectToAction("GetListUser");
         }
-        
+        [HttpPost]
         public async Task<IActionResult> Edit(EditUserRequest request)
         {
             var user = await _userManagementServiceClient.EditUser(request);
