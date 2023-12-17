@@ -37,6 +37,10 @@ namespace Quiz.UI.Controllers
             ViewBag.User = user.ResultObj;
             var testStructure = await _testStructureServiceClient.GetTestStructureById(testStructureId);
             ViewBag.TestStructure = testStructure.ResultObj;
+            if (TempData["Notify"] != null)
+            {
+                ViewBag.Error = TempData["Notify"];
+            }
             return View(model);
         }
         [HttpPost]
@@ -54,7 +58,10 @@ namespace Quiz.UI.Controllers
                          subjectId = testStructure.ResultObj.SubjectId,
                      });
             }
-            return RedirectToAction(
+            else
+            {
+                TempData["Notify"] = result.Message;
+                return RedirectToAction(
                     "BuyConfirm",
                     "UserManagement",
                      new
@@ -62,6 +69,8 @@ namespace Quiz.UI.Controllers
                          testStructureId = request.TestStructureId,
                          userId = request.UserId
                      });
+            }
+            
         }
         [HttpGet("/my-profile/{userId}/test-result")]
         public async Task<IActionResult> GetListTest(string userId)
