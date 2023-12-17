@@ -136,5 +136,16 @@ namespace Quiz.UI.ServicesClient.Implements
                 return JsonConvert.DeserializeObject<ApiSuccessResult<PagedResult<SubjectItem>>>(body);
             return JsonConvert.DeserializeObject<ApiErrorResult<PagedResult<SubjectItem>>>(body);
         }
+
+        public async Task<ApiResult<bool>> DeleteSubject(string id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.DeleteAsync($"/quiz/subject-management/{id}");
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
+        }
     }
 }

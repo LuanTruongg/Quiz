@@ -96,6 +96,14 @@
                                                 new { subjectId=item.SubjectId},
                                                 new{@class = "dropdown-item"})
                                             </li>
+                                            <li>
+                                                @Html.ActionLink(
+                                                "Xoá",
+                                                "DeleteSubjectManagement",
+                                                "SubjectManagement",
+                                                new { subjectId=item.SubjectId},
+                                                new{@class = "dropdown-item"})
+                                            </li>
                                         </ul>
                                     </div>
                                     

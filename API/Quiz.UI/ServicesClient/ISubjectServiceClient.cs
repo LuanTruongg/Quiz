@@ -19,5 +19,6 @@ namespace Quiz.UI.ServicesClient
         Task<ApiResult<bool>> AddTeacherForSubject(AddTeacherForSubjectRequest request);
         Task<ApiResult<PagedResult<UserStructureItem>>> GetListUserBoughtTest(GetListUserStructureRequest request);
         Task<ApiResult<bool>> AddSubject(AddSubjectRequest request);
+        Task<ApiResult<bool>> DeleteSubject(string id);
     }
 }

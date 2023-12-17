@@ -73,6 +73,16 @@ namespace Quiz.API.Controllers
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(GetListSubjectPagingResponse), 200)]
+        public async Task<IActionResult> DeleteSubject(string id)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.DeleteSubjectAsync(id));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
 
     }
 }

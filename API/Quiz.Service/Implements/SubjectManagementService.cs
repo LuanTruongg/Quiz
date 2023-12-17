@@ -96,6 +96,18 @@ namespace Quiz.Service.Implements
             return new ApiSuccessResult<bool>();
         }
 
+        public async Task<ApiResult<bool>> DeleteSubjectAsync(string id)
+        {
+            var subjectExisting = _dbContext.Subjects.FirstOrDefault(x => x.SubjectId == id);
+			if (subjectExisting == null)
+			{
+                return new ApiErrorResult<bool>("Học phần không tồn tại");
+            }
+			_dbContext.Subjects.Remove(subjectExisting);
+			_dbContext.SaveChanges();
+            return new ApiSuccessResult<bool>();
+        }
+
         public async Task<IEnumerable<GetSubjectResponse>> GetListSubjectsAsync()
 		{
 			var data = await _dbContext.Subjects.Select(x => new GetSubjectResponse()

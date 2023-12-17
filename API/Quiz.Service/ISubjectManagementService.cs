@@ -8,6 +8,7 @@ namespace Quiz.Service
 		Task<ApiResult<bool>> AddSubjectsAsync(AddSubjectRequest request);
 		Task<ApiResult<PagedResult<SubjectItem>>> GetListSubjectsPagingAsync(GetListSubjectPagingRequest request);
         Task<ApiResult<SubjectItem>> GetSubjectByIdAsync(string id);
-        Task<ApiResult<bool>>AddTeachersForSubjectAsync(AddTeacherForSubjectRequest request);
+        Task<ApiResult<bool>> AddTeachersForSubjectAsync(AddTeacherForSubjectRequest request);
+        Task<ApiResult<bool>> DeleteSubjectAsync(string id);
     }
 }
