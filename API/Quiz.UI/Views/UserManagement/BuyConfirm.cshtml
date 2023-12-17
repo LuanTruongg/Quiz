@@ -49,6 +49,12 @@
 <!-- Modal -->
 <form asp-action="Buy" asp-controller="UserManagement" method="post">
 <div class="modal-dialog d-block w-25 shadow-sm p-3 mb-5 mt-5 bg-white rounded">
+    @if (ViewBag.Error != null)
+    {
+        <div id="msgAlert" class="alert alert-warning" role="alert">
+            @ViewBag.Error
+        </div>
+    }
     <div class="modal-content rounded-0">
         <div class="modal-body">
             <div class="text-center">
@@ -61,11 +67,17 @@
                 <p class="fw-bold">Bạn có muốn mua</p>
                 <input type="hidden" value="@Model.UserId" asp-for="UserId"/>
                 <input type="hidden" value="@Model.TestStructureId" asp-for="TestStructureId"/>
-                @{
+                <input type="hidden" value="@user.Money" asp-for="Money" />
+                <input type="hidden" value="@testStructureItem.Price" asp-for="Price" />
+                    @{
                         CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");   // try with "en-US"
                         string price = long.Parse(testStructureItem.Price.ToString()).ToString("#,###", cul.NumberFormat);
                         string money = long.Parse(user.Money.ToString()).ToString("#,###", cul.NumberFormat);
-                }
+                        if (string.IsNullOrEmpty(money))
+                        {
+                            money = "0";
+                        }
+                    }
                 <span>Bài thi: @testStructureItem.Name</span><br />
                 <p class="fw-bold">Số dư: @money đ</p>
                 <span>Giá: @price đ</span>
