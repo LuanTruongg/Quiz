@@ -196,5 +196,24 @@ namespace Quiz.UI.Controllers
             }
             return Unauthorized();
         }
+        public async Task<IActionResult> DeleteSubjectManagement(string subjectId)
+        {
+            var checkRoles = _rolesService.CheckAdmin(HttpContext);
+            if (checkRoles is true)
+            {
+                var result = await _subjectServiceClient.DeleteSubject(subjectId);
+                if (result.IsSuccessed)
+                {
+                    TempData["Notify"] = "Xoá thành công";
+                    return RedirectToAction("ListSubjectManagement", "SubjectManagement");
+                }
+                else
+                {
+                    TempData["Notify"] = result.Message;
+                    return RedirectToAction("AddSubject", "SubjectManagement");
+                }
+            }
+            return Unauthorized();
+        }
     }
 }
