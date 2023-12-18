@@ -75,7 +75,7 @@ namespace Quiz.Service.Implements
             var listUserTest = from ut in _dbContext.UserTests
                                join ts in _dbContext.TestStructures on ut.TestStructureId equals ts.TestStructureId
                                join u in _dbContext.Users on ut.UserId equals u.Id
-                               where ut.TestStructureId == ts.TestStructureId
+                               where ut.TestStructureId == ts.TestStructureId && ts.TestStructureId == request.TestStructureId
                                select new GetUserTestResponse()
                                {
                                    UserId = ut.UserId,

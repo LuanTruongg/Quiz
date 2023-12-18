@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,5 +20,9 @@ namespace Quiz.DTO.QuestionManagement
         public string Difficult { get; set; }
         public string ModuleId { get; set; }
         public string ModuleName { get; set; }
+        public string Image { get; set; }
+        public string Audio { get; set; }
+        public IFormFile ImageFile { get; set; }
+        public IFormFile AudioFile { get; set; }
     }
 }

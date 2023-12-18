@@ -209,7 +209,15 @@ namespace Quiz.Service.Implements
 			editQuestion.Answer = Base64.Base64Encode(answer);
 			editQuestion.Difficult = request.Difficult;
 			editQuestion.ModuleId = request.ModuleId;
-			try
+            if (request.Image != null)
+            {
+                editQuestion.Image = request.Image;
+            }
+            if (request.Audio != null)
+            {
+                editQuestion.Audio = request.Audio;
+            }
+            try
 			{
 				_dbContext.Questions.Update(editQuestion);
 			}
@@ -256,7 +264,9 @@ namespace Quiz.Service.Implements
 				Answer = Base64.Base64Decode(questionExisting.Answer),
 				Difficult = questionExisting.Difficult,
 				ModuleId = moduleExisting.ModuleId,
-				ModuleName = moduleExisting.Name
+				ModuleName = moduleExisting.Name,
+				Image = questionExisting.Image,
+				Audio = questionExisting.Audio
 			};
             return new ApiSuccessResult<GetQuestionResponse>(result);
         }

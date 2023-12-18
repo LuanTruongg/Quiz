@@ -31,7 +31,7 @@
         </div>
         <div class="card-body">
             <div class="row col-md-12">
-                <form asp-action="EditQuestion" asp-controller="Question">
+                <form asp-action="EditQuestion" asp-controller="Question" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" value="@ViewData["QuestionId"]" asp-for="QuestionId" />
                     <input type="hidden" value="@ViewData["SubjectId"]" asp-for="SubjectId" />
@@ -57,6 +57,31 @@
                                 <input asp-for="QuestionText" class="form-control" value="@Model.QuestionText"/>
                                 <span asp-validation-for="QuestionText" class="text-danger"></span>
                             </div>
+                            @{
+                                if (!string.IsNullOrEmpty(Model.Image))
+                                {
+                                    <img src="~/uploaded/@Model.Image" class="w-50 my-3" />
+                                }
+                            }
+                            <div class="form-group mb-2">
+                                <label asp-for="ImageFile" class="control-label w-100">Hình ảnh</label>
+                                <input asp-for="ImageFile" type="file" class="from-control" value="">
+                                <span asp-validation-for="ImageFile" class="text-danger"></span>
+
+                            </div>
+                            @{
+                                if (!string.IsNullOrEmpty(Model.Audio))
+                                {
+                                    <audio controls>
+                                        <source src="~/uploaded/@Model.Audio" type="audio/ogg">
+                                    </audio>
+                                }
+                            }
+                            <div class="form-group">
+                                <label asp-for="AudioFile" class="control-label w-100">Âm thanh</label>
+                                <input asp-for="AudioFile" type="file" class="from-control">
+                                <span asp-validation-for="AudioFile" class="text-danger"></span>
+                            </div>
                             <div class="form-group">
                                 <label asp-for="QuestionA" class="control-label">Câu A</label>
                                 <input asp-for="QuestionA" class="form-control" value="@Model.QuestionA" />
@@ -80,7 +105,7 @@
                         </div>
                         <div class="col-md-5">
                             <div class="form-group">
-                                <label class="control-label">Đáp án đúng: </label>
+                                <label class="control-label">Đáp án đúng trước đó: </label>
                                 <br />
                                 <span class="form-control">@Model.Answer</span>
                             </div>
