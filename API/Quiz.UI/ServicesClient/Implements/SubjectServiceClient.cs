@@ -147,5 +147,16 @@ namespace Quiz.UI.ServicesClient.Implements
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
         }
+
+        public async Task<ApiResult<List<int>>> GetListTotalQuestionOfModule(string subjectId)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.GetAsync($"/quiz/module-management/total-question-of-module?SubjectId={subjectId}");
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<List<int>>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<List<int>>>(body);
+        }
     }
 }

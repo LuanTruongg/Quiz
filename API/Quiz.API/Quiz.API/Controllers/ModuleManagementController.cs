@@ -30,7 +30,17 @@ namespace Quiz.API.Controllers
 			throw new ErrorException(400, ErrorMessage.BadRequest);
 		}
 
-		[HttpGet("{moduleId}")]
+        [HttpGet("total-question-of-module")]
+        public async Task<IActionResult> GetListTotalQuestionOfModule([FromQuery] string SubjectId)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.GetListTotalQuestionOfModuleAsync(SubjectId));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+
+        [HttpGet("{moduleId}")]
 		[ProducesResponseType(typeof(GetListModuleResponse), 200)]
 		public async Task<IActionResult> GetModuleById(string moduleId)
 		{
@@ -40,6 +50,7 @@ namespace Quiz.API.Controllers
 			}
 			throw new ErrorException(400, ErrorMessage.BadRequest);
 		}
+
 
 		[HttpPost]
 		[ProducesResponseType(typeof(CreateModuleResponse), 200)]

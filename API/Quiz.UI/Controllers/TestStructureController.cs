@@ -82,6 +82,8 @@ namespace Quiz.UI.Controllers
 
             var listModule = await _subjectServiceClient.GetListModuleOfSubject(subjectId);
             ViewBag.ListModule = listModule.ResultObj;
+            var totalQuestion = await _subjectServiceClient.GetListTotalQuestionOfModule(subjectId);
+            ViewBag.TotalQuestion = totalQuestion.ResultObj;
             return View();
         }
         [HttpPost]

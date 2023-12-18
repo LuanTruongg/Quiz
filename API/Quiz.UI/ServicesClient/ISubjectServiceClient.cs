@@ -20,5 +20,6 @@ namespace Quiz.UI.ServicesClient
         Task<ApiResult<PagedResult<UserStructureItem>>> GetListUserBoughtTest(GetListUserStructureRequest request);
         Task<ApiResult<bool>> AddSubject(AddSubjectRequest request);
         Task<ApiResult<bool>> DeleteSubject(string id);
+        Task<ApiResult<List<int>>> GetListTotalQuestionOfModule(string subjectId);
     }
 }

@@ -93,7 +93,25 @@ namespace Quiz.Service.Implements
 			return new ApiSuccessResult<List<GetListModuleResponse>>(data);
 		}
 
-		public async Task<GetListModuleResponse> GetModuleByIdAsync(string moduleId)
+        public async Task<ApiResult<List<int>>> GetListTotalQuestionOfModuleAsync(string subjectId)
+        {
+            var subjectExisting = await _dbContext.Subjects.FindAsync(subjectId);
+            if (subjectExisting is null)
+            {
+                return new ApiErrorResult<List<int>>("Not Found module");
+            }
+            var listModule = await _dbContext.Modules.Where(x => x.SubjectId == subjectId).ToListAsync();
+
+			List<int> listTotal = new List<int>();
+			foreach(var item in listModule)
+			{
+				var totalQuestion = await _dbContext.Questions.Where(x => x.ModuleId == item.ModuleId).CountAsync();
+                listTotal.Add(totalQuestion);
+			}
+            return new ApiSuccessResult<List<int>>(listTotal);
+        }
+
+        public async Task<GetListModuleResponse> GetModuleByIdAsync(string moduleId)
 		{
 			var moduleExisting = await _dbContext.Modules.FindAsync(moduleId);
 			if (moduleExisting is null)

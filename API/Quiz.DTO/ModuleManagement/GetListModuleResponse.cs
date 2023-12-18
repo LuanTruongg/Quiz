@@ -4,6 +4,7 @@
 	{
         public string ModuleId { get; set; }
         public string Name { get; set; }
-		public string SubjectName { get; set; }
-	}
+        public string SubjectName { get; set; }
+        public int Total { get; set; }
+    }
 }

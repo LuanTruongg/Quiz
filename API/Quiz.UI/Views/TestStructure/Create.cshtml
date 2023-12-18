@@ -4,6 +4,7 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_LayoutTeacher.cshtml";
     List<GetListModuleResponse> listModule = ViewBag.ListModule;
+    List<int> listTotal = ViewBag.TotalQuestion;
 }
 <div class="container-fluid px-4">
     <h1 class="mt-4">Thêm bài thi</h1>
@@ -52,13 +53,16 @@
                         </div>
                         <div class="col-md-5">
                             @{
+                                var i = 0;
                                 foreach (var module in listModule)
                                 {
                                     <fieldset class="border p-2 mt-2">
+                                        <span class="text-danger">Tổng số câu hỏi: @listTotal[i]</span>
                                         <legend class="float-none w-auto">@module.Name</legend>
                                         <input type="hidden" value="@module.ModuleId" asp-for="ListModuleId" />
-                                        <input asp-for="ListNumQuestion" class="form-control" type="number" value="0" placeholder="Số lượng câu hỏi của chương này" />
+                                        <input asp-for="ListNumQuestion" class="form-control" type="number" value="0" min="0" max="@listTotal[i]" placeholder="Số lượng câu hỏi của chương này" />
                                     </fieldset>
+                                    i++;
                                 }
                             }
                         </div>
