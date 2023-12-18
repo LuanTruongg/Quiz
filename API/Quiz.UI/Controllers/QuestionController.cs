@@ -157,6 +157,30 @@ namespace Quiz.UI.Controllers
             var checkRoles = _rolesService.CheckTeacher(HttpContext);
             if (checkRoles is true)
             {
+                IFormFile file;
+                string uniqueFileNameImg = "";
+                string uniqueFileNameAudio = "";
+                try
+                {
+                    if (request.ImageFile != null)
+                    {
+                        uniqueFileNameImg = GetUniqueFileName(request.ImageFile.FileName);
+                        var uploads = Path.Combine(_webHostEnvironment.WebRootPath, "uploaded");
+                        var filePath = Path.Combine(uploads, uniqueFileNameImg);
+                        request.ImageFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                    }
+                    if (request.AudioFile != null)
+                    {
+                        uniqueFileNameAudio = GetUniqueFileName(request.AudioFile.FileName);
+                        var uploads = Path.Combine(_webHostEnvironment.WebRootPath, "uploaded");
+                        var filePath = Path.Combine(uploads, uniqueFileNameAudio);
+                        request.AudioFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
                 if (string.IsNullOrEmpty(request.Answer))
                 {
                     TempData["Validation"] = "Vui lòng chọn đáp án đúng";
@@ -179,7 +203,9 @@ namespace Quiz.UI.Controllers
                     QuestionC = request.QuestionC,
                     QuestionD = request.QuestionD,
                     Answer = Convert.ToChar(request.Answer),
-                    Difficult = request.Difficult
+                    Difficult = request.Difficult,
+                    Image = uniqueFileNameImg,
+                    Audio = uniqueFileNameAudio
                 };
                 var result = await _questionServiceClient.EditQuestion(request.QuestionId, content);
                 if (!result.IsSuccessed)
