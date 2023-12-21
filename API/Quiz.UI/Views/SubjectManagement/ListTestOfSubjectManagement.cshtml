@@ -87,17 +87,20 @@
                                     }
                                     else
                                     {
-                                        @Html.DisplayFor(modelItem => item.Price)
+                                            @Html.DisplayFor(modelItem => item.Price)
+                                        }
                                     }
-                                }
-                            </td>
-                            <td>
-                                <div class="dropdown">
+                                </td>
+                                <td>
+                                    <div class="dropdown">
                                         <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown">
                                             <i class="fa-light fa-ellipsis-vertical"></i>
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li>
+                                                @{
+                                                    var subjectId = ViewData["SubjectId"];
+                                                }
                                                 @Html.ActionLink(
                                                     "Xem kết quả", 
                                                     "ListResultTested", 
@@ -105,7 +108,8 @@
                                                     new GetListResultUserTestRequest { 
                                                         TestStructureId= item.TestStructureId,
                                                         Page=1,
-                                                        PageSize = 5
+                                                        PageSize = 5,
+                                                        SubjectId = subjectId.ToString()
                                                     },
                                                     new { @class = "dropdown-item"})
                                             </li>

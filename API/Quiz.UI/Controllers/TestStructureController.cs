@@ -61,7 +61,7 @@ namespace Quiz.UI.Controllers
                 SubjectId = subjectId,
             };
             var subject = await _subjectServiceClient.GetSubjectById(subjectId);
-            ViewData["SubjectId"] = subject.ResultObj.SubjectId;
+            ViewData["SubjectId"] = subject.ResultObj.SubjectId.ToString();
             ViewData["SubjectName"] = subject.ResultObj.Name;
             var userId = HttpContext.Session.GetString("UserId");
             if (!string.IsNullOrEmpty(userId))

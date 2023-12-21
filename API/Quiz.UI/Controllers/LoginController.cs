@@ -37,7 +37,7 @@ namespace Quiz.UI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(ModelState);
+                return RedirectToAction("Index", "Login", new { message = "Vui lòng nhập đầy đủ thông tin đăng nhập" });
             }
             var result = await _service.Authenticate(request);
             if (result.Token == null)
