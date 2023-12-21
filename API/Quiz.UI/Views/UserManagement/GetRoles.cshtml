@@ -7,10 +7,10 @@
     IList<string> listRoleUser = ViewBag.ListRoleUser;
 }
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Gán quyền</h1>
+    <h1 class="mt-4">Phân quyền</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="">Trang chủ</a></li>
-        <li class="breadcrumb-item"><a href="">Danh sách người dùng</a></li>
+        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Admin">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a asp-action="GetListUser" asp-controller="UserManagement">Danh sách người dùng</a></li>
         <li class="breadcrumb-item active">Phân quyền</li>
     </ol>
     <div class="card mb-4">
@@ -22,35 +22,61 @@
                 <form asp-action="RoleAssign">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" value="@ViewBag.UserId" asp-for="UserId"/>
-                    @for (var i = 0; i < listRole.Count; i++)
-                    {
-                        <div class="form-group">
-                            <label>
-                                @listRole[i].Name
-                                @{
-                                    if (listRoleUser.Count > 0)
-                                    {
-                                        foreach(var roles in listRoleUser)
-                                        {
-                                            if (listRole[i].Name == roles)
-                                            {
-                                                <input type="checkbox" asp-for="Roles[i].Selected" checked/>
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <input type="checkbox" asp-for="Roles[i].Selected" />
-                                    }
+                    
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                    Quyền hạn
+                                </th>
+                                <th>
                                     
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var stt = 1;
+                                for (var i = 0; i < listRole.Count; i++)
+                                {
+                                <tr>
+                                    <td>
+                                        @stt
+                                    </td>
+                                        <td>
+                                            @listRole[i].Name
+                                        </td>
+                                        <td>
+                                        @{
+                                            if (listRoleUser.Count > 0)
+                                            {
+                                                foreach (var roles in listRoleUser)
+                                                {
+                                                    if (listRole[i].Name == roles)
+                                                    {
+                                                        <input type="checkbox" asp-for="Roles[i].Selected" checked />
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" asp-for="Roles[i].Selected" />
+                                            }
+                                            stt++;
+
+                                        }
+
+                                        <input type="hidden" asp-for="Roles[i].Id" value="@listRole[i].Id">
+                                        <input type="hidden" asp-for="Roles[i].Name" value="@listRole[i].Name">
+                                        </td>
+                                </tr>
                                 }
-
-                                <input type="hidden" asp-for="Roles[i].Id" value="@listRole[i].Id">
-                                <input type="hidden" asp-for="Roles[i].Name" value="@listRole[i].Name">
-                            </label>
-
-                        </div>
-                    }
+                            }
+                        </tbody>
+                    </table>
                     <div class="form-group">
                         <input type="submit" value="Save" class="btn btn-primary" />
                     </div>

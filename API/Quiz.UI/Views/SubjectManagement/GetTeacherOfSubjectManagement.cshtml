@@ -14,9 +14,10 @@
     </script>
 }
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Danh sách người dùng</h1>
+    <h1 class="mt-4">Danh sách giảng viên</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Admin">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a asp-action="ListSubjectManagement" asp-controller="SubjectManagement">Danh sách môn học</a></li>
         <li class="breadcrumb-item"><a href="">@ViewBag.SubjectName</a></li>
         <li class="breadcrumb-item active">Danh sách giảng viên</li>
     </ol>
