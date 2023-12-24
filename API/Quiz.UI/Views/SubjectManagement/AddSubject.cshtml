@@ -39,7 +39,7 @@
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="Name" class="control-label">Tên môn học</label>
+                                <label asp-for="Name" class="control-label">Chuyên Ngành</label>
                                 <select class="form-select" asp-for="MajorId">
                                     @{
                                         foreach(var item in listMajor)
@@ -49,7 +49,11 @@
                                     }
                                 </select>
                             </div>
-                            
+                            <div class="form-group">
+                                <label asp-for="Module" class="control-label">Số chương</label>
+                                <input asp-for="Module" class="form-control" type="number"/>
+                                <span asp-validation-for="Module" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
 
