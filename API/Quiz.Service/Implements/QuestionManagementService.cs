@@ -104,6 +104,7 @@ namespace Quiz.Service.Implements
 			var getListQuestionOfSubject = from question in questionAll
 										   join module in _dbContext.Modules on question.ModuleId equals module.ModuleId
 										   join subject in _dbContext.Subjects on module.SubjectId equals subject.SubjectId
+										   where subject.SubjectId == request.SubjectId
 										   select new {
 												QuestionId = question.QuestionId,
 												QuestionText = question.QuestionText,

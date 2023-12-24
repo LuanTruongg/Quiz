@@ -16,11 +16,11 @@ namespace Quiz.Service.Implements
 			_dbContext = dbContext;
 		}
 
-		public async Task<IEnumerable<CreateModuleResponse>> CreateListModuleAsync(CreateModuleRequest request)
+		public async Task<ApiResult<bool>> CreateListModuleAsync(CreateModuleRequest request)
 		{
 			var subjectExisting = await _dbContext.Subjects.FindAsync(request.SubjectId);
 			if(subjectExisting is null) {
-				throw new TestException($"Not Found Subject with id {request.SubjectId}");
+				return new ApiErrorResult<bool>($"Not Found Subject with id {request.SubjectId}");
 			}
 			for(int i = 1; i <= request.NumberOfMudule; i++)
 			{
@@ -41,9 +41,9 @@ namespace Quiz.Service.Implements
 				}).ToListAsync();
 			if(listModuleOfSubject is null)
 			{
-				throw new TestException("Not Found");
+                return new ApiErrorResult<bool>("Not Found");
 			}
-			return listModuleOfSubject;
+			return new ApiSuccessResult<bool>();
 		}
 
 		public async Task<GetListModuleResponse> EditModuleAsync(string id, EditModuleRequest request)

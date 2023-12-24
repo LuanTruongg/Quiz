@@ -8,7 +8,7 @@ namespace Quiz.Service
 		Task<ApiResult<List<GetListModuleResponse>>> GetListModuleAsync(string subjectId);
         Task<ApiResult<List<int>>> GetListTotalQuestionOfModuleAsync(string subjectId);
         Task<GetListModuleResponse> GetModuleByIdAsync(string moduleId);
-		Task<IEnumerable<CreateModuleResponse>> CreateListModuleAsync(CreateModuleRequest request);
+        Task<ApiResult<bool>> CreateListModuleAsync(CreateModuleRequest request);
 		Task<GetListModuleResponse> EditModuleAsync(string id, EditModuleRequest request);
 	}
 }

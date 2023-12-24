@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Quiz.DTO.BaseResponse;
+using Quiz.DTO.ModuleManagement;
 using Quiz.DTO.SubjectManagement;
 using Quiz.DTO.TestStructureManagement;
 using Quiz.DTO.UserManagement;
@@ -182,7 +183,13 @@ namespace Quiz.UI.Controllers
             var checkRoles = _rolesService.CheckAdmin(HttpContext);
             if (checkRoles is true)
             {
+                var moduleRequest = new CreateModuleRequest()
+                {
+                    NumberOfMudule = request.Module,
+                    SubjectId = request.SubjectId,
+                };
                 var result = await _subjectServiceClient.AddSubject(request);
+                var addModule = await _subjectServiceClient.CreateModule(moduleRequest);
                 if (result.IsSuccessed)
                 {
                     TempData["Notify"] = "Thêm thành công";
