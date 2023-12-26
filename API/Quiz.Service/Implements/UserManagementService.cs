@@ -374,5 +374,24 @@ namespace Quiz.Service.Implements
             }
             
         }
+
+        public async Task<ApiResult<bool>> ChangePasswordAsync(ChangePasswordRequest request)
+        {
+            var userExisting = await _userManager.FindByIdAsync(request.UserId);
+            if (userExisting == null)
+            {
+                return new ApiErrorResult<bool>("User does not exist");
+            }
+            if (request.NewPassword != request.ConfirmPassword)
+            {
+                return new ApiErrorResult<bool>("Password invalid");
+            }
+            var result = await _userManager.ChangePasswordAsync(userExisting, request.OldPassword, request.NewPassword);
+            if (result.Succeeded)
+            {
+                return new ApiSuccessResult<bool>();
+            }
+            return new ApiErrorResult<bool>("Mật khẩu cũ không trùng khớp");
+        }
     }
 }

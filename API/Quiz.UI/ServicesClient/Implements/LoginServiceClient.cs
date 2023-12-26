@@ -38,7 +38,22 @@ namespace Quiz.UI.ServicesClient.Implements
             return JsonConvert.DeserializeObject<AuthenticationResponse>(responseContent);
         }
 
-        public async Task<string> GetListRoleFromToken(string token)
+		public async Task<ApiResult<bool>> ChangePasswordUser(ChangePasswordRequest request)
+		{
+            request.UserId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+			var json = JsonConvert.SerializeObject(request);
+			var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+			var client = _httpClientFactory.CreateClient();
+			client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+			var response = await client.PostAsync("/quiz/identity/change-password", httpContent);
+			var responseContent = await response.Content.ReadAsStringAsync();
+			if (response.IsSuccessStatusCode)
+				return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(responseContent);
+			return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(responseContent);
+		}
+
+		public async Task<string> GetListRoleFromToken(string token)
         {
             var handler = new JwtSecurityTokenHandler();
             var oldTokenDecoded = handler.ReadJwtToken(token);
