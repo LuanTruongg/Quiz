@@ -39,6 +39,26 @@ namespace Quiz.UI.Controllers
             return Redirect(url);
             //return RedirectToAction("PayComplete");
         }
+        [HttpGet]
+        public IActionResult ViewChangePassword()
+        {
+			if (TempData["Notify"] != null)
+			{
+				ViewBag.Error = TempData["Notify"];
+			}
+			return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequest request)
+        {
+            var result = await _service.ChangePasswordUser(request);
+            if (result.IsSuccessed)
+            {
+				return RedirectToAction("Index", "Login", new { message = "Vui lòng đăng nhập lại với mật khẩu mới" });
+			}
+			TempData["Notify"] = result.Message;
+			return RedirectToAction("ViewChangePassword", "Account");
+        }
         public async Task<IActionResult> PayComplete()
         {
             ViewBag.Success = await VnPayReturn();

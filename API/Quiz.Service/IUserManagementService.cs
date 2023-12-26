@@ -19,5 +19,6 @@ namespace Quiz.Service
         Task<ApiResult<bool>> AssignRolesAsync(string userId, RoleAssignRequest request);
         Task<ApiResult<PagedResult<UserStructureItem>>> GetListUserBoughtTestAsync(GetListUserStructureRequest request);
         Task<ApiResult<bool>> UpdateMoneyAsync(AddMoneyRequest request);
+        Task<ApiResult<bool>> ChangePasswordAsync(ChangePasswordRequest request);
     }
 }

@@ -58,5 +58,14 @@ namespace Quiz.API.Controllers
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.ChangePasswordAsync(request));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
     }
 }

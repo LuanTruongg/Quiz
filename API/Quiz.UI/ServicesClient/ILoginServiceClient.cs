@@ -11,5 +11,6 @@ namespace Quiz.UI.ServicesClient
         Task<ApiResult<GetProfileResponse>> GetMyProfile(string userId);
         Task<ApiResult<bool>> UpdateMoney(AddMoneyRequest request);
         Task<ApiResult<bool>> Register(RegisterRequest request);
-    }
+		Task<ApiResult<bool>> ChangePasswordUser(ChangePasswordRequest request);
+	}
 }
