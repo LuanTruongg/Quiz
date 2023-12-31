@@ -92,5 +92,14 @@ namespace Quiz.API.Controllers
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
-    }
+		[HttpPost("edit-profile/{id?}")]
+		public async Task<IActionResult> AddUserStructure(string id, [FromBody] EditUserRequest request)
+		{
+			if (ModelState.IsValid)
+			{
+				return GetResponse(200, await _userManagementService.EditUserAsync(request, id));
+			}
+			throw new ErrorException(400, ErrorMessage.BadRequest);
+		}
+	}
 }

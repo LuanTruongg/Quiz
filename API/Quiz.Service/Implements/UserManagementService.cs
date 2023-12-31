@@ -246,7 +246,7 @@ namespace Quiz.Service.Implements
             var result = new GetProfileResponse()
             {
                 Fullname = userExisting.Fullname,
-                DoB = userExisting.DoB,
+                DoB = userExisting.DoB.Date,
                 Address = userExisting.Address,
                 CCCD = userExisting.CCCD,
                 Money = userExisting.Money,

@@ -5,6 +5,7 @@
     GetProfileResponse profile = ViewBag.Profile;
     var userId = HttpContextAccessor.HttpContext.Session.GetString("UserId");
 }
+@model EditUserRequest
 <style>
     .form-control:focus {
         box-shadow: none;
@@ -47,7 +48,7 @@
         border: solid 1px #BA68C8
     }
 </style>
-<form>
+<form asp-action="EditProfile" asp-controller="Account">
 <div class="container rounded bg-white mt-5 mb-5">
     <div class="row">
         <div class="col-md-3 border-right">
@@ -78,20 +79,35 @@
             </div>
         </div>
         <div class="col-md-5 border-right">
-            <div class="p-3 py-5">
+                @if (ViewBag.Success != null)
+                {
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.Success
+                    </div>
+                }
+                else if (ViewBag.Error != null)
+                {
+                    <div id="msgAlert" class="alert alert-warning" role="alert">
+                        @ViewBag.Error
+                    </div>
+                }
+                <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="text-right">Profile Settings</h4>
+                    <h4 class="text-right">Thông tin cá nhân</h4>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-md-12"><label class="labels">Name</label><input type="text" class="form-control" placeholder="Full Name" value="@profile.Fullname"></div>
+                        @{
+                            var id = HttpContextAccessor.HttpContext.Session.GetString("UserId").ToString();
+                        }
+                        <input type="hidden" value="@id" asp-for="UserId"></input>
+                    <div class="col-md-12"><label class="labels">Name</label><input type="text" class="form-control" placeholder="Full Name" value="@profile.Fullname" asp-for="Fullname" required></div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" class="form-control" placeholder="enter phone number" value="@profile.PhoneNumber"></div>
-                    <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control" placeholder="enter address" value="@profile.Address"></div>
-                    <div class="col-md-12"><label class="labels">Email ID</label><input type="text" class="form-control" placeholder="enter email id" value="@profile.Email"></div>
-                    <div class="col-md-12"><label class="labels">Birthday</label><input type="text" class="form-control" placeholder="Date of Birth" value="@profile.DoB.Date"></div>
-                    <div class="col-md-12"><label class="labels">CCCD</label><input type="text" class="form-control" placeholder="CCCD" value="@profile.CCCD"></div>
-                    <div class="col-md-12"><label class="labels">Số điện thoại</label><input type="text" class="form-control" placeholder="Số điện thoại" value="@profile.PhoneNumber"></div>
+                        <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control" placeholder="enter address" value="@profile.Address" asp-for="Address" required></div>
+                        <div class="col-md-12"><label class="labels">Email ID</label><input type="text" class="form-control" placeholder="enter email id" value="@profile.Email" asp-for="Email" required></div>
+                        <div class="col-md-12"><label class="labels">Birthday</label><input type="text" class="form-control" placeholder="Date of Birth" value="@profile.DoB.ToShortDateString().ToString()" asp-for="DoB" required></div>
+                        <div class="col-md-12"><label class="labels">CCCD</label><input type="text" class="form-control" placeholder="CCCD" value="@profile.CCCD" asp-for="CCCD" required></div>
+                        <div class="col-md-12"><label class="labels">Số điện thoại</label><input type="text" class="form-control" placeholder="Số điện thoại" value="@profile.PhoneNumber" asp-for="PhoneNumber" required></div>
                         @{
                             CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");   // try with "en-US"
                             string money;
