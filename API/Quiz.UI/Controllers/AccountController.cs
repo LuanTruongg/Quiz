@@ -15,20 +15,42 @@ namespace Quiz.UI.Controllers
         private readonly ILoginServiceClient _service;
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public AccountController(ILoginServiceClient service, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        private readonly IUserManagementServiceClient _userManagementServiceClient;
+        public AccountController(ILoginServiceClient service, IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IUserManagementServiceClient userManagementServiceClient)
         {
             _service = service;
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
+            _userManagementServiceClient = userManagementServiceClient;
         }
         public async Task<IActionResult> Index()
         {
             var userId = HttpContext.Session.GetString("UserId");
             var profile = await _service.GetMyProfile(userId);
+            if (TempData["Success"] != null)
+            {
+                ViewBag.Success = TempData["Success"];
+            }
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
             ViewBag.Profile = profile.ResultObj;
             return View();
         }
-        public IActionResult Payment()
+		[HttpPost]
+		public async Task<IActionResult> EditProfile(EditUserRequest request)
+		{
+			var result = await _userManagementServiceClient.EditUser(request);
+            if (result.IsSuccessed)
+            {
+                TempData["Success"] = "Cập nhật thành công";
+                return RedirectToAction("Index", "Account");
+            }
+            TempData["Error"] = result.Message;
+            return RedirectToAction("Index", "Account");
+        }
+		public IActionResult Payment()
         {
             return View();
         }
