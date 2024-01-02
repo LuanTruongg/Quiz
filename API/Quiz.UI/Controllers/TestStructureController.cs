@@ -132,5 +132,30 @@ namespace Quiz.UI.Controllers
                     pageSize = 5 }
                 );
         }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateSpeaking(string subjectId)
+        {
+            var subject = await _subjectServiceClient.GetSubjectById(subjectId);
+            ViewData["SubjectId"] = subject.ResultObj.SubjectId;
+            ViewData["SubjectName"] = subject.ResultObj.Name;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateSpeakingTest(string htmlEditor , CreateSpeakingTestRequest request)
+        {
+            var requestStructure = new CreateTestStructureRequest()
+            {
+                Name = request.Name,
+                NumberOfQuestion = 1,
+                SubjectId = request.SubjectId,
+                Time = 0,
+                IsFree = request.IsFree,
+                Price = request.IsFree == true ? 0 : request.Price
+            };
+            var testStructureIdCreated = await _testStructureServiceClient.CreateTestStructure(requestStructure);
+            
+            return Ok();
+        }
     }
 }
