@@ -1,5 +1,6 @@
 ﻿@using Quiz.DTO.TestSubjectManagement
 @using Quiz.Service.Extensions
+@using System.Web;
 @model List<UserAnswerRequest>
 @{
     List<GetListQuestionOfTestResponse> listQuestion = ViewBag.ListQuestion;
@@ -99,7 +100,28 @@
             {
                 <div class="container w-100 shadow-sm p-3 mb-5 bg-white rounded">
                 <div class="question w-100">
-                    <div class="py-2 h5"><b>Câu @(i+1): @Base64.Base64Decode(listQuestion[i].QuestionText)</b></div>
+                    <div class="py-2 h5">
+                            @{
+                                if (listQuestion[i].QuestionCustom == "Speaking")
+                                {
+                                    // string encodedString = listQuestion[i].QuestionText;
+                                    // string decodedString = HttpUtility.UrlDecode(encodedString);
+                                    <script>
+                                        var encodedString = @listQuestion[i].QuestionText;
+                                        var decodedString = decodeURIComponent(encodedString);
+                                        var question = document.getElementById("speaking");
+                                        question.innerHTML = decodedString;
+                                        console.log(decodedString);
+                                    </script>
+                                    <p id="speaking"></p>
+                                }
+                                else
+                                {
+                                    <b>Câu @(i + 1): @Base64.Base64Decode(listQuestion[i].QuestionText)</b>
+                                }
+                            }
+                     
+                    </div>
                         @{
                             if (!string.IsNullOrEmpty(listQuestion[i].Image))
                             {

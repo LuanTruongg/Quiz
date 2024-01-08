@@ -50,24 +50,47 @@
                                             @listRole[i].Name
                                         </td>
                                         <td>
-                                        @{
-                                            if (listRoleUser.Count > 0)
-                                            {
-                                                foreach (var roles in listRoleUser)
+                                            @{
+                                                if (listRoleUser.Count > 0)
                                                 {
-                                                    if (listRole[i].Name == roles)
+                                                    var flag = false;
+                                                    // foreach (var roles in listRoleUser)
+                                                    // {
+                                                    //     if (listRole[i].Name == roles)
+                                                    //     {
+                                                    //         <input type="checkbox" asp-for="Roles[i].Selected" checked />
+                                                    //         flag = true;
+                                                    //     }
+                                                    //     else if (flag == false)
+                                                    //     {
+                                                    //         <input type="checkbox" asp-for="Roles[i].Selected" />
+                                                    //     }
+                                                    // }
+                                                    for(var k = i; k < listRole.Count; k++)
                                                     {
-                                                        <input type="checkbox" asp-for="Roles[i].Selected" checked />
+                                                        if (flag == false && k >= listRoleUser.Count)
+                                                        {
+                                                            <input type="checkbox" asp-for="Roles[i].Selected" />
+                                                        }
+                                                        if (k >= listRoleUser.Count)
+                                                        {
+                                                            break;
+                                                        }
+                                                        if (listRole[i].Name == listRoleUser[k])
+                                                        {
+                                                            <input type="checkbox" asp-for="Roles[i].Selected" checked />
+                                                            flag = true;
+                                                        }
+                                                        
                                                     }
                                                 }
-                                            }
-                                            else
-                                            {
-                                                <input type="checkbox" asp-for="Roles[i].Selected" />
-                                            }
-                                            stt++;
+                                                else
+                                                {
+                                                    <input type="checkbox" asp-for="Roles[i].Selected" />
+                                                }
+                                                stt++;
 
-                                        }
+                                            }
 
                                         <input type="hidden" asp-for="Roles[i].Id" value="@listRole[i].Id">
                                         <input type="hidden" asp-for="Roles[i].Name" value="@listRole[i].Name">

@@ -54,8 +54,19 @@ namespace Quiz.API.Controllers
 			}
 			throw new ErrorException(400, ErrorMessage.BadRequest);
 		}
+        [HttpPost("create-question-return-id")]
+        [ProducesResponseType(typeof(AddQuestionResponse), 200)]
 
-		[HttpPut("{id}")]
+        public async Task<IActionResult> CreateQuestionReturnId([FromBody] AddQuestionRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.AddQuestionReturnIdAsync(request));
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
+
+        [HttpPut("{id}")]
 		[ProducesResponseType(typeof(EditQuestionResponse), 200)]
 		public async Task<IActionResult> Put(string id, [FromBody] EditQuestionRequest request)
 		{
