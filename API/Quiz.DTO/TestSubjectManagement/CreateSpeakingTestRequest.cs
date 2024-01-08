@@ -16,5 +16,6 @@ namespace Quiz.DTO.TestSubjectManagement
         public bool IsFree { get; set; }
         public long Price { get; set; }
         public string htmlEditor { get; set; }
+        public string ModuleId { get; set; }
     }
 }

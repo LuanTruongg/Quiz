@@ -2,6 +2,7 @@
 using Quiz.DTO.ModuleManagement;
 using Quiz.DTO.TestStructureManagement;
 using Quiz.DTO.TestSubjectManagement;
+using Quiz.DTO.QuestionManagement;
 using Quiz.Repository.Model;
 using Quiz.UI.ServicesClient;
 using Quiz.UI.ServicesClient.Implements;
@@ -15,19 +16,22 @@ namespace Quiz.UI.Controllers
         private readonly ISubjectServiceClient _subjectServiceClient;
         private readonly ITestSubjectServiceClient _testSubjectServiceClient;
         private readonly IUserManagementServiceClient _userManagementServiceClient;
+        private readonly IQuestionServiceClient _questionServiceClient;
 
         public TestStructureController(
             ILogger<HomeController> logger, 
             ITestStructureServiceClient testStructureServiceClient, 
             ITestSubjectServiceClient testSubjectServiceClient,
             ISubjectServiceClient subjectServiceClient,
-            IUserManagementServiceClient userManagementServiceClient)
+            IUserManagementServiceClient userManagementServiceClient,
+            IQuestionServiceClient questionServiceClient)
         {
             _logger = logger;
             _testStructureServiceClient = testStructureServiceClient;
             _testSubjectServiceClient = testSubjectServiceClient;
             _subjectServiceClient = subjectServiceClient;
             _userManagementServiceClient = userManagementServiceClient;
+            _questionServiceClient = questionServiceClient;
         }
         public IActionResult Index()
         {
@@ -139,6 +143,10 @@ namespace Quiz.UI.Controllers
             var subject = await _subjectServiceClient.GetSubjectById(subjectId);
             ViewData["SubjectId"] = subject.ResultObj.SubjectId;
             ViewData["SubjectName"] = subject.ResultObj.Name;
+
+            var listModule = await _subjectServiceClient.GetListModuleOfSubject(subjectId);
+            ViewBag.ListModule = listModule.ResultObj;
+
             return View();
         }
         [HttpPost]
@@ -154,7 +162,32 @@ namespace Quiz.UI.Controllers
                 Price = request.IsFree == true ? 0 : request.Price
             };
             var testStructureIdCreated = await _testStructureServiceClient.CreateTestStructure(requestStructure);
-            
+
+            //Create Quesiton
+            var newQuestion = new CreateQuestionRequestViewModel()
+            {
+                ModuleId = request.ModuleId,
+                QuestionText = request.htmlEditor,
+                Difficult = "Easy",
+                Answer = 'A',
+                QuestionCustom = "Speaking",
+                QuestionA = "none",
+                QuestionB = "none",
+                QuestionC = "none",
+                QuestionD = "none",
+                
+            };
+            var createQuestion = await _questionServiceClient.CreateQuestionOfModuleReturn(newQuestion, "", "");
+
+            //Create Test
+            var requestTestSubject = new CreateTestSubjectSpeakingRequest()
+            {
+                TestStructureId = testStructureIdCreated.TestStructureId,
+                TestSubjectCode = testStructureIdCreated.TestStructureId,
+                QuestionId = createQuestion.ResultObj.ToString(),
+                ModuleId = request.ModuleId
+            };
+            var result = await _testSubjectServiceClient.CreateSpeakingTestSubject(requestTestSubject);
             return Ok();
         }
     }

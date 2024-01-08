@@ -384,7 +384,7 @@ namespace Quiz.Service.Implements
             }
             if (request.NewPassword != request.ConfirmPassword)
             {
-                return new ApiErrorResult<bool>("Password invalid");
+                return new ApiErrorResult<bool>("Mật khẩu không trùng khớp");
             }
             var result = await _userManager.ChangePasswordAsync(userExisting, request.OldPassword, request.NewPassword);
             if (result.Succeeded)

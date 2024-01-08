@@ -16,5 +16,6 @@ namespace Quiz.UI.ServicesClient
         Task<ApiResult<CreateTestSubjectResponse>> CreateTestSubject(CreateTestSubjectRequest request);
         Task<ApiResult<bool>> DeleteTestSubject(string id);
         Task<ApiResult<bool>> DeleteTestStructure(string id);
+        Task<ApiResult<bool>> CreateSpeakingTestSubject(CreateTestSubjectSpeakingRequest request);
     }
 }

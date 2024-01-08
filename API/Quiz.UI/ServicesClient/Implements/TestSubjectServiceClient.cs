@@ -26,6 +26,21 @@ namespace Quiz.UI.ServicesClient.Implements
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public async Task<ApiResult<bool>> CreateSpeakingTestSubject(CreateTestSubjectSpeakingRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync($"/quiz/test-subject-management/create-speaking", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
+
         public async Task<ApiResult<CreateTestSubjectResponse>> CreateTestSubject(CreateTestSubjectRequest request)
         {
             var client = _httpClientFactory.CreateClient();

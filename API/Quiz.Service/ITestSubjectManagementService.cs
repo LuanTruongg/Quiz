@@ -8,5 +8,6 @@ namespace Quiz.Service
 		Task<ApiResult<CreateTestSubjectResponse>> CreateTestSubjectAsync(CreateTestSubjectRequest request);
         Task<DeleteTestSubjectResponse> DeleteTestSubject(string testSubjectCode);
         Task<List<GetListQuestionOfTestResponse>> GetListQuestionOfTestAsync(GetListQuestionOfTestRequest request);
+        Task<ApiResult<bool>> CreateSpeakingTestSubjectAsync(CreateTestSubjectSpeakingRequest request);
     }
 }

@@ -10,5 +10,6 @@ namespace Quiz.UI.ServicesClient
         Task<ApiResult<bool>> EditQuestion(string id, EditQuestionRequest request);
         Task<ApiResult<GetQuestionResponse>> GetQuestionById(string id);
         Task<ApiResult<bool>> DeleteQuestion(string id);
+        Task<ApiResult<string>> CreateQuestionOfModuleReturn(CreateQuestionRequestViewModel request, string imgName, string audioName);
     }
 }

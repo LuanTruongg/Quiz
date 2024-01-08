@@ -40,7 +40,8 @@ namespace Quiz.UI.ServicesClient.Implements
                 Answer = request.Answer,
                 Difficult = request.Difficult,
                 Image = imgName,
-                Audio = audioName
+                Audio = audioName,
+                QuestionCustom = request.QuestionCustom,
             };
 
             var json = JsonConvert.SerializeObject(content);
@@ -118,6 +119,37 @@ namespace Quiz.UI.ServicesClient.Implements
                 return JsonConvert.DeserializeObject<ApiSuccessResult<GetQuestionResponse>>(responseContent);
             }
             return JsonConvert.DeserializeObject<ApiErrorResult<GetQuestionResponse>>(responseContent);
+        }
+
+        public async Task<ApiResult<string>> CreateQuestionOfModuleReturn(CreateQuestionRequestViewModel request, string imgName, string audioName)
+        {
+            var content = new AddQuestionRequest()
+            {
+                ModuleId = request.ModuleId,
+                QuestionText = request.QuestionText,
+                QuestionA = request.QuestionA,
+                QuestionB = request.QuestionB,
+                QuestionC = request.QuestionC,
+                QuestionD = request.QuestionD,
+                Answer = request.Answer,
+                Difficult = request.Difficult,
+                Image = imgName,
+                Audio = audioName,
+                QuestionCustom = request.QuestionCustom,
+            };
+
+            var json = JsonConvert.SerializeObject(content);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
+            var response = await client.PostAsync("/quiz/question-management/create-question-return-id", httpContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<ApiSuccessResult<string>>(responseContent);
+            }
+            return JsonConvert.DeserializeObject<ApiErrorResult<string>>(responseContent);
         }
     }
 }

@@ -16,5 +16,6 @@ namespace Quiz.DTO.QuestionManagement
         public string ModuleId { get; set; }
         public IFormFile Image { get; set; }
         public IFormFile Audio { get; set; }
+        public string QuestionCustom { get; set; }
     }
 }

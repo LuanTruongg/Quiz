@@ -17,7 +17,39 @@ namespace Quiz.Service.Implements
 		{
 			_dbContext = dbContext;
 		}
-		public async Task<ApiResult<CreateTestSubjectResponse>> CreateTestSubjectAsync(CreateTestSubjectRequest request)
+
+        public async Task<ApiResult<bool>> CreateSpeakingTestSubjectAsync(CreateTestSubjectSpeakingRequest request)
+        {
+            var testSubjectExisting = _dbContext.TestSubjects.FirstOrDefault(x => x.TestSubjectCode == request.TestSubjectCode);
+            if (testSubjectExisting != null)
+            {
+                return new ApiErrorResult<bool>($"Test Subject Code {request.TestSubjectCode} does exist");
+            }
+
+            var subjectExisting = _dbContext.Modules.FirstOrDefault(x => x.ModuleId == request.ModuleId);
+
+            var testStructure = await _dbContext.TestStructures.FindAsync(request.TestStructureId);
+
+            var newQuestion = new TestSubject()
+            {
+                TestSubjectId = Guid.NewGuid().ToString(),
+                TestSubjectCode = request.TestSubjectCode,
+                QuestionId = request.QuestionId,
+                TestStructureId = request.TestStructureId,
+            };
+            try
+            {
+                await _dbContext.TestSubjects.AddAsync(newQuestion);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new TestException($"{ex.Message}");
+            }
+            return new ApiSuccessResult<bool>();
+        }
+
+        public async Task<ApiResult<CreateTestSubjectResponse>> CreateTestSubjectAsync(CreateTestSubjectRequest request)
 		{
 			var testSubjectExisting = _dbContext.TestSubjects.FirstOrDefault(x => x.TestSubjectCode == request.TestSubjectCode);
 			if (testSubjectExisting != null)
@@ -125,7 +157,8 @@ namespace Quiz.Service.Implements
 					AnswerC = x.Question.QuestionC,
 					AnswerD = x.Question.QuestionD,
 					Image = x.Question.Image,
-                    Audio = x.Question.Audio
+                    Audio = x.Question.Audio,
+					QuestionCustom = x.Question.QuestionCustom,
                 }).ToListAsync();
 			return listAllQuestion;
         }

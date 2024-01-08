@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace Quiz.Service.Implements
 {
-	public class QuestionManagementService : IQuestionManagementService
+    public class QuestionManagementService : IQuestionManagementService
 	{
 		private readonly QuizDbContext _dbContext;
 		public Base64 Base64 { get; set; }
@@ -50,10 +50,11 @@ namespace Quiz.Service.Implements
 				QuestionB = Base64.Base64Encode(request.QuestionB),
 				QuestionC = Base64.Base64Encode(request.QuestionC),
 				QuestionD = Base64.Base64Encode(request.QuestionD),
-				QuestionCustom = "test",
+				QuestionCustom = request.QuestionCustom is null? "no custom" : request.QuestionCustom,
 				Answer = Base64.Base64Encode(answer),
 				Difficult = request.Difficult,
-				ModuleId = request.ModuleId
+				ModuleId = request.ModuleId,
+				
 			};
 			if (request.Image != null)
 			{
@@ -270,6 +271,64 @@ namespace Quiz.Service.Implements
 				Audio = questionExisting.Audio
 			};
             return new ApiSuccessResult<GetQuestionResponse>(result);
+        }
+
+        public async Task<ApiResult<string>> AddQuestionReturnIdAsync(AddQuestionRequest request)
+        {
+            var moduleExisting = await _dbContext.Modules.FindAsync(request.ModuleId);
+            if (moduleExisting is null)
+            {
+                return new ApiErrorResult<string>($"Not Found Module with Id: {request.ModuleId}");
+            }
+            var answer = string.Empty;
+            switch (request.Answer)
+            {
+                case 'A':
+                    answer = request.QuestionA;
+                    break;
+                case 'B':
+                    answer = request.QuestionB;
+                    break;
+                case 'C':
+                    answer = request.QuestionC;
+                    break;
+                case 'D':
+                    answer = request.QuestionD;
+                    break;
+            }
+            var newQuestion = new Question()
+            {
+                QuestionId = Guid.NewGuid().ToString(),
+                QuestionText = Base64.Base64Encode(request.QuestionText),
+                QuestionA = Base64.Base64Encode(request.QuestionA),
+                QuestionB = Base64.Base64Encode(request.QuestionB),
+                QuestionC = Base64.Base64Encode(request.QuestionC),
+                QuestionD = Base64.Base64Encode(request.QuestionD),
+                QuestionCustom = request.QuestionCustom is null ? "no custom" : request.QuestionCustom,
+                Answer = Base64.Base64Encode(answer),
+                Difficult = request.Difficult,
+                ModuleId = request.ModuleId,
+
+            };
+            if (request.Image != null)
+            {
+                newQuestion.Image = request.Image;
+            }
+            if (request.Audio != null)
+            {
+                newQuestion.Audio = request.Audio;
+            }
+            try
+            {
+                await _dbContext.Questions.AddAsync(newQuestion);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+            await _dbContext.SaveChangesAsync();
+            var result = _dbContext.Questions.Where(x => x.QuestionId == newQuestion.QuestionId).FirstOrDefault();
+            return new ApiSuccessResult<string>(result.QuestionId);
         }
     }
 }
