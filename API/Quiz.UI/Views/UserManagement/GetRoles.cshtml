@@ -66,23 +66,53 @@
                                                     //         <input type="checkbox" asp-for="Roles[i].Selected" />
                                                     //     }
                                                     // }
-                                                    for(var k = i; k < listRole.Count; k++)
+
+                                                    // for(var k = i; k < listRole.Count; k++)
+                                                    // {
+                                                    //     if (flag == false && k >= listRoleUser.Count)
+                                                    //     {
+                                                    //         <input type="checkbox" asp-for="Roles[i].Selected" />
+                                                    //     }
+                                                    //     if (k >= listRoleUser.Count)
+                                                    //     {
+                                                    //         break;
+                                                    //     }
+                                                    //     if (listRole[i].Name == listRoleUser[k])
+                                                    //     {
+                                                    //         <input type="checkbox" asp-for="Roles[i].Selected" checked />
+                                                    //         flag = true;
+                                                    //     }
+                                                    // }
+
+                                                    if (listRole[i].Name == listRoleUser[0] && listRoleUser.Count == 1)
                                                     {
-                                                        if (flag == false && k >= listRoleUser.Count)
-                                                        {
-                                                            <input type="checkbox" asp-for="Roles[i].Selected" />
-                                                        }
-                                                        if (k >= listRoleUser.Count)
-                                                        {
-                                                            break;
-                                                        }
-                                                        if (listRole[i].Name == listRoleUser[k])
-                                                        {
-                                                            <input type="checkbox" asp-for="Roles[i].Selected" checked />
-                                                            flag = true;
-                                                        }
-                                                        
+                                                        <input type="checkbox" asp-for="Roles[i].Selected" checked />
                                                     }
+                                                    else if(listRole[i].Name != listRoleUser[0] && listRoleUser.Count == 1)
+                                                    {
+                                                        <input type="checkbox" asp-for="Roles[i].Selected" />
+                                                    }
+
+                                                    if (listRoleUser.Count > 1)
+                                                    {
+                                                        for(var k = 0; k < listRole.Count; k++)
+                                                        {
+                                                            if (flag == false && k >= listRoleUser.Count)
+                                                            {
+                                                                <input type="checkbox" asp-for="Roles[i].Selected" />
+                                                            }
+                                                            if (k >= listRoleUser.Count)
+                                                            {
+                                                                break;
+                                                            }
+                                                            if (listRole[i].Name == listRoleUser[k])
+                                                            {
+                                                                <input type="checkbox" asp-for="Roles[i].Selected" checked />
+                                                                flag = true;
+                                                            }
+                                                        }
+                                                    }
+                                                    
                                                 }
                                                 else
                                                 {
