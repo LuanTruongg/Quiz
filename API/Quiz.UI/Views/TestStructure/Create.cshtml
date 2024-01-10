@@ -17,6 +17,12 @@
             <a class="btn btn-success" asp-controller="Subject" asp-action="Index">Xem danh sách</a>
         </div>
         <div class="card-body">
+            @if (ViewBag.Error != null)
+            {
+                <div id="msgAlert" class="alert alert-warning" role="alert">
+                    @ViewBag.Error
+                </div>
+            }
             <div class="row col-md-12">
                 <form asp-action="Create" asp-controller="TestStructure" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>

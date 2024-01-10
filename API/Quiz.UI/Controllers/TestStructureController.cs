@@ -84,6 +84,10 @@ namespace Quiz.UI.Controllers
             ViewData["SubjectId"] = subject.ResultObj.SubjectId;
             ViewData["SubjectName"] = subject.ResultObj.Name;
 
+            if (TempData["Notify"] != null)
+            {
+                ViewBag.Error = TempData["Notify"];
+            }
             var listModule = await _subjectServiceClient.GetListModuleOfSubject(subjectId);
             ViewBag.ListModule = listModule.ResultObj;
             var totalQuestion = await _subjectServiceClient.GetListTotalQuestionOfModule(subjectId);
@@ -115,10 +119,10 @@ namespace Quiz.UI.Controllers
             {
                 await _testSubjectServiceClient.DeleteTestSubject(testStructureIdCreated.TestStructureId);
                 await _testSubjectServiceClient.DeleteTestStructure(testStructureIdCreated.TestStructureId);
-                TempData["Notify"] = "Tạo bài thi không thành công";
+                TempData["Notify"] = result.Message;
                 return RedirectToAction(
-                    "ListTestOfSubjectManagement",
-                    "SubjectManagement",
+                    "Create",
+                    "TestStructure",
                     new
                     {
                         subjectId = request.SubjectId,

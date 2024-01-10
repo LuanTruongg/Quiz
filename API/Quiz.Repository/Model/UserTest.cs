@@ -12,5 +12,6 @@
         public List<UserAnswer> UserAnswers { get; set; }
         public string TestStructureId { get; set; }
         public TestStructure TestStructure { get; set; }
+        public DateTime? TimeSubmit { get; set; }
     }
 }

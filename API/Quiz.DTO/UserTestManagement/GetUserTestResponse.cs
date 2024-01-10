@@ -17,5 +17,6 @@ namespace Quiz.DTO.UserTestManagement
         public string TestStructureName{ get; set; }
         public int NumberOfQuestions { get; set; }
         public int Time { get; set; }
+        public DateTime TimeSubmit { get; set; }
     }
 }
