@@ -61,6 +61,12 @@ namespace Quiz.Service.Implements
 
 			var testStructure = await _dbContext.TestStructures.FindAsync(request.TestStructureId);
 
+			var sumTotalQuestion = request.ListNumQuestion.Sum();
+			if(testStructure.NumberOfQuestions != sumTotalQuestion)
+			{
+                return new ApiErrorResult<CreateTestSubjectResponse>($"Tổng số lượng câu hỏi phải bằng với số lượng yêu cầu");
+            }
+
 			var listQuestionOfSubject = from question in _dbContext.Questions
 								  join module in _dbContext.Modules on question.ModuleId equals module.ModuleId
 								  join subject in _dbContext.Subjects on module.SubjectId equals subject.SubjectId
