@@ -29,6 +29,7 @@ namespace Quiz.Service.Implements
                 UserTestId = request.UserTestId,
                 Score = request.Score,
                 CorrectAnswers = request.CorrectAnswers,
+                TimeSubmit = DateTime.Now,
             };
             try
             {
@@ -84,6 +85,7 @@ namespace Quiz.Service.Implements
                                    CorrectAnswers = ut.CorrectAnswers,
                                    NumberOfQuestions = ts.NumberOfQuestions,
                                    Score = ut.Score,
+                                   TimeSubmit = ut.TimeSubmit.Value
                                };
 
             if (request.Search != null)
