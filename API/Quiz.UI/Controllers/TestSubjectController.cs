@@ -8,15 +8,18 @@ namespace Quiz.UI.Controllers
     public class TestSubjectController : Controller
     {
         private readonly ITestSubjectServiceClient _testSubjectServiceClient;
-        public TestSubjectController(ITestSubjectServiceClient testSubjectServiceClient)
+        private readonly ITestStructureServiceClient _testStructureServiceClient;
+        public TestSubjectController(ITestSubjectServiceClient testSubjectServiceClient, ITestStructureServiceClient testStructureServiceClient)
         {
             _testSubjectServiceClient = testSubjectServiceClient;
+            _testStructureServiceClient = testStructureServiceClient;
         }
         public async Task<IActionResult> Index(string testStructureId)
         {
             ViewBag.TestStructureId = testStructureId;
-            //var testSubjectCode = await _testSubjectServiceClient.GetTestSubjectCode(testStructureId);
+            var teststructure = await _testStructureServiceClient.GetTestStructureById(testStructureId);
             ViewBag.ListQuestion = await _testSubjectServiceClient.GetListQuestionOfTest(testStructureId);
+            ViewBag.TestStructure = teststructure.ResultObj;
             return View();
         }
         [HttpPost]
