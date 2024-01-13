@@ -1,10 +1,12 @@
 ﻿@using Quiz.DTO.TestSubjectManagement
+@using Quiz.DTO.TestStructureManagement
 @using Quiz.Service.Extensions
 @using System.Web;
 @model List<UserAnswerRequest>
 @{
     List<GetListQuestionOfTestResponse> listQuestion = ViewBag.ListQuestion;
     var testStructureId = ViewBag.TestStructureId;
+    TestStructureItem testStructure = ViewBag.TestStructure;
 }
 <style>
     *{
@@ -90,7 +92,42 @@
     }
 }
 </style>
+<div class="py-2 px-4 d-flex justify-content-end">
+    <div style="font-size:24px">
+        <span class="text-danger">Thời gian làm bài: </span>
+        <span id="timer" class="text-danger">@testStructure.Time:00</span>
+    </div>
+</div>
+<script>
+    var timeLimitInMinutes = @testStructure.Time;
+    var timeLimitInSeconds = timeLimitInMinutes * 60;
+    var timerElement = document.getElementById('timer');
 
+    function startTimer() {
+        timeLimitInSeconds--;
+        var minutes = Math.floor(timeLimitInSeconds / 60);
+        var seconds = timeLimitInSeconds % 60;
+
+        if (timeLimitInSeconds < 0) {
+            timerElement.textContent = '00:00';
+            clearInterval(timerInterval);
+            document.getElementById("submitTestButton").click();
+            return;
+        }
+
+        if (minutes < 10) {
+            minutes = '0' + minutes;
+        }
+        if (seconds < 10) {
+            seconds = '0' + seconds;
+        }
+
+        timerElement.textContent = minutes + ':' + seconds;
+    }
+
+    var timerInterval = setInterval(startTimer, 1000);
+
+</script>
 @using (Html.BeginForm("SubmitTest", "TestSubject", FormMethod.Post))
 {
     <input type="hidden" value="@testStructureId" name="testStructureId" />
@@ -163,7 +200,7 @@
         }
     </div>
     <div class="d-flex justify-content-end py-4 w-75">
-        <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Nộp bài</button>
+        <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter" id="submitTestButton">Nộp bài</button>
     </div>
 }
 
