@@ -18,5 +18,6 @@ namespace Quiz.DTO.UserTestManagement
         public int NumberOfQuestions { get; set; }
         public int Time { get; set; }
         public DateTime TimeSubmit { get; set; }
+        public string DateSubmit { get; set; }
     }
 }

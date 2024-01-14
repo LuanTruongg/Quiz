@@ -14,5 +14,6 @@ namespace Quiz.DTO.UserTestManagement
         public int PageSize { get; set; }
         public bool? IsAscSorting { get; set; }
         public string? SubjectId { get; set; }
+        public string? DateSubmit { get; set; }
     }
 }
