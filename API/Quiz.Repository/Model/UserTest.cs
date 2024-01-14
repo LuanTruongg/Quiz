@@ -13,5 +13,6 @@
         public string TestStructureId { get; set; }
         public TestStructure TestStructure { get; set; }
         public DateTime? TimeSubmit { get; set; }
+        public string? DateSubmit { get; set; }
     }
 }

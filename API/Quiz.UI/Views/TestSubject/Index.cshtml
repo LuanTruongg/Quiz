@@ -154,16 +154,17 @@
                                 }
                                 else
                                 {
-                                    <b>Câu @(i + 1): @Base64.Base64Decode(listQuestion[i].QuestionText)</b>
+                                    <b>Câu @(i + 1): </b><span>@Base64.Base64Decode(listQuestion[i].QuestionText)</span><br/>
+                                }
+                                if (!string.IsNullOrEmpty(listQuestion[i].Image))
+                                {
+                                    <img src="~/uploaded/@listQuestion[i].Image" class="my-3" />
                                 }
                             }
                      
                     </div>
                         @{
-                            if (!string.IsNullOrEmpty(listQuestion[i].Image))
-                            {
-                                <img src="~/uploaded/@listQuestion[i].Image" class="w-50 my-3" />
-                            }
+                            
                             if (!string.IsNullOrEmpty(listQuestion[i].Audio))
                             {
                                 <audio controls>

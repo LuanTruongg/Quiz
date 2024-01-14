@@ -26,8 +26,10 @@ namespace Quiz.UI.ServicesClient.Implements
             client.BaseAddress = new Uri(_configuration["BaseApiAddress"]);
             var response = await client.GetAsync($"/quiz/user-test-management/get-list-result-user-test-management" +
                 $"?Search={request.Search}" +
+                $"&DateSubmit={request.DateSubmit}" +
                 $"&TestStructureId={request.TestStructureId}" +
                 $"&Page={request.Page}" +
+                $"&SubjectId={request.SubjectId}" +
                 $"&PageSize={request.PageSize}");
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)

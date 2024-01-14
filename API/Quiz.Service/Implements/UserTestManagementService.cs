@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Quiz.Service.Implements
@@ -22,6 +23,7 @@ namespace Quiz.Service.Implements
         }
         public async Task<AddUserTestResponse> AddUserTestAsync(AddUserTestRequest request)
         {
+            var tempDate = DateTime.Now.ToString("dd/MM/yyyy");
             var newUserTest = new UserTest()
             {
                 UserId = request.UserId,
@@ -29,7 +31,7 @@ namespace Quiz.Service.Implements
                 UserTestId = request.UserTestId,
                 Score = request.Score,
                 CorrectAnswers = request.CorrectAnswers,
-                TimeSubmit = DateTime.Now,
+                DateSubmit = tempDate
             };
             try
             {
@@ -85,7 +87,7 @@ namespace Quiz.Service.Implements
                                    CorrectAnswers = ut.CorrectAnswers,
                                    NumberOfQuestions = ts.NumberOfQuestions,
                                    Score = ut.Score,
-                                   TimeSubmit = ut.TimeSubmit.Value
+                                   DateSubmit = ut.DateSubmit
                                };
 
             if (request.Search != null)
@@ -93,7 +95,11 @@ namespace Quiz.Service.Implements
                 listUserTest = listUserTest
                     .Where(x => x.FullName.Contains(request.Search));
             }
-
+            if (request.DateSubmit != "01/01/0001")
+            {
+                listUserTest = listUserTest
+                    .Where(x => x.DateSubmit.Contains(request.DateSubmit));
+            }
             int totalRow = listUserTest.Count();
 
             var data = await listUserTest.Skip((request.Page - 1) * request.PageSize)
