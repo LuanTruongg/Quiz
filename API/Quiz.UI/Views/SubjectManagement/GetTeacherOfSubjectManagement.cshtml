@@ -102,7 +102,7 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                @Html.ActionLink("Huỷ dạy", "", new {  userId=item.UserId,  subjectId = ViewBag.SubjectId },new{@class = "dropdown-item"})
+                                                @Html.ActionLink("Huỷ dạy", "DeleteTeacherOfSubject", "SubjectManagement", new {  userId=item.UserId,  subjectId = ViewBag.SubjectId },new{@class = "dropdown-item"})
                                             </li>
                                         </ul>
                                     </div>

@@ -10,5 +10,6 @@ namespace Quiz.Service
         Task<ApiResult<SubjectItem>> GetSubjectByIdAsync(string id);
         Task<ApiResult<bool>> AddTeachersForSubjectAsync(AddTeacherForSubjectRequest request);
         Task<ApiResult<bool>> DeleteSubjectAsync(string id);
+        Task<ApiResult<bool>> DeleteTeachersForSubjectAsync(DeleteTeacherForSubjectRequest request);
     }
 }

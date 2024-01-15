@@ -22,5 +22,6 @@ namespace Quiz.UI.ServicesClient
         Task<ApiResult<bool>> DeleteSubject(string id);
         Task<ApiResult<List<int>>> GetListTotalQuestionOfModule(string subjectId);
         Task<ApiResult<bool>> CreateModule(CreateModuleRequest request);
+        Task<ApiResult<bool>> DeleteTeacherForSubject(DeleteTeacherForSubjectRequest request);
     }
 }
