@@ -172,11 +172,14 @@ namespace Quiz.UI.Controllers
                 
         }
         [HttpGet]
-        public async Task<IActionResult> GetListUserBougthTest(string testStructureId)
+        public async Task<IActionResult> GetListUserBougthTest(string testStructureId, string subjectId)
         {
             var checkRoles = _rolesService.CheckTeacher(HttpContext);
             if (checkRoles is true)
             {
+                var subject = await _subjectServiceClient.GetSubjectById(subjectId);
+                ViewData["SubjectName"] = subject.ResultObj.Name;
+                ViewData["SubjectId"] = subject.ResultObj.SubjectId;
                 var request = new GetListUserStructureRequest()
                 {
                     TestStructureId = testStructureId,

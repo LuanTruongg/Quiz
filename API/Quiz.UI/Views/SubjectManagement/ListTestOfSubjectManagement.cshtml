@@ -122,13 +122,7 @@
                                                     new { @class = "dropdown-item"})
                                             </li>
                                             <li>
-                                                @Html.ActionLink("Xem người mua", "GetListUserBougthTest","SubjectManagement", new { testStructureId=item.TestStructureId },new { @class = "dropdown-item"})
-                                            </li>
-                                            <li>
-                                                @Html.ActionLink("Xem bộ câu hỏi", "Index", "Quenstion", new { id=item.TestStructureId },new { @class = "dropdown-item"})
-                                            </li>
-                                            <li>
-                                                @Html.ActionLink("Xóa", "Delete", new { id=item.TestStructureId },new { @class = "dropdown-item"})
+                                                @Html.ActionLink("Xem người mua", "GetListUserBougthTest","SubjectManagement", new { testStructureId=item.TestStructureId, subjectId = ViewData["SubjectId"] },new { @class = "dropdown-item"})
                                             </li>
                                         </ul>
                                 </div>
