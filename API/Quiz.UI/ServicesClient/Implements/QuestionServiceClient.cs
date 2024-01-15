@@ -41,7 +41,7 @@ namespace Quiz.UI.ServicesClient.Implements
                 Difficult = request.Difficult,
                 Image = imgName,
                 Audio = audioName,
-                QuestionCustom = request.QuestionCustom,
+                QuestionCustom = request.QuestionCustom is null ? "": request.QuestionCustom,
             };
 
             var json = JsonConvert.SerializeObject(content);

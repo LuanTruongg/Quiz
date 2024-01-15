@@ -76,11 +76,11 @@
                     <label class="form-label" for="form3Example4">Giới tính</label>
                     <div class="form-outline mb-3 d-flex">
                         <div class="col-md-3">
-                            <input type="checkbox" asp-for="Sex" />
+                            <input type="radio" asp-for="Sex" value="true" required/>
                             Nam
                         </div>
                         <div>
-                            <input type="checkbox" class="ml-3"/>
+                            <input type="radio" asp-for="Sex" value="false"/>
                             Nữ
                         </div>
                     </div>
