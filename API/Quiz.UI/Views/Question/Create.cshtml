@@ -16,7 +16,12 @@
 
     <div class="card mb-4">
         <div class="card-header">
-            <a class="btn btn-success" asp-controller="Question" asp-action="Index">Xem danh sách</a>
+            @Html.ActionLink(
+            "Xem danh sách",
+            "Index",
+            "Question",
+            new { subjectId = ViewData["SubjectId"]},
+            new { @class = "btn btn-success"})
         </div>
         <div class="card-body">
             <div class="row col-md-12">
