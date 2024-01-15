@@ -73,6 +73,16 @@ namespace Quiz.API.Controllers
             }
             throw new ErrorException(400, ErrorMessage.BadRequest);
         }
+        [HttpPost("delete-teacher-for-subject")]
+        [ProducesResponseType(typeof(GetListSubjectPagingResponse), 200)]
+        public async Task<IActionResult> DeleteTeacherForSubject([FromBody] DeleteTeacherForSubjectRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                return GetResponse(200, await _service.DeleteTeachersForSubjectAsync(request));;
+            }
+            throw new ErrorException(400, ErrorMessage.BadRequest);
+        }
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(GetListSubjectPagingResponse), 200)]
         public async Task<IActionResult> DeleteSubject(string id)

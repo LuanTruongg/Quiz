@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Quiz.DTO.BaseResponse;
 using Quiz.DTO.SubjectManagement;
 using Quiz.Infrastructure.Http;
@@ -10,9 +11,11 @@ namespace Quiz.Service.Implements
 	public class SubjectManagementService : ISubjectManagementService
 	{
 		private readonly QuizDbContext _dbContext;
-		public SubjectManagementService(QuizDbContext dbContext)
+        private readonly UserManager<User> _userManager;
+        public SubjectManagementService(QuizDbContext dbContext, UserManager<User> userManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
         }
 		public async Task<ApiResult<bool>> AddSubjectsAsync(AddSubjectRequest request)
 		{
@@ -106,6 +109,36 @@ namespace Quiz.Service.Implements
 			_dbContext.Subjects.Remove(subjectExisting);
 			_dbContext.SaveChanges();
             return new ApiSuccessResult<bool>();
+        }
+
+        public async Task<ApiResult<bool>> DeleteTeachersForSubjectAsync(DeleteTeacherForSubjectRequest request)
+        {
+            var subjectExisting = _dbContext.Subjects.FirstOrDefault(x => x.SubjectId == request.SubjectId);
+            if (subjectExisting == null)
+            {
+                return new ApiErrorResult<bool>("Môn học không tồn tại");
+            }
+
+            var userExisting = await _userManager.FindByIdAsync(request.UserId);
+            if (subjectExisting == null)
+            {
+                return new ApiErrorResult<bool>("User không tồn tại");
+            }
+            UserSubject userSubject = new UserSubject()
+            {
+                SubjectId = request.SubjectId,
+                UserId = request.UserId,
+            };
+            try
+            {
+                _dbContext.UserSubjects.Remove(userSubject);
+                _dbContext.SaveChanges();
+                return new ApiSuccessResult<bool>();
+            }
+            catch (Exception ex)
+            {
+                return new ApiErrorResult<bool>(ex.Message);
+            }
         }
 
         public async Task<IEnumerable<GetSubjectResponse>> GetListSubjectsAsync()

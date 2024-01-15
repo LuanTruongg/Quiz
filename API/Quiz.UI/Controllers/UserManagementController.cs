@@ -82,7 +82,7 @@ namespace Quiz.UI.Controllers
         public async Task<IActionResult> GetListUser(PagingRequest request)
         {
             request.PageSize = 5;
-            request.Page = 1;
+            request.Page = request.Page == 0 ? 1: request.Page;
             if (TempData["Notify"] != null)
             {
                 ViewBag.SuccessMsg = TempData["Notify"];
@@ -161,5 +161,6 @@ namespace Quiz.UI.Controllers
                     );
             }
         }
+        
     }
 }

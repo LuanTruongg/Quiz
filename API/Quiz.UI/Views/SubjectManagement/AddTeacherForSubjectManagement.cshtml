@@ -72,20 +72,55 @@
                                             </td>
                                             <td>
                                                 @{
-                                                    if (listTeacherOfSubject.Count > 0)
+                                                    if (listTeacher.Count > 0)
                                                     {
-                                                        foreach (var user in listTeacherOfSubject)
+                                                        var flag = false;
+                                                        if (listTeacher[i].UserId == listTeacherOfSubject[0].UserId && listTeacherOfSubject.Count == 1)
                                                         {
-                                                            if (listTeacher[i].UserId == user.UserId)
+                                                            <input type="checkbox" asp-for="User[i].Select" checked />
+                                                        }
+                                                        else if (listTeacher[i].UserId != listTeacherOfSubject[0].UserId && listTeacherOfSubject.Count == 1)
+                                                        {
+                                                            <input type="checkbox" asp-for="User[i].Select" />
+                                                        }
+
+                                                        if (listTeacherOfSubject.Count > 1)
+                                                        {
+                                                            for (var k = 0; k < listTeacher.Count; k++)
                                                             {
-                                                                <input type="checkbox" asp-for="User[i].Select" checked />
+                                                                if (flag == false && k >= listTeacherOfSubject.Count)
+                                                                {
+                                                                    <input type="checkbox" asp-for="User[i].Select" />
+                                                                }
+                                                                if (k >= listTeacherOfSubject.Count)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                if (listTeacher[i].UserId == listTeacherOfSubject[k].UserId)
+                                                                {
+                                                                    <input type="checkbox" asp-for="User[i].Select" checked />
+                                                                    flag = true;
+                                                                }
                                                             }
+                                                            // foreach (var user in listTeacherOfSubject)
+                                                            // {
+                                                            //     if (listTeacher[i].UserId == user.UserId)
+                                                            //     {
+                                                            //         <input type="checkbox" asp-for="User[i].Select" checked />
+                                                            //     }
+                                                            //     else
+                                                            //     {
+                                                            //         <input type="checkbox" asp-for="User[i].Select" />
+                                                            //     }
+                                                            // }
                                                         }
                                                     }
                                                     else
                                                     {
                                                         <input type="checkbox" asp-for="User[i].Select" />
                                                     }
+                                                    
+                                                    
                                                 }
                                                 
                                                 <input type="hidden" asp-for="User[i].UserId" value="@listTeacher[i].UserId">

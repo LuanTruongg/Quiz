@@ -145,6 +145,33 @@ namespace Quiz.UI.Controllers
 
         }
         [HttpGet]
+        public async Task<IActionResult> DeleteTeacherOfSubject(string userId, string subjectId)
+        {
+            DeleteTeacherForSubjectRequest request = new DeleteTeacherForSubjectRequest()
+            {
+                SubjectId = subjectId,
+                UserId = userId
+            };
+            var result = await _subjectServiceClient.DeleteTeacherForSubject(request);
+            if (result.IsSuccessed)
+            {
+                return RedirectToAction(
+                    "GetTeacherOfSubjectManagement",
+                    "SubjectManagement",
+                    new { subjectId = subjectId }
+                    );
+            }
+            else
+            {
+                return RedirectToAction(
+                    "GetTeacherOfSubjectManagement",
+                    "SubjectManagement",
+                    new { subjectId = subjectId }
+                    );
+            }
+                
+        }
+        [HttpGet]
         public async Task<IActionResult> GetListUserBougthTest(string testStructureId)
         {
             var checkRoles = _rolesService.CheckTeacher(HttpContext);
