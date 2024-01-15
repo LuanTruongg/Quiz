@@ -14,7 +14,12 @@
     </ol>
     <div class="card mb-4">
         <div class="card-header">
-            <a class="btn btn-success" asp-controller="Subject" asp-action="Index">Xem danh sách</a>
+            @Html.ActionLink(
+            "Xem danh sách",
+            "ListTestOfSubjectManagement",
+            "SubjectManagement",
+            new { subjectId = ViewData["SubjectId"]},
+            new { @class = "btn btn-success"})
         </div>
         <div class="card-body">
             @if (ViewBag.Error != null)

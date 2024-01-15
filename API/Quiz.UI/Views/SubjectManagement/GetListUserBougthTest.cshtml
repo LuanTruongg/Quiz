@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Danh sách người mua";
     Layout = "~/Views/Shared/_LayoutTeacher.cshtml";
+    var subjectName = ViewData["SubjectName"];
 }
 @section Scripts{
     <script>
@@ -16,7 +17,14 @@
     <h1 class="mt-4">Danh sách người mua</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a asp-controller="SubjectManagement" asp-action="Index">Danh sách môn học</a></li>
-        <li class="breadcrumb-item"><a asp-controller="SubjectManagement" asp-action="Index"></a>@ViewData["SubjectName"]</li>
+        <li class="breadcrumb-item">
+            <a asp-controller="SubjectManagement" asp-action="Index"></a>
+            @Html.ActionLink(
+            subjectName.ToString(),
+            "ListTestOfSubjectManagement",
+            "SubjectManagement",
+            new { subjectId = ViewData["SubjectId"]})
+        </li>
         <li class="breadcrumb-item active">Danh sách người mua</li>
     </ol>
     <div class="card mb-4">
