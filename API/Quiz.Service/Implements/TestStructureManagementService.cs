@@ -54,7 +54,7 @@ namespace Quiz.Service.Implements
         public async Task<ApiResult<bool>> DeleteTestStructureAsync(string id)
         {
             var testStructureExisting = _dbContext.TestStructures.FirstOrDefault(x => x.TestStructureId == id);
-			if (testStructureExisting != null)
+			if (testStructureExisting == null)
 			{
 				return new ApiErrorResult<bool>("Test Structure does not exist");
 			}
